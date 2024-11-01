@@ -4,7 +4,7 @@ Donate link: http://ljapps.com/
 Tags: Facebook, reviews, slider, testimonials, facebook reviews, Twitter, tweets, Twitter slider
 Requires at least: 3.0.1
 Tested up to: 6.6
-Stable tag: 13.7
+Stable tag: 13.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,9 @@ We are always looking for features to add. Just post on the support forum or con
 7. Easily pick and choose which tweets to download!
 
 == Changelog ==
+= 13.8 =
+* small bug fix
+
 = 13.7 =
 * added ability to hide or initial Last Name of reviewer.
 * added feature to hide certain reviews

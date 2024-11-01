@@ -43,7 +43,9 @@ for ($x = 0; $x < count($rowarray); $x++) {
 			$userpic ="https://avatar.oxro.io/avatar.svg?name=".substr($review->reviewer_name, 0, 1);
 		} else {
 			if($review->type=="Facebook"){
-				if($review->userpic!=""){
+				if($review->userpiclocal!=""){ // Add this line
+					$userpic = $review->userpiclocal;
+				} else if($review->userpic!=""){
 					$userpic = $review->userpic;
 				} else {
 					$userpic = 'https://graph.facebook.com/v2.2/'.$review->reviewer_id.'/picture?width=60&height=60';
