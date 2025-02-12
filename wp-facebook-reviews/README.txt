@@ -4,7 +4,7 @@ Donate link: http://ljapps.com/
 Tags: Facebook, reviews, slider, testimonials, facebook reviews, Twitter, tweets, Twitter slider
 Requires at least: 3.0.1
 Tested up to: 6.7
-Stable tag: 13.8
+Stable tag: 13.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,9 @@ We are always looking for features to add. Just post on the support forum or con
 7. Easily pick and choose which tweets to download!
 
 == Changelog ==
+= 13.9 =
+* freemius sdk update
+
 = 13.8 =
 * small bug fix
 
