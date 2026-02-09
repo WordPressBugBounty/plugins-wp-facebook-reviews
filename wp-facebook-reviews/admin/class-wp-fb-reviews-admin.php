@@ -579,6 +579,12 @@ class WP_FB_Reviews_Admin {
 		
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
 		
+		// Security: Only allow administrators to insert reviews
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized access', 403 );
+			wp_die();
+		}
+		
 		$postreviewarray = $_POST['postreviewarray'];
 		
 		//var_dump($postreviewarray);
@@ -612,12 +618,15 @@ class WP_FB_Reviews_Admin {
 			if($review_length <1 && $review_text !=""){		//fix for other language error
 				$review_length = substr_count($review_text, ' ');
 			}
-			$rtype = $item['type'];
-			
-			//check to see if row is in db already
-			$checkrow = $wpdb->get_row( "SELECT id FROM ".$table_name." WHERE created_time = '$created_time'" );
-			
-			$from_url = "https://www.facebook.com/pg/".$pageid."/reviews/";
+		$rtype = $item['type'];
+		
+		//check to see if row is in db already
+		$checkrow = $wpdb->get_row( $wpdb->prepare(
+			"SELECT id FROM {$table_name} WHERE created_time = %s",
+			$created_time
+		) );
+		
+		$from_url = "https://www.facebook.com/pg/".$pageid."/reviews/";
 			
 			//option for saving positive recommendation_type as 5 start
 			$option = get_option('wpfbr_facebook');
@@ -632,24 +641,24 @@ class WP_FB_Reviews_Admin {
 				}
 			}
 			
-			if ( null === $checkrow ) {
-				$stats[] =array( 
-						'pageid' => $pageid, 
-						'pagename' => $pagename, 
-						'created_time' => $created_time,
-						'created_time_stamp' => strtotime($created_time),
-						'reviewer_name' => $reviewer_name,
-						'reviewer_id' => $reviewer_id,
-						'rating' => $rating,
-						'recommendation_type' => $recommendation_type,
-						'review_text' => $review_text,
-						'hide' => '',
-						'review_length' => $review_length,
-						'type' => $rtype,
-						'userpic' => $reviewer_imgurl,
-						'from_url' => $from_url,
-					);
-			}
+		if ( null === $checkrow ) {
+			$stats[] =array( 
+					'pageid' => $pageid, 
+					'pagename' => $pagename, 
+					'created_time' => date('Y-m-d H:i:s', $created_time_stamp),
+					'created_time_stamp' => $created_time_stamp,
+					'reviewer_name' => $reviewer_name,
+					'reviewer_id' => $reviewer_id,
+					'rating' => $rating,
+					'recommendation_type' => $recommendation_type,
+					'review_text' => $review_text,
+					'hide' => '',
+					'review_length' => $review_length,
+					'type' => $rtype,
+					'userpic' => $reviewer_imgurl,
+					'from_url' => $from_url,
+				);
+		}
 		}
 		$i = 0;
 		$insertnum = 0;
@@ -1471,12 +1480,12 @@ class WP_FB_Reviews_Admin {
 			$starfile = 'stars_'.$review->rating.'_yellow.png';
 			$starhtml='<img src="'.$imgs_url."".$starfile.'" alt="'.$review->rating.' star rating" class="wprev_dash_stars">';
 			
-			$avatarhtml = '';
-			if(isset($review->userpic) && $review->userpic!=''){
-				$avatarhtml = '<img alt="" src="'.$review->userpic.'" class="wprev_dash_avatar" height="40" width="40">';
-			}
-			
-			echo '<li><div class="wprev_dash_revdiv">'.$avatarhtml.'<div class="wprev_dash_stars">'.$starhtml.'</div><h4 class="wprev_dash_name">'.$review->reviewer_name.' - <span class="wprev_dash_timeago">'.$daysagohtml.'</span></h4><p class="wprev_dash_text">'.$reviewtext.'</p></div></li>';
+		$avatarhtml = '';
+		if(isset($review->userpic) && $review->userpic!=''){
+			$avatarhtml = '<img alt="" src="'.esc_url($review->userpic).'" class="wprev_dash_avatar" height="40" width="40">';
+		}
+		
+		echo '<li><div class="wprev_dash_revdiv">'.$avatarhtml.'<div class="wprev_dash_stars">'.$starhtml.'</div><h4 class="wprev_dash_name">'.esc_html($review->reviewer_name).' - <span class="wprev_dash_timeago">'.$daysagohtml.'</span></h4><p class="wprev_dash_text">'.esc_html($reviewtext).'</p></div></li>';
 			
 		}
 		echo '</ul>';

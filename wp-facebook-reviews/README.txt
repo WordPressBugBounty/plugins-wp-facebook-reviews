@@ -3,8 +3,8 @@ Contributors: jgwhite33
 Donate link: http://ljapps.com/
 Tags: Facebook, reviews, slider, testimonials, facebook reviews, Twitter, tweets, Twitter slider
 Requires at least: 3.0.1
-Tested up to: 6.7
-Stable tag: 13.9
+Tested up to: 6.9
+Stable tag: 14.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,14 @@ We are always looking for features to add. Just post on the support forum or con
 7. Easily pick and choose which tweets to download!
 
 == Changelog ==
+= 14.0 =
+* Security: Added capability checks to prevent unauthorized access to AJAX endpoints
+* Security: Fixed stored XSS vulnerabilities by adding proper output escaping
+* Security: Removed nonce exposure from public frontend
+* Security: Fixed SQL injection vulnerability in review duplicate check
+* Fixed: Date handling for Facebook reviews now properly converts to MySQL datetime format
+* Fixed: Improved efficiency by reusing calculated timestamp values
+
 = 13.9 =
 * freemius sdk update
 

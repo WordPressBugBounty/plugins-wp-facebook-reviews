@@ -137,14 +137,13 @@ class WP_FB_Reviews_Public {
 		
 		//wp_enqueue_script( $this->_token."_unslider-min", plugin_dir_url( __FILE__ ) . 'js/wprs-unslider-min.js', array( 'jquery' ), $this->version, false );
 		
-		wp_enqueue_script( $this->_token."_plublic", plugin_dir_url( __FILE__ ) . 'js/wprev-public.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script($this->_token."_plublic", 'wprevpublicjs_script_vars', 
-					array(
-					'wpfb_nonce'=> wp_create_nonce('randomnoncestring'),
-					'wpfb_ajaxurl' => admin_url( 'admin-ajax.php' ),
-					'wprevpluginsurl' => wpfbrev_plugin_url
-					)
-				);
+	wp_enqueue_script( $this->_token."_plublic", plugin_dir_url( __FILE__ ) . 'js/wprev-public.js', array( 'jquery' ), $this->version, false );
+	wp_localize_script($this->_token."_plublic", 'wprevpublicjs_script_vars', 
+				array(
+				'wpfb_ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'wprevpluginsurl' => wpfbrev_plugin_url
+				)
+			);
 
 	}
 	

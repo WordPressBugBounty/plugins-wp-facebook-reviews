@@ -262,20 +262,20 @@ _e('Search reviews, hide certain reviews, manually add reviews, save a CSV file 
 					$userpic = '<a href="'.$profilelink.'" target=_blank>'.$userpic.'</a>';
 				}
 	
-				$html .= '<tr id="'.$reviewsrow->id.'"  class="'.$hiddentrclass.'">
-						<th scope="col" class="manage-column">
-						<a title="hide/unhide" alt="hide/unhide" href="'.$hideurl.'">'.$hideicon.'</a>
-						</th>
-						<th scope="col" class="manage-column">'.$userpic.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->reviewer_name.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->rating.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->recommendation_type.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->review_text.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->created_time.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->review_length.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->pagename.'</th>
-						<th scope="col" class="manage-column">'.$reviewsrow->type.'</th>
-					</tr>';
+			$html .= '<tr id="'.$reviewsrow->id.'"  class="'.$hiddentrclass.'">
+					<th scope="col" class="manage-column">
+					<a title="hide/unhide" alt="hide/unhide" href="'.$hideurl.'">'.$hideicon.'</a>
+					</th>
+					<th scope="col" class="manage-column">'.$userpic.'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->reviewer_name).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->rating).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->recommendation_type).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->review_text).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->created_time).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->review_length).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->pagename).'</th>
+					<th scope="col" class="manage-column">'.esc_html($reviewsrow->type).'</th>
+				</tr>';
 			}
 		} else {
 				$html .= '<tr>
