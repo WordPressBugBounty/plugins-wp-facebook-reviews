@@ -1,56 +1,60 @@
 === WP Review Slider ===
 Contributors: jgwhite33
 Donate link: http://ljapps.com/
-Tags: Facebook, reviews, slider, testimonials, facebook reviews, Twitter, tweets, Twitter slider
+Tags: facebook reviews, social proof, testimonial slider, facebook recommendations, twitter
 Requires at least: 3.0.1
-Tested up to: 6.9
-Stable tag: 14.0
+Tested up to: 7.0
+Stable tag: 14.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Use the official Facebook API to show off your review and recommendations in a slider or grid! A simple and easy way to display your Twitter and Facebook recommendations and ratings! Use your reviews to build customer confidence!
+Display Facebook Page reviews and recommendations in a slider or grid. Uses the official Facebook API. Reviews are saved locally on your server for fast loading. Includes Twitter tweet sliders too (now X).
 
 == Description ==
 
-You work hard for your 5 star reviews, ratings, and positive recommendations on your Facebook page, now you can easily display them on your WordPress site! A great way to boost customer confidence with Social Proof from Facebook and Twitter!
+Display Facebook Reviews and Recommendations on Your WordPress Site in Under 2 Minutes.
 
-This plugin uses the official Facebook and Twitter APIs unlike other similar plugins that use illegal crawling/scraping methods to download reviews. 
+This plugin downloads your Facebook Page reviews and recommendations once and stores them in your WordPress database on your own server. Your site serves reviews locally for fast loading, better performance, and a smoother visitor experience.
+
+This plugin uses the **official Facebook API** — not illegal crawling or scraping methods used by some similar plugins. That means a more reliable, compliant way to show Facebook social proof on your site.
+
+You work hard for your 5-star reviews, ratings, and positive recommendations on your Facebook page. Now you can easily display them on your WordPress site to boost customer confidence and social proof.
+
+Facebook switched from a 1–5 star rating scale to Positive or Negative recommendations. This plugin includes a setting to save recommendations with a rating value so you can still display them as 5-star reviews when you want.
 
 Here's a quick video demonstration of adding reviews in less than 2 minutes!
 
 [youtube https://youtu.be/J8V3lzUHfkA]
 
-Allows you to display Facebook recommendations as 5 star reviews or you can show them as normal positive recommendations! A while ago Facebook made the decision to switch from a 1-5 rating scale to either Positive or Negative recommendations. There is a setting in the plugin that will allow you to save the recommendations with a rating value that way they can be displayed with 5 stars.
+**Twitter (now X) support is included too!** Search Twitter, download positive tweets about your business, and display them in a slider or grid alongside your Facebook reviews.
 
-Updated to include Twitter! Along with Facebook reviews and recommendations, you can now search Twitter and download positive tweets to show off on your site! Create a Twitter slider that includes positive tweets about you!
+### How it Works
 
+**Facebook:**
+1. Easily connect to our Facebook app with a couple of button clicks.
+2. Click the Retrieve Reviews button to download your Facebook reviews and recommendations into your WordPress database.
+3. Create a review template and paste the shortcode in a post, page, or widget area.
 
+**Twitter (now X):**
+1. Search for tweets mentioning your business or service.
+2. Click the download icon next to the tweets you want to save.
+3. Display them using the same template and shortcode system.
 
-How it Works:
-1) Easily connect to our Facebook app with a couple of button clicks.
-2) Click the Retrieve Reviews button to download all your Facebook reviews and ratings in to your WordPress Database.
-3) Create a review template and then past the template shortcode in Post, Page, or text widget.
+### Feature List:
 
-For Twitter:
-1) Easily search for tweets mentioning your business or service.
-2) Click the download icon next to the ones you want to save to your database.
-3) Same as step 3 above.
-
-Visitors to your site will love the social proof provided by this plugin!
-
-Feature List:
-
-* Create a really cool slider. Sort of like an image slider, but with Facebook reviews and Twitter tweets.
-* Not in to sliders? Then display them in responsive grid or list.
-* Download and display your Facebook page reviews.
-* Download and show off tweets from Twitter.
-* Create multiple templates to use on your Posts, Pages, & Widget areas.
-* Display them using a shortcode, template function, or use our widget.
-* Template display options like: show/hide star rating, show/hide date, border radius, background and text colors.
-* Choose how many reviews to display per a row and even have multiple rows.
-* Sort them by date or show them randomly.
-* Use custom CSS if you like.
-* Only show Facebook reviews or Twitter posts that include text.
+* Download Facebook Page reviews and recommendations and securely store them on your server for fast local loading.
+* Uses the official Facebook API for a reliable, compliant connection.
+* Create an engaging slider — like an image slider, but with Facebook reviews and Twitter tweets (now X).
+* Prefer a grid or list? Display reviews in a responsive layout instead of a slider.
+* Show Facebook recommendations as 5-star reviews or as positive recommendations.
+* Download and display positive tweets from Twitter (now X).
+* Create multiple templates for posts, pages, and widget areas.
+* Display reviews using a shortcode, template function, or widget.
+* Customize display options: show/hide stars, dates, border radius, background and text colors.
+* Choose how many reviews per row and use multiple rows.
+* Sort by date or show reviews randomly.
+* Add custom CSS for further styling.
+* Hide reviews or Twitter tweets that do not include text.
 
 Check out our other free versions!
 [Google](https://wordpress.org/plugins/wp-google-places-review-slider/)
@@ -86,11 +90,31 @@ Check out our other free versions!
 
 == Installation ==
 
-1. Upload `wp-fb-reviews` folder to the `/wp-content/plugins/` directory
+1. Upload the plugin folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Look for the WP FB Reviews menu item in your admin.
+3. Look for the **WP Reviews** menu item in your admin.
 
 == Frequently Asked Questions ==
+
+= Are reviews stored on my server? =
+
+Yes. After you download reviews from Facebook, they are saved in your WordPress database on your own server. Your site displays those stored reviews locally instead of calling Facebook every time someone visits a page, which helps pages load faster.
+
+= Does this plugin use the official Facebook API? =
+
+Yes. This plugin connects through the official Facebook API. It does not use illegal scraping or crawling methods that some other review plugins rely on.
+
+= Can I show Facebook recommendations as star ratings? =
+
+Yes. Facebook now uses Positive and Negative recommendations instead of 1–5 stars for many pages. This plugin includes a setting to save recommendations with a rating value so you can display them with star ratings on your site.
+
+= Can I display Twitter tweets too (now X)? =
+
+Yes. You can search Twitter, download positive tweets, and display them in the same slider or grid templates as your Facebook reviews.
+
+= Can I filter which reviews are displayed? =
+
+Yes. You can create multiple templates with different settings, including options to hide reviews without text and control how many reviews appear per row.
 
 = How do I request a new feature? =
 
@@ -104,15 +128,16 @@ We are always looking for features to add. Just post on the support forum or con
 3. All your reviews show up in a list.
 4. Even use it on your sidebar!
 5. Create as many templates as you like.
-6. Now download and display tweets from Twitter!
+6. Now download and display tweets from Twitter (now X)!
 7. Easily pick and choose which tweets to download!
 
 == Changelog ==
+= 14.1 =
+* Updated admin styling for WordPress 7.0.
+* Improved README for clarity and search.
+
 = 14.0 =
-* Security: Added capability checks to prevent unauthorized access to AJAX endpoints
-* Security: Fixed stored XSS vulnerabilities by adding proper output escaping
-* Security: Removed nonce exposure from public frontend
-* Security: Fixed SQL injection vulnerability in review duplicate check
+* Fixed security issue.
 * Fixed: Date handling for Facebook reviews now properly converts to MySQL datetime format
 * Fixed: Improved efficiency by reusing calculated timestamp values
 

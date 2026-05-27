@@ -134,11 +134,13 @@ div#setting-error-settings_updated {
     margin-bottom: 10px;
 }
 .wpfbr_btnicononly {
-    padding-left: 4px !important;
-	padding-right: 3px !important;
+    width: 28px;
+    min-width: 28px;
+    max-width: 28px;
+    padding: 0 !important;
 }
 .dashicons-before::before {
-    padding-top: 3px;
+    padding-top: 0;
     padding-right: 2px;
 }
 #wpfb_review_list_pagination_bar {
@@ -154,6 +156,107 @@ div#wpfbr_new_template {
     box-shadow: 0 1px 1px rgba(0,0,0,0.04);
     padding: 10px;
 	display: none;
+}
+#wpfbr_new_template input[type="text"],
+#wpfbr_new_template input[type="number"],
+#wpfbr_new_template select {
+    height: 32px;
+    min-height: 32px;
+    box-sizing: border-box;
+    line-height: 1.4;
+}
+#wpfbr_new_template select {
+    padding: 0 24px 0 8px;
+}
+#wpfbr_new_template .wp-picker-container .wp-color-result.button {
+    height: 32px;
+    min-height: 32px;
+    box-sizing: border-box;
+}
+#wpfbr_new_template table.form-table > tbody > tr.wpfbr_row:first-child th,
+#wpfbr_new_template table.form-table > tbody > tr.wpfbr_row:first-child td {
+    vertical-align: middle;
+}
+#wpfbr_new_template table.form-table > tbody > tr.wpfbr_row:first-child th {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    white-space: nowrap;
+}
+#wpfbr_new_template #wpfbr_template_title {
+    margin: 0;
+    vertical-align: middle;
+}
+#wp_rev_maindiv input[type="text"],
+#wp_rev_maindiv input[type="number"],
+#wp_rev_maindiv select,
+#wp_fb-settings input[type="text"],
+#wp_fb-settings input[type="number"],
+#wp_fb-settings select {
+    height: 32px;
+    min-height: 32px;
+    box-sizing: border-box;
+    line-height: 1.4;
+}
+#wp_rev_maindiv select,
+#wp_fb-settings select {
+    padding: 0 24px 0 8px;
+}
+#wp_rev_maindiv .button,
+#wp_rev_maindiv .button-secondary,
+#wp_rev_maindiv a.button,
+#wp_rev_maindiv input.button,
+#wp_fb-settings .button,
+#wp_fb-settings .button-secondary,
+#wp_fb-settings a.button,
+#wp_fb-settings input.button {
+    border-color: #ccc;
+    background: #f6f7f7;
+    color: #505050;
+    height: 28px;
+    min-height: 28px;
+    max-height: 28px;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    line-height: 1;
+}
+img.wprev_headerimg {
+    margin-bottom: 10px;
+}
+#wp_rev_maindiv form p.description,
+#newtemplateform p.description {
+    font-size: 14px;
+    margin: .4em 0;
+}
+#wp_rev_maindiv #newtemplateform input[type="submit"].button,
+#wp_rev_maindiv #newtemplateform a.button,
+#wp_rev_maindiv #wpfbr_submittemplatebtn,
+#wp_rev_maindiv #wpfbr_addnewtemplate_cancel,
+#wp_rev_maindiv #wprevpro_addnewtemplate_update {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    min-height: 28px;
+    max-height: 28px;
+    padding: 0 12px;
+    margin: 0 6px 0 0;
+    box-sizing: border-box;
+    line-height: 1;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    appearance: none;
+}
+#wp_rev_maindiv #newtemplateform input[type="submit"].button-primary,
+#wp_rev_maindiv #wpfbr_submittemplatebtn,
+#wp_rev_maindiv #wprevpro_addnewtemplate_update {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+}
+.wprevdescription {
+    font-size: 14px;
+    color: #646970;
 }
 .wpfbr_template_thumb{
     width: 200px;
@@ -248,4 +351,62 @@ body.admin-color-fresh #adminmenu #toplevel_page_wp_fb-welcome a[href="https://w
 }
 tr.hiddenrow {
     background-color: #9c9c9c !important;
+}
+
+/* WP 7 admin: center dashicons in buttons */
+#wp_rev_maindiv .button.dashicons-before,
+#wp_rev_maindiv a.button.dashicons-before,
+#wp_rev_maindiv .button.dashicons-after,
+#wp_rev_maindiv a.button.dashicons-after,
+#wp_fb-settings .button.dashicons-before,
+#wp_fb-settings a.button.dashicons-before {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    line-height: 1.2;
+}
+
+#wp_rev_maindiv .button.dashicons-before::before,
+#wp_rev_maindiv a.button.dashicons-before::before,
+#wp_fb-settings .button.dashicons-before::before,
+#wp_fb-settings a.button.dashicons-before::before {
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    vertical-align: middle;
+    position: relative;
+    top: auto;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+#wp_rev_maindiv .button.dashicons-after::after,
+#wp_rev_maindiv a.button.dashicons-after::after {
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    vertical-align: middle;
+    position: relative;
+    top: auto;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+#wp_rev_maindiv .wpfbr_btnicononly.button.dashicons-before {
+    padding: 0 !important;
+}
+
+#wp_rev_maindiv .wpfbr_margin10:has(> .button),
+#wp_rev_maindiv .wpfbr_margin10:has(> a.button),
+#wp_fb-settings .wpfbr_margin10:has(> .button),
+#wp_fb-settings .wpfbr_margin10:has(> a.button) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
 }
