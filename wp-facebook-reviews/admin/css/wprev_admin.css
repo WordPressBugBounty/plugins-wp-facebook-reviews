@@ -126,7 +126,52 @@ div#setting-error-settings_updated {
 .popup-close:hover { color: #333; }
 
 #popup_bobytext2 {
-    font-weight: bold;
+    margin-top: 12px;
+    font-weight: normal;
+}
+#popup_review_list #popup_bobytext2 .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 12px;
+    margin: 0;
+    box-sizing: border-box;
+    line-height: 1.2;
+    text-decoration: none;
+}
+#popup_review_list #popup_bobytext2 .button.dashicons-before::before {
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+#popup_review_list #popup_bobytext2 a.button.dashicons-no {
+    background: #d63638;
+    border-color: #d63638;
+    color: #fff;
+}
+#popup_review_list #popup_bobytext2 a.button.dashicons-no:hover,
+#popup_review_list #popup_bobytext2 a.button.dashicons-no:focus {
+    background: #b32d2e;
+    border-color: #b32d2e;
+    color: #fff;
+}
+#popup_review_list #popup_bobytext2 a.button.dashicons-cart {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+}
+#popup_review_list #popup_bobytext2 a.button.dashicons-cart:hover,
+#popup_review_list #popup_bobytext2 a.button.dashicons-cart:focus {
+    background: #135e96;
+    border-color: #135e96;
+    color: #fff;
 }
 /*---------------review list page-------------*/
 .wpfbr_margin10 {

@@ -594,12 +594,20 @@ class WP_FB_Reviews_Admin {
 		$table_name = $wpdb->prefix . 'wpfb_reviews';
 		
 		$stats = array();
+		$seen_keys = array();
 		
 		foreach($postreviewarray as $item) { //foreach element in $arr
+			if ( empty( $item['pageid'] ) || empty( $item['created_time'] ) ) {
+				continue;
+			}
+
 			$pageid = $item['pageid'];
 			$pagename = $item['pagename'];
 			$created_time = $item['created_time'];
-			$created_time_stamp = strtotime($created_time);
+			$created_time_stamp = strtotime( $created_time );
+			if ( false === $created_time_stamp ) {
+				continue;
+			}
 			$reviewer_name = $item['reviewer_name'];
 			$reviewer_id = $item['reviewer_id'];
 			$reviewer_imgurl = $item['reviewer_imgurl'];
@@ -608,7 +616,7 @@ class WP_FB_Reviews_Admin {
 			} else {
 				$rating ="";
 			}
-			if($item['recommendation_type']){
+			if(isset($item['recommendation_type']) && $item['recommendation_type']){
 				$recommendation_type = $item['recommendation_type'];
 			} else {
 				$recommendation_type ="";
@@ -619,12 +627,27 @@ class WP_FB_Reviews_Admin {
 				$review_length = substr_count($review_text, ' ');
 			}
 		$rtype = $item['type'];
+
+		$dedup_key = $pageid . '|' . $reviewer_id . '|' . $created_time_stamp;
+		if ( isset( $seen_keys[ $dedup_key ] ) ) {
+			continue;
+		}
 		
 		//check to see if row is in db already
 		$checkrow = $wpdb->get_row( $wpdb->prepare(
 			"SELECT id FROM {$table_name} WHERE created_time = %s",
 			$created_time
 		) );
+
+		// Re-download sends API datetime format; DB stores normalized values.
+		if ( null === $checkrow ) {
+			$checkrow = $wpdb->get_row( $wpdb->prepare(
+				"SELECT id FROM {$table_name} WHERE pageid = %s AND reviewer_id = %s AND created_time_stamp = %d",
+				$pageid,
+				$reviewer_id,
+				$created_time_stamp
+			) );
+		}
 		
 		$from_url = "https://www.facebook.com/pg/".$pageid."/reviews/";
 			
@@ -642,6 +665,7 @@ class WP_FB_Reviews_Admin {
 			}
 			
 		if ( null === $checkrow ) {
+			$seen_keys[ $dedup_key ] = true;
 			$stats[] =array( 
 					'pageid' => $pageid, 
 					'pagename' => $pagename, 

@@ -16,7 +16,7 @@
  * Plugin Name:       WP Review Slider
  * Plugin URI:        https://wpreviewslider.com/
  * Description:       Display Facebook Page reviews and recommendations in a slider or grid. Uses the official Facebook API. Reviews are saved locally on your server for fast loading. Includes Twitter tweet sliders too (now X).
- * Version:           14.2
+ * Version:           14.1
  * Author:            LJ Apps
  * Author URI:        http://ljapps.com/
  * License:           GPL-2.0+
