@@ -98,6 +98,8 @@ class WP_FB_Reviews_Admin {
 			if($_GET['page']=="wpfb-templates_posts" || $_GET['page']=="wp_fb-get_pro" || $_GET['page']=="wpfb-welcome-slug"){
 				//enque template styles for preview
 				wp_enqueue_style( $this->_token."_style1", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-fb-combine.css', array(), $this->version, 'all' );
+				//style 6 layout css for the preview
+				wp_enqueue_style( $this->_token."_style6", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-public_template6.css', array(), $this->version, 'all' );
 
 			}
 			
@@ -170,6 +172,10 @@ class WP_FB_Reviews_Admin {
 		if(isset($_GET['page'])){
 			if($_GET['page']=="wpfb-reviews"){
 				//admin js
+				// Depend only on jQuery. thickbox/media-upload are enqueued separately below
+				// for the avatar uploader; declaring them as hard dependencies here risks
+				// WordPress silently dropping this script if either handle isn't registered,
+				// which would break the edit popup, hide, and delete AJAX handlers.
 				wp_enqueue_script('review_list_page-js', plugin_dir_url( __FILE__ ) . 'js/review_list_page.js', array( 'jquery' ), $this->version, false );
 				wp_localize_script('review_list_page-js', 'adminjs_script_vars', 
 					array(
@@ -180,12 +186,21 @@ class WP_FB_Reviews_Admin {
 		  <p><b>- Manually Add Review:</b> Allows you to manaully insert a review in to your Wordpress database.</p> 
 		  <p><b>- Download a CSV File:</b> Save a CSV file to your computer containing all the reviews in this table.</p> ', 'wp-fb-reviews'),
 					'popuptitle2' => esc_html__('Are you sure?', 'wp-fb-reviews'),
-					'popupbody2' => esc_html__('This will delete all reviews in your Wordpress database including the ones you manually entered. It Does NOT affect your reviews on Facebook or Twitter.', 'wp-fb-reviews'),
+					'popupbody2' => esc_html__('This will delete all reviews in your Wordpress database including the ones you manually entered. It Does NOT affect your reviews on Facebook or X (Twitter).', 'wp-fb-reviews'),
 					'popupbody3' => esc_html__('Remove Facebook', 'wp-fb-reviews'),
-					'popupbody4' => esc_html__('Remove Twitter', 'wp-fb-reviews'),
+					'popupbody4' => esc_html__('Remove X (Twitter)', 'wp-fb-reviews'),
 					'popupbody5' => esc_html__('Remove All Reviews', 'wp-fb-reviews'),
 					)
 				);
+
+				//lity lightbox for review media thumbnails
+				wp_enqueue_style( $this->_token."_lity_min", plugin_dir_url( __FILE__ ) . 'css/lity.min.css', array(), $this->version, 'all' );
+				wp_enqueue_script('wpfb_lity-js', plugin_dir_url( __FILE__ ) . 'js/lity.min.js', array( 'jquery' ), $this->version, false );
+
+				//avatar uploader (thickbox/media) for the edit popup
+				wp_enqueue_script('thickbox');
+				wp_enqueue_style('thickbox');
+				wp_enqueue_script('media-upload');
 			}
 			
 			//scripts for templates posts page
@@ -194,7 +209,13 @@ class WP_FB_Reviews_Admin {
 				$date_format = get_option( 'date_format' );
 				$sampledate = date($date_format,'1547391507');
 		
-				wp_enqueue_script('templates_posts_page-js', plugin_dir_url( __FILE__ ) . 'js/templates_posts_page.js', array( 'jquery' ), $this->version, false );
+				//add color picker here
+				wp_enqueue_style( 'wp-color-picker' );
+				// Alpha add-on (v3) — extends Iris without replacing the WP color-result button markup
+				wp_enqueue_script( 'wp-color-picker-alpha', plugin_dir_url( __FILE__ ) . 'js/wprevpro-wp-color-picker-alpha.js', array( 'wp-color-picker' ), '3.0.0', false );
+
+				wp_enqueue_media();
+				wp_enqueue_script('templates_posts_page-js', plugin_dir_url( __FILE__ ) . 'js/templates_posts_page.js', array( 'jquery', 'wp-color-picker', 'wp-color-picker-alpha' ), $this->version, false );
 				wp_localize_script('templates_posts_page-js', 'adminjs_script_vars', 
 					array(
 					'wpfb_nonce'=> wp_create_nonce('randomnoncestring'),
@@ -209,10 +230,18 @@ class WP_FB_Reviews_Admin {
 					'popupbody4' => esc_html__('Or you can add the following php code to your template:', 'wp-fb-reviews'),
 					)
 				);
-				//add color picker here
-				wp_enqueue_style( 'wp-color-picker' );
-				//enque alpha color add-on wprevpro-wp-color-picker-alpha.js
-				wp_enqueue_script( 'wp-color-picker-alpha', plugin_dir_url( __FILE__ ) . 'js/wprevpro-wp-color-picker-alpha.js', array( 'wp-color-picker' ), '2.1.2', true );
+
+				//slider engine so the live preview can build working sliders
+				wp_enqueue_script( $this->_token."_unslider-swipe-min", plugin_dir_url( dirname( __FILE__ ) ) . 'public/js/wprs-unslider-swipe.js', array( 'jquery' ), $this->version, false );
+
+				//lity lightbox for review media thumbnails in the preview
+				wp_enqueue_style( $this->_token."_lity_min", plugin_dir_url( __FILE__ ) . 'css/lity.min.css', array(), $this->version, 'all' );
+				wp_enqueue_script( 'wpfb_lity-js', plugin_dir_url( __FILE__ ) . 'js/lity.min.js', array( 'jquery' ), $this->version, false );
+
+				// Badge business image uses wp.media (enqueued above).
+				// Keep thickbox for any remaining inline tip dialogs on this page.
+				wp_enqueue_script( 'thickbox' );
+				wp_enqueue_style( 'thickbox' );
 			}
 			
 			//scripts for get_twitter page itunes
@@ -262,9 +291,9 @@ class WP_FB_Reviews_Admin {
 		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_facebook'));
 
 		
-		// Now add the hidden submenu page for twitter
-		$submenu_page_title = 'WP Reviews : Twitter';
-		$submenu_title = 'Twitter';
+		// Now add the hidden submenu page for X (Twitter)
+		$submenu_page_title = 'WP Reviews : X (Twitter)';
+		$submenu_title = 'X (Twitter)';
 		$submenu_slug = 'wpfb-get_twitter';
 		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_gettwitter'));
 		
@@ -568,6 +597,137 @@ class WP_FB_Reviews_Admin {
 	}
 	*/
 	/**
+	 * AJAX: hide/unhide or delete a single review without a page reload.
+	 * Called from admin/js/review_list_page.js.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function wpfb_hidereview_ajax() {
+		check_ajax_referer( 'randomnoncestring', 'wpfb_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			echo '0-noperm-fail';
+			die();
+		}
+
+		$rid      = isset( $_POST['reviewid'] ) ? intval( $_POST['reviewid'] ) : 0;
+		$myaction = isset( $_POST['myaction'] ) ? sanitize_text_field( wp_unslash( $_POST['myaction'] ) ) : '';
+
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wpfb_reviews';
+
+		if ( $myaction === 'hideshow' ) {
+			$myreview = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %d", $rid ) );
+			if ( ! $myreview ) {
+				echo $rid . '-' . $myaction . '-fail';
+				die();
+			}
+
+			$newvalue = ( $myreview->hide === 'yes' ) ? '' : 'yes';
+
+			$updatetempquery = $wpdb->update(
+				$table_name,
+				array( 'hide' => $newvalue ),
+				array( 'id' => $rid ),
+				array( '%s' ),
+				array( '%d' )
+			);
+			if ( false !== $updatetempquery ) {
+				echo $rid . '-' . $myaction . '-' . $newvalue;
+			} else {
+				echo $rid . '-' . $myaction . '-fail';
+			}
+		}
+
+		if ( $myaction === 'deleterev' ) {
+			$deletereview = $wpdb->delete( $table_name, array( 'id' => $rid ), array( '%d' ) );
+			if ( $deletereview > 0 ) {
+				echo $rid . '-' . $myaction . '-success';
+			} else {
+				echo $rid . '-' . $myaction . '-fail';
+			}
+		}
+
+		die();
+	}
+
+	/**
+	 * AJAX: save an edited review (reviewer photo URL + display date) without a
+	 * page reload, called from admin/js/review_list_page.js.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function wpfb_savereview_ajax() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions', 'wp-fb-reviews' ) ) );
+			return;
+		}
+
+		check_ajax_referer( 'randomnoncestring', 'wpfb_nonce' );
+
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wpfb_reviews';
+
+		$r_id       = isset( $_POST['editrid'] ) ? absint( $_POST['editrid'] ) : 0;
+		$avatar_url = isset( $_POST['avatar_url'] ) ? esc_url_raw( wp_unslash( $_POST['avatar_url'] ) ) : '';
+		$rdate_raw  = isset( $_POST['review_date'] ) ? sanitize_text_field( wp_unslash( $_POST['review_date'] ) ) : '';
+
+		if ( $r_id <= 0 ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid review.', 'wp-fb-reviews' ) ) );
+			return;
+		}
+
+		$existing = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %d", $r_id ) );
+		if ( ! $existing ) {
+			wp_send_json_error( array( 'message' => __( 'Review not found.', 'wp-fb-reviews' ) ) );
+			return;
+		}
+
+		// Update both userpic and userpiclocal so the front-end (which prefers the
+		// local copy for Facebook avatars) reflects the edited image.
+		$data   = array(
+			'userpic'      => $avatar_url,
+			'userpiclocal' => $avatar_url,
+		);
+		$format = array( '%s', '%s' );
+
+		$parsed_stamp = $rdate_raw !== '' ? strtotime( $rdate_raw ) : false;
+		if ( ! $parsed_stamp ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid date. Use the format YYYY-MM-DD HH:MM:SS.', 'wp-fb-reviews' ) ) );
+			return;
+		}
+
+		$created_time               = date( 'Y-m-d H:i:s', $parsed_stamp );
+		$data['created_time']       = $created_time;
+		$data['created_time_stamp'] = $parsed_stamp;
+		$format[]                   = '%s';
+		$format[]                   = '%d';
+
+		$updated = $wpdb->update(
+			$table_name,
+			$data,
+			array( 'id' => $r_id ),
+			$format,
+			array( '%d' )
+		);
+
+		if ( false === $updated ) {
+			wp_send_json_error( array( 'message' => __( 'Database error while saving. Please try again.', 'wp-fb-reviews' ) ) );
+			return;
+		}
+
+		wp_send_json_success(
+			array(
+				'id'      => $r_id,
+				'userpic' => $avatar_url !== '' ? esc_url( $avatar_url ) : '',
+				'date'    => esc_html( $created_time ),
+			)
+		);
+	}
+
+	/**
 	 * Store reviews in table, called from javascript file admin.js
 	 * @access  public
 	 * @since   1.0.0
@@ -762,19 +922,23 @@ class WP_FB_Reviews_Admin {
 						//echo "Copy failed.";
 						//try to curl the image
 						if (function_exists('curl_init')) {
-							$curl = curl_init();
-							$fh = fopen($newfile, 'w');
-							curl_setopt($curl, CURLOPT_URL, $userpic);
-							curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-							$result = curl_exec($curl);
-							fwrite($fh, $result);
-							fclose($fh);
-							curl_close($curl);
-											
-							if ( is_file($newfile) ) {
-								//$this->wppro_resizeimage($newfile,60);
-								//update db with new image location, userpiclocal
-								$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = '$newfileurl' WHERE id = %d AND reviewer_id = %s",$id, $revid) );
+							$fh = @fopen($newfile, 'w');
+							if ($fh) {
+								$curl = curl_init();
+								curl_setopt($curl, CURLOPT_URL, $userpic);
+								curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+								$result = curl_exec($curl);
+								if ($result !== false) {
+									fwrite($fh, $result);
+								}
+								fclose($fh);
+								curl_close($curl);
+
+								if ( is_file($newfile) ) {
+									//$this->wppro_resizeimage($newfile,60);
+									//update db with new image location, userpiclocal
+									$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = %s WHERE id = %d AND reviewer_id = %s",$newfileurl,$id, $revid) );
+								}
 							}
 						}
 					}
@@ -1092,23 +1256,17 @@ class WP_FB_Reviews_Admin {
 //--======================= end fb tempmethod =======================--//	
 	*/	
 	
-		//====================twitter======================
-	//for checking twitter keys
+		//====================X (Twitter)======================
+	//search X for posts using the X API v2
 	public function wprp_twitter_gettweets_ajax() {
-		
-		//====default twitter keys used for standard search/
-		$wprevpro_twitter_api_default['key']='O30jlOfBnZdV5Eh8iWO37jsEw';
-		$wprevpro_twitter_api_default['secret']='GL4LFyXwfOZTORVmkQjXrhorUzEIy7ycamYXC8icpDWrluKXi2';
-		$wprevpro_twitter_api_default['token']='919980007707037697-B8oPwME9yBWt0NQc3L9pdEBvWqzFfzE';
-		$wprevpro_twitter_api_default['token_secret']='Gvk3Op3oNyhzzOd1oONPp414yNO6XnFqN5AxSJnMVxkoI';
-		
+
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
 		$searchquery = sanitize_text_field($_POST['query']);
 		$searchendpoint = sanitize_text_field($_POST['endpoint']);
 		$formid = sanitize_text_field($_POST['fid']);
 		$resultarray['searchquery'] = $searchquery;
 		$resultarray['searchendpoint'] = $searchendpoint;
-		
+
 		//update the searchquery for the form id, this is because of the input on the pop-up.
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'wpfb_gettwitter_forms';
@@ -1116,66 +1274,145 @@ class WP_FB_Reviews_Admin {
 		$data = array('query' => "$searchquery",'last_ran' =>"$timenow");
 		$format = array('%s','%d');
 		$updatetempquery = $wpdb->update($table_name, $data, array( 'id' => $formid ), $format, array( '%d' ));
-		
-		$wprevpro_twitter_api_key = get_option('wprevfb_twitterapi_key');
-		$wprevpro_twitter_api_key_secret = get_option('wprevfb_twitterapi_key_secret');
-		$wprevpro_twitter_api_token = get_option('wprevfb_twitterapi_token');
-		$wprevpro_twitter_api_token_secret = get_option('wprevfb_twitterapi_token_secret');
-		
-		//------if we are using default keys then force to the standard search, also force in javascript
-		if($searchendpoint=="7" || $wprevpro_twitter_api_key=='' || $wprevpro_twitter_api_key_secret=='' || $wprevpro_twitter_api_token=='' || $wprevpro_twitter_api_token_secret==''){
-			//use standard search
-			$connection = new Abraham\TwitterOAuth\TwitterOAuth($wprevpro_twitter_api_default['key'], $wprevpro_twitter_api_default['secret'], $wprevpro_twitter_api_default['token'], $wprevpro_twitter_api_default['token_secret']);
 
-			
-			$resultstemp = (array)$connection->get("search/tweets", ["q" => $searchquery,"count" => '100']);
-
-			//print_r($resultstemp);
-			
-			$statuses['results']=$resultstemp['statuses'];
-			
-			//$resultsarr = json_decode($resultstemp,true);
-			//print_r($resultsarr);
-			//$statusesarr = $resultsarr['statuses'];
-			//$statuses = json_encode($statusesarr['statuses']);
-			//$statuses need to match what we get from premium search
-		} else {
-			//try to use premium search
-			$connection = new Abraham\TwitterOAuth\TwitterOAuth($wprevpro_twitter_api_key, $wprevpro_twitter_api_key_secret, $wprevpro_twitter_api_token, $wprevpro_twitter_api_token_secret);
-			if($searchendpoint=='all'){
-				$endhtml = 'fullarchive';
-			} else {
-				$endhtml = '30day';
-			}
-			$statuses = $connection->get("tweets/search/".$endhtml."/wprevdev", ["query" => $searchquery,"maxResults" => '100']);
+		$wprevpro_twitter_api_key = trim((string) get_option('wprevfb_twitterapi_key'));
+		$wprevpro_twitter_api_key_secret = trim((string) get_option('wprevfb_twitterapi_key_secret'));
+		$wprevpro_twitter_api_token = trim((string) get_option('wprevfb_twitterapi_token'));
+		$wprevpro_twitter_api_token_secret = trim((string) get_option('wprevfb_twitterapi_token_secret'));
+		$wprevpro_twitter_bearer = trim((string) get_option('wprevfb_twitterapi_bearer'));
+		//Users sometimes paste the header value including the "Bearer " prefix.
+		if(stripos($wprevpro_twitter_bearer, 'Bearer ') === 0){
+			$wprevpro_twitter_bearer = trim(substr($wprevpro_twitter_bearer, 7));
 		}
-		
+
+		$has_oauth1 = ($wprevpro_twitter_api_key!='' && $wprevpro_twitter_api_key_secret!='' && $wprevpro_twitter_api_token!='' && $wprevpro_twitter_api_token_secret!='');
+		$has_bearer = ($wprevpro_twitter_bearer!='');
+
+		//X API v2 requires the site owner's own credentials, there is no shared fallback.
+		if(!$has_oauth1 && !$has_bearer){
+			$resultarray['ack'] = 'error';
+			$resultarray['msg'] = 'Please enter your X (Twitter) API credentials using the "Enter/Modify API Keys" button before searching. Prefer OAuth 1.0a (Consumer Key, Consumer Key Secret, Access Token, Access Token Secret), or a Bearer Token.';
+			$resultarray['statuses'] = array('results' => array());
+			$resultarray['savedreviews'] = array();
+			echo json_encode($resultarray);
+			die();
+		}
+
+		//Prefer OAuth 1.0a user context when all four keys are present; otherwise use OAuth 2.0 app-only Bearer.
+		$authmethod = '';
+		if($has_oauth1){
+			$connection = new Abraham\TwitterOAuth\TwitterOAuth($wprevpro_twitter_api_key, $wprevpro_twitter_api_key_secret, $wprevpro_twitter_api_token, $wprevpro_twitter_api_token_secret);
+			$authmethod = 'oauth1';
+		} else {
+			$connection = new Abraham\TwitterOAuth\TwitterOAuth('', '');
+			$connection->setBearer($wprevpro_twitter_bearer);
+			$authmethod = 'bearer';
+		}
+		$connection->setApiVersion('2');
+		$connection->setDecodeJsonAsArray(true);
+
+		//'all' uses the full-archive search (needs elevated/paid access), everything else uses recent (last 7 days).
+		if($searchendpoint=='all'){
+			$searchpath = 'tweets/search/all';
+		} else {
+			$searchpath = 'tweets/search/recent';
+		}
+
+		$params = array(
+			'query' => $searchquery,
+			'max_results' => '100',
+			'tweet.fields' => 'created_at,lang,public_metrics,author_id,note_tweet',
+			'expansions' => 'author_id',
+			'user.fields' => 'name,username,profile_image_url',
+		);
+		$apiresult = $connection->get($searchpath, $params);
+
+		//build a lookup of users by id from the includes payload.
+		$usersbyid = array();
+		if(isset($apiresult['includes']['users']) && is_array($apiresult['includes']['users'])){
+			foreach($apiresult['includes']['users'] as $u){
+				$usersbyid[$u['id']] = $u;
+			}
+		}
+
+		//normalize the v2 response into the legacy statuses.results shape the picker JS expects.
+		$statuses = array('results' => array());
+		if(isset($apiresult['data']) && is_array($apiresult['data'])){
+			foreach($apiresult['data'] as $tweet){
+				$authorid = isset($tweet['author_id']) ? $tweet['author_id'] : '';
+				$u = isset($usersbyid[$authorid]) ? $usersbyid[$authorid] : array();
+
+				//note_tweet holds the full text for posts longer than 280 characters.
+				if(isset($tweet['note_tweet']['text']) && $tweet['note_tweet']['text']!=''){
+					$tweettext = $tweet['note_tweet']['text'];
+				} else {
+					$tweettext = isset($tweet['text']) ? $tweet['text'] : '';
+				}
+
+				$metrics = isset($tweet['public_metrics']) ? $tweet['public_metrics'] : array();
+
+				$statuses['results'][] = array(
+					'id_str' => isset($tweet['id']) ? (string)$tweet['id'] : '',
+					'text' => $tweettext,
+					'truncated' => false,
+					'created_at' => isset($tweet['created_at']) ? $tweet['created_at'] : '',
+					'lang' => isset($tweet['lang']) ? $tweet['lang'] : '',
+					'retweet_count' => isset($metrics['retweet_count']) ? $metrics['retweet_count'] : 0,
+					'favorite_count' => isset($metrics['like_count']) ? $metrics['like_count'] : 0,
+					'reply_count' => isset($metrics['reply_count']) ? $metrics['reply_count'] : 0,
+					'user' => array(
+						'screen_name' => isset($u['username']) ? $u['username'] : '',
+						'name' => isset($u['name']) ? $u['name'] : '',
+						'profile_image_url_https' => isset($u['profile_image_url']) ? $u['profile_image_url'] : '',
+					),
+				);
+			}
+		}
+
 		//get an array of all tweets in db and pass back so we can know what we already have.
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'wpfb_reviews';
-		$resultarray['savedreviews'] = $wpdb->get_col( "SELECT unique_id FROM ".$table_name." WHERE type = 'Twitter'" );
-		
-		if ($connection->getLastHttpCode() == 200) {
+		$reviews_table = $wpdb->prefix . 'wpfb_reviews';
+		$resultarray['savedreviews'] = $wpdb->get_col( "SELECT unique_id FROM ".$reviews_table." WHERE type = 'Twitter'" );
+
+		$httpcode = $connection->getLastHttpCode();
+		if ($httpcode == 200) {
 			$resultarray['ack'] = 'success';
 			$resultarray['msg'] ='';
 			$resultarray['statuses'] =$statuses;
 		} else {
-			// Handle error case
+			// Handle error case with a human-readable message when possible.
 			$resultarray['ack'] = 'error';
-			$temperrormessage = (array)$connection->getLastBody();
-			$temperrormessage = json_encode($temperrormessage);
-			$resultarray['msg'] = $temperrormessage;
 			$resultarray['statuses'] =$statuses;
+			$apibody = $connection->getLastBody();
+			$apidetail = '';
+			if(is_array($apibody)){
+				if(isset($apibody['detail'])){
+					$apidetail = $apibody['detail'];
+				} else if(isset($apibody['title'])){
+					$apidetail = $apibody['title'];
+				}
+			}
+
+			if($httpcode == 401 || $httpcode == 403){
+				$authlabel = ($authmethod === 'oauth1') ? 'OAuth 1.0a user-context keys' : 'Bearer Token (app-only)';
+				$resultarray['msg'] = 'X API returned '.$httpcode.' Unauthorized/Forbidden using '.$authlabel.'. Confirm the App is on Pay Per Use (or another paid plan) with Recent Search access, that credentials belong to that App/Project, and try regenerating Access Token + Secret (or Bearer). See https://developer.x.com/en/portal/products';
+				if($apidetail!=''){
+					$resultarray['msg'] .= ' X said: '.$apidetail;
+				}
+			} else if($apidetail!=''){
+				$resultarray['msg'] = 'X API error ('.$httpcode.'): '.$apidetail;
+			} else {
+				$resultarray['msg'] = 'X API error ('.$httpcode.'): '.json_encode($apibody);
+			}
 		}
-		
+
 		echo json_encode($resultarray);
 		die();
 	}
 	//for saving or deleting tweets in db
 	public function wprp_twitter_savetweet_ajax() {
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
-		
-		
+
+		$resultarray = array();
 		$saveordel =  sanitize_text_field($_POST['saveordel']);
 		
 		$review_text = sanitize_text_field($_POST['tw_text']);
@@ -1196,9 +1433,15 @@ class WP_FB_Reviews_Admin {
 		$pageid = str_replace(" ","",$pagename)."_".$fid;
 		$pageid = str_replace("'","",$pageid);
 		$pageid = str_replace('"',"",$pageid);
-//print_r($_POST);
-//		die();		
+
 		$timestamp = $this->myStrtotime($tw_time);
+		if(!$timestamp){
+			//X API v2 returns ISO-8601 (e.g. 2026-08-02T01:32:10.000Z).
+			$timestamp = strtotime($tw_time);
+		}
+		if(!$timestamp){
+			$timestamp = time();
+		}
 		$unixtimestamp = $timestamp;
 		$timestamp = date("Y-m-d H:i:s", $timestamp);
 		
@@ -1206,31 +1449,26 @@ class WP_FB_Reviews_Admin {
 		
 		//find character length
 		if (extension_loaded('mbstring')) {
-			$review_length_char = mb_strlen($text);
+			$review_length_char = mb_strlen($review_text);
 		} else {
-			$review_length_char = strlen($text);
+			$review_length_char = strlen($review_text);
 		}
 		
-		
-		//$review_length_char = mb_strlen($review_text);
-		
-		$from_url = "https://twitter.com/".$tw_sname."/status/".$tw_id;
-		
-		
-		
-		//$cats = sanitize_text_field($_POST['cats']);
-		//$cats = str_replace("'",'"',$cats);
-		//$posts = sanitize_text_field($_POST['posts']);
-		//$posts = str_replace("'",'"',$posts);
+		$from_url = "https://x.com/".$tw_sname."/status/".$tw_id;
+
+		$cats = isset($_POST['cats']) ? sanitize_text_field($_POST['cats']) : '';
+		$cats = str_replace("'",'"',$cats);
+		$posts = isset($_POST['posts']) ? sanitize_text_field($_POST['posts']) : '';
+		$posts = str_replace("'",'"',$posts);
+
 		//save likes, retweets, and replies in meta_data
 		//===============================================
-		$meta_data['user_url'] = "https://twitter.com/".$tw_sname;
+		$meta_data['user_url'] = "https://x.com/".$tw_sname;
 		$meta_data['favorite_count'] = $tw_fc;
 		$meta_data['retweet_count'] = $tw_rtc;
 		$meta_data['reply_count'] = $tw_rc;
 		$meta_data['screenname'] = $tw_sname;
 		$meta_json = json_encode($meta_data);
-		//{"user_url":"https://www.tripadvisor.com/Profile/rhohensee","location":"Houston, Texas","contributions":2,"helpful_votes":3,"date_of_visit":"2019-07-31"}
 		//===============================================
 		
 		
@@ -1262,21 +1500,12 @@ class WP_FB_Reviews_Admin {
 						'posts' => trim($posts),
 					];
 			
-			//print_r($stat);
 		$insertnum = $wpdb->insert( $table_name, $stat );
 		$resultarray['insertnum']=$insertnum;
 			
-			//try to save local image if turned on
-			
-				//if($insertnum>0 && $limage=="yes" && $tw_img!=''){
-				//	$resultarray['imgdownload']='yes';
-				//	$stat['id']=$wpdb->insert_id;
-				//	$resultarray['id']=$stat['id'];
-				//	$statobj = (object) $stat;
-					$this->wprevpro_download_avatar_tolocal();
-				//}
-				
-			
+			//Avatar caching is handled by the separate wprevpro_download_avatar_tolocal AJAX
+			//action. Do not call it from here — it re-checks the nonce and can fatally error
+			//if the uploads directory is not writable, which breaks the save response.
 		}
 		
 		
@@ -1515,6 +1744,248 @@ class WP_FB_Reviews_Admin {
 		echo '</ul>';
 		
 		echo '<div><a href="admin.php?page=wpfb-reviews">All Reviews</a> - <a href="https://wpreviewslider.com/" target="_blank">Go Pro For More Cool Features!</a></div>';
+	}
+
+	/**
+	 * Allow a hex or rgb(a) color string, otherwise return empty.
+	 *
+	 * @param string $color Raw color value.
+	 * @return string
+	 */
+	private function wpfb_sanitize_css_color( $color ) {
+		$color = trim( (string) $color );
+		if ( $color === '' ) {
+			return '';
+		}
+		if ( preg_match( '/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $color ) ) {
+			return $color;
+		}
+		if ( preg_match( '/^rgba?\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*(,\s*[\d.]+\s*)?\)$/i', $color ) ) {
+			return $color;
+		}
+		return '';
+	}
+
+	/**
+	 * Ajax: return the rendered template HTML for the live preview.
+	 */
+	public function wpfb_previewtemplate_ajax() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Insufficient permissions' ) );
+			return;
+		}
+		check_ajax_referer( 'randomnoncestring', 'wpfb_nonce' );
+
+		$tid         = isset( $_POST['tid'] ) ? absint( $_POST['tid'] ) : 0;
+		$returnarray = $this->wpfb_previewtemplate_ajax_get( $tid );
+		echo wp_json_encode( $returnarray );
+		die();
+	}
+
+	/**
+	 * Build preview HTML for a template id using the public shortcode renderer.
+	 *
+	 * @param int $tid Template id.
+	 * @return array
+	 */
+	public function wpfb_previewtemplate_ajax_get( $tid ) {
+		$atts = array( 'tid' => absint( $tid ) );
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-wp-fb-reviews-public.php';
+		$plugin_public_class = new WP_FB_Reviews_Public( $this->_token, $this->version );
+		$templatehtml        = $plugin_public_class->wprev_usetemplate_func( $atts, null );
+
+		return array(
+			'tid'          => absint( $tid ),
+			'ack'          => 'success',
+			'templatehtml' => $templatehtml,
+		);
+	}
+
+	/**
+	 * Ajax: save (insert/update) a review template then return its preview HTML.
+	 *
+	 * Mirrors the page-POST save logic in admin/partials/templates_posts.php so
+	 * the live preview reflects exactly what will be stored.
+	 */
+	public function wpfb_savetemplate_ajax() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Insufficient permissions' ) );
+			return;
+		}
+		check_ajax_referer( 'randomnoncestring', 'wpfb_nonce' );
+
+		$formdata  = isset( $_POST['data'] ) ? stripslashes( $_POST['data'] ) : '';
+		$formarray = json_decode( $formdata, true );
+		if ( ! is_array( $formarray ) ) {
+			echo wp_json_encode( array( 'ack' => 'error', 'ackmessage' => 'Invalid form data.' ) );
+			die();
+		}
+
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'wpfb_post_templates';
+
+		$get = function ( $key, $default = '' ) use ( $formarray ) {
+			return isset( $formarray[ $key ] ) ? $formarray[ $key ] : $default;
+		};
+
+		$t_id             = sanitize_text_field( $get( 'edittid' ) );
+		$title            = sanitize_text_field( $get( 'wpfbr_template_title' ) );
+		$template_type    = sanitize_text_field( $get( 'wpfbr_template_type', 'post' ) );
+		$style            = sanitize_text_field( $get( 'wprevpro_template_style', '1' ) );
+		$display_num      = sanitize_text_field( $get( 'wpfbr_t_display_num', '3' ) );
+		$display_num_rows = sanitize_text_field( $get( 'wpfbr_t_display_num_rows', '1' ) );
+		$display_order    = sanitize_text_field( $get( 'wpfbr_t_display_order', 'newest' ) );
+		$hide_no_text     = sanitize_text_field( $get( 'wpfbr_t_hidenotext', 'no' ) );
+		$template_css     = sanitize_textarea_field( $get( 'wpfbr_template_css' ) );
+		$createslider     = sanitize_text_field( $get( 'wpfbr_t_createslider', 'no' ) );
+		$numslides        = sanitize_text_field( $get( 'wpfbr_t_numslides', '3' ) );
+		$read_more        = sanitize_text_field( $get( 'wprevpro_t_read_more', 'no' ) );
+		$read_more_text   = sanitize_text_field( $get( 'wprevpro_t_read_more_text', 'read more' ) );
+		$read_more_num    = absint( $get( 'wprevpro_t_read_more_num', '30' ) );
+		$min_rating       = sanitize_text_field( $get( 'wpfbr_t_min_rating', '1' ) );
+		$slidermobileview = sanitize_text_field( $get( 'wpfbr_slidermobileview' ) );
+		$review_same_hgt  = sanitize_text_field( $get( 'wpfbr_t_review_same_height', 'no' ) );
+		$filtersource     = sanitize_text_field( $get( 'wpfbr_t_filtersource' ) );
+		$filterrtype      = sanitize_text_field( $get( 'wpfbr_t_rtype', 'fb' ) );
+		if ( $filterrtype === 'twitter' ) {
+			$rtype_save = '["twitter"]';
+		} elseif ( $filterrtype === 'both' ) {
+			$rtype_save = '["fb","twitter"]';
+		} else {
+			$rtype_save = '["fb"]';
+		}
+
+		// template misc (style + slider + badge, stored as JSON)
+		$templatemiscarray = array();
+		$templatemiscarray['showstars'] = sanitize_text_field( $get( 'wprevpro_template_misc_showstars', 'yes' ) );
+		$templatemiscarray['showdate']  = sanitize_text_field( $get( 'wprevpro_template_misc_showdate', 'yes' ) );
+		$templatemiscarray['bgcolor1']  = $this->wpfb_sanitize_css_color( $get( 'wprevpro_template_misc_bgcolor1' ) );
+		$templatemiscarray['bgcolor2']  = $this->wpfb_sanitize_css_color( $get( 'wprevpro_template_misc_bgcolor2' ) );
+		$templatemiscarray['tcolor1']   = $this->wpfb_sanitize_css_color( $get( 'wprevpro_template_misc_tcolor1' ) );
+		$templatemiscarray['tcolor2']   = $this->wpfb_sanitize_css_color( $get( 'wprevpro_template_misc_tcolor2' ) );
+		$templatemiscarray['tcolor3']   = $this->wpfb_sanitize_css_color( $get( 'wprevpro_template_misc_tcolor3' ) );
+		$templatemiscarray['bradius']   = sanitize_text_field( $get( 'wprevpro_template_misc_bradius', '0' ) );
+		$templatemiscarray['showmedia'] = sanitize_text_field( $get( 'wpfbr_t_showmedia', 'yes' ) );
+
+		// Style-tab options.
+		$templatemiscarray['verified']       = sanitize_text_field( $get( 'wprevpro_template_misc_verified', 'no' ) );
+		$templatemiscarray['lastnameformat'] = sanitize_text_field( $get( 'wprevpro_template_misc_lastname', 'show' ) );
+		$templatemiscarray['avataropt']      = sanitize_text_field( $get( 'wprevpro_template_misc_avataropt', 'show' ) );
+		$templatemiscarray['showicon']       = sanitize_text_field( $get( 'wprevpro_template_misc_showicon', 'lin' ) );
+		$ajax_tfont1 = absint( $get( 'wprevpro_template_misc_tfont1', 0 ) );
+		$ajax_tfont2 = absint( $get( 'wprevpro_template_misc_tfont2', 0 ) );
+		$templatemiscarray['tfont1'] = $ajax_tfont1 > 0 ? (string) $ajax_tfont1 : '';
+		$templatemiscarray['tfont2'] = $ajax_tfont2 > 0 ? (string) $ajax_tfont2 : '';
+
+		// General-tab options (slider + read more).
+		$templatemiscarray['slidespeed']         = sanitize_text_field( $get( 'wpfbr_t_slidespeed', '1' ) );
+		$templatemiscarray['slideautodelay']     = sanitize_text_field( $get( 'wpfbr_t_slideautodelay', '5' ) );
+		$templatemiscarray['sliderautoplay']     = sanitize_text_field( $get( 'wpfbr_sliderautoplay' ) );
+		$templatemiscarray['sliderhideprevnext'] = sanitize_text_field( $get( 'wpfbr_sliderhideprevnext' ) );
+		$templatemiscarray['sliderhidedots']     = sanitize_text_field( $get( 'wpfbr_sliderhidedots' ) );
+		$templatemiscarray['sliderfixedheight']  = sanitize_text_field( $get( 'wpfbr_sliderfixedheight' ) );
+		$templatemiscarray['slidermobileview']   = $slidermobileview;
+		$templatemiscarray['review_same_height'] = $review_same_hgt;
+		$templatemiscarray['read_more_num']      = (string) $read_more_num;
+		$templatemiscarray['read_more_color']    = $this->wpfb_sanitize_css_color( $get( 'wprevpro_t_read_more_color' ) );
+
+		// Filter source lives in misc (the public renderer reads template_misc['filtersource']).
+		$templatemiscarray['filtersource'] = $filtersource;
+
+		// Badge options.
+		$templatemiscarray['blocation'] = sanitize_text_field( $get( 'wpfbr_t_blocation' ) );
+		$templatemiscarray['bname']     = sanitize_text_field( $get( 'wpfbr_t_bname' ) );
+		$templatemiscarray['bnameurl']  = esc_url_raw( $get( 'wpfbr_t_bnameurl' ) );
+		$templatemiscarray['bimgurl']   = esc_url_raw( $get( 'wpfbr_t_bimgurl' ) );
+		$templatemiscarray['bshape']    = sanitize_text_field( $get( 'wpfbr_t_bshape' ) );
+		$templatemiscarray['bimgsize']  = sanitize_text_field( $get( 'wpfbr_t_bimgsize', '50' ) );
+		$templatemiscarray['bbtnurl']   = esc_url_raw( $get( 'wpfbr_t_bbtnurl' ) );
+		$templatemiscarray['bbradius']  = sanitize_text_field( $get( 'wpfbr_t_bbradius', '0' ) );
+		$templatemiscarray['bbwidth']   = sanitize_text_field( $get( 'wpfbr_t_bbwidth', '0' ) );
+		$templatemiscarray['bbtncolor'] = $this->wpfb_sanitize_css_color( $get( 'wpfbr_t_bbtncolor', '#1877f2' ) );
+		$templatemiscarray['bbkcolor']  = $this->wpfb_sanitize_css_color( $get( 'wpfbr_t_bbkcolor', '#ffffff' ) );
+		$templatemiscarray['bbcolor']   = $this->wpfb_sanitize_css_color( $get( 'wpfbr_t_bbcolor', '#eeeeee' ) );
+		$templatemiscarray['bdropsh']   = sanitize_text_field( $get( 'wpfbr_t_bdropsh' ) );
+		$templatemiscarray['bcenter']   = sanitize_text_field( $get( 'wpfbr_t_bcenter' ) );
+		$templatemiscarray['bhname']    = sanitize_text_field( $get( 'wpfbr_t_bhname' ) );
+		$templatemiscarray['bhphoto']   = sanitize_text_field( $get( 'wpfbr_t_bhphoto' ) );
+		$templatemiscarray['bhbased']   = sanitize_text_field( $get( 'wpfbr_t_bhbased' ) );
+		$templatemiscarray['bhbtn']     = sanitize_text_field( $get( 'wpfbr_t_bhbtn' ) );
+		$templatemiscarray['bhpow']     = sanitize_text_field( $get( 'wpfbr_t_bhpow' ) );
+		$templatemiscarray['bhreviews'] = sanitize_text_field( $get( 'wpfbr_t_bhreviews' ) );
+		$templatemiscarray['bobasedon'] = sanitize_text_field( $get( 'wpfbr_t_bobasedon' ) );
+		$templatemiscarray['borevus']   = sanitize_text_field( $get( 'wpfbr_t_borevus' ) );
+
+		$templatemiscjson = wp_json_encode( $templatemiscarray );
+		$timenow          = time();
+
+		$data = array(
+			'title'              => $title,
+			'template_type'      => $template_type,
+			'style'              => $style,
+			'created_time_stamp' => $timenow,
+			'display_num'        => $display_num,
+			'display_num_rows'   => $display_num_rows,
+			'display_order'      => $display_order,
+			'hide_no_text'       => $hide_no_text,
+			'template_css'       => $template_css,
+			'min_rating'         => $min_rating,
+			'min_words'          => '',
+			'max_words'          => '',
+			'rtype'              => $rtype_save,
+			'rpage'              => $filtersource,
+			'createslider'       => $createslider,
+			'numslides'          => $numslides,
+			'slidermobileview'   => $slidermobileview,
+			'showreviewsbyid'    => '',
+			'template_misc'      => $templatemiscjson,
+			'read_more'          => $read_more,
+			'read_more_num'      => $read_more_num,
+			'read_more_text'     => $read_more_text,
+			'review_same_height' => $review_same_hgt,
+		);
+		$format = array(
+			'%s', '%s', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%d',
+			'%d', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s',
+			'%d', '%s', '%s',
+		);
+
+		$returnarray = array(
+			'iu'         => '',
+			'ack'        => '',
+			'ackmessage' => '',
+			't_id'       => '',
+		);
+
+		if ( $t_id === '' ) {
+			$returnarray['iu'] = 'insert';
+			$inserttemplate    = $wpdb->insert( $table_name, $data, $format );
+			$t_id              = $wpdb->insert_id;
+			if ( ! $inserttemplate ) {
+				$returnarray['ack']        = 'error';
+				$returnarray['ackmessage'] = __( 'Unable to update. Try refreshing the page.', 'wp-fb-reviews' );
+			} else {
+				$returnarray['ack']        = 'success';
+				$returnarray['ackmessage'] = __( 'Template Saved!', 'wp-fb-reviews' );
+			}
+		} else {
+			$returnarray['iu'] = 'update';
+			$updatetempquery   = $wpdb->update( $table_name, $data, array( 'id' => absint( $t_id ) ), $format, array( '%d' ) );
+			if ( false === $updatetempquery ) {
+				$returnarray['ack']        = 'error';
+				$returnarray['ackmessage'] = __( 'Unable to update. Try refreshing the page.', 'wp-fb-reviews' );
+			} else {
+				$returnarray['ack']        = 'success';
+				$returnarray['ackmessage'] = __( 'Template Updated!', 'wp-fb-reviews' );
+			}
+		}
+
+		$returnarray['t_id']         = absint( $t_id );
+		$returnpreview               = $this->wpfb_previewtemplate_ajax_get( absint( $t_id ) );
+		$returnarray['templatehtml'] = $returnpreview['templatehtml'];
+
+		echo wp_json_encode( $returnarray );
+		die();
 	}
 
 

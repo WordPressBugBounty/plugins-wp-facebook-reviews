@@ -40,7 +40,7 @@ for ($x = 0; $x < count($rowarray); $x++) {
 		if(isset($template_misc_array['avataropt']) && $template_misc_array['avataropt']=='mystery'){
 			$userpic = $imgs_url.$typelower."_mystery_man.png";
 		} else if(isset($template_misc_array['avataropt']) && $template_misc_array['avataropt']=='init'){
-			$userpic ="https://avatar.oxro.io/avatar.svg?name=".substr($review->reviewer_name, 0, 1);
+			$userpic = $templateclass->wprev_get_initials_avatar_url( wp_strip_all_tags( $tempreviewername ), 100 );
 		} else {
 			if($review->type=="Facebook"){
 				if($review->userpiclocal!=""){ // Add this line
@@ -54,7 +54,7 @@ for ($x = 0; $x < count($rowarray); $x++) {
 				$userpic = $review->userpic;
 			}
 		}
-		$userpichtml = '<img src="'.$userpic.'" alt="'.stripslashes($review->reviewer_name).' Avatar" class="wprevpro_t1_IMG_4" loading="lazy" />';
+		$userpichtml = '<img src="'.$templateclass->wprev_esc_avatar_src( $userpic ).'" alt="'.esc_attr( stripslashes( $review->reviewer_name ) ).' Avatar" class="wprevpro_t1_IMG_4" loading="lazy" />';
 		
 		if(isset($template_misc_array['avataropt']) && $template_misc_array['avataropt']=='hide'){
 			$userpichtml = '';
@@ -83,7 +83,11 @@ for ($x = 0; $x < count($rowarray); $x++) {
 		if($template_misc_array['showicon']=="no"){
 			$yelp_logo = '';
 		} else if($template_misc_array['showicon']=="yes"){
-			 $yelp_logo = '<img src="'.$imgs_url.''.$typelower.'_small_icon.png" alt="'.$review->type.' Logo" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'">';
+			if($review->type=="Twitter"){
+				$yelp_logo = '<img src="'.$imgs_url.'twitter_small_icon.svg" alt="X" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'" width="16" height="16">';
+			} else {
+				$yelp_logo = '<img src="'.$imgs_url.''.$typelower.'_small_icon.png" alt="'.$review->type.' Logo" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'">';
+			}
 		 } else {
 			 if($review->type=="Facebook") {
 				//facebook logo
@@ -92,6 +96,9 @@ for ($x = 0; $x < count($rowarray); $x++) {
 			} else if($review->type=="Google") {
 			 $burl = $review->from_url;
 			$yelp_logo = '<a href="'.$burl.'" target="_blank" rel="nofollow noreferrer" class="wprevpro_t1_site_logo_a"><img src="'.$imgs_url.''.$typelower.'_small_icon.png" alt="'.$review->type.' Logo" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'"></a>';
+			} else if($review->type=="Twitter") {
+				$burl = !empty($review->from_url) ? $review->from_url : 'https://x.com/';
+				$yelp_logo = '<a href="'.$burl.'" target="_blank" rel="nofollow noreferrer" class="wprevpro_t1_site_logo_a"><img src="'.$imgs_url.'twitter_small_icon.svg" alt="X" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'" width="16" height="16"></a>';
 			}
 		}
 		
@@ -186,11 +193,11 @@ for ($x = 0; $x < count($rowarray); $x++) {
 			//Convert urls to <a> links
 			$reviewtext = preg_replace("/([\w]+\:\/\/[\w\-?&;#~=\.\/\@]+[\w\/])/", "<a rel=\"nofollow noreferrer\" target=\"_blank\" href=\"$1\">$1</a>", $reviewtext);
 
-			//Convert hashtags to twitter searches in <a> links
-			$reviewtext = preg_replace("/#([A-Za-z0-9\/\.]*)/", "<a rel=\"nofollow noreferrer\" target=\"_new\" target=\"_blank\" href=\"https://twitter.com/search?q=$1\">#$1</a>", $reviewtext);
+			//Convert hashtags to X searches in <a> links
+			$reviewtext = preg_replace("/#([A-Za-z0-9\/\.]*)/", "<a rel=\"nofollow noreferrer\" target=\"_new\" target=\"_blank\" href=\"https://x.com/search?q=$1\">#$1</a>", $reviewtext);
 
-			//Convert attags to twitter profiles in &lt;a&gt; links
-			$reviewtext = preg_replace("/@([A-Za-z0-9_\/\.]*)/", "<a rel=\"nofollow noreferrer\" target=\"_blank\" href=\"https://twitter.com/$1\">@$1</a>", $reviewtext);
+			//Convert attags to X profiles in &lt;a&gt; links
+			$reviewtext = preg_replace("/@([A-Za-z0-9_\/\.]*)/", "<a rel=\"nofollow noreferrer\" target=\"_blank\" href=\"https://x.com/$1\">@$1</a>", $reviewtext);
 
 		}
 

@@ -37,20 +37,18 @@
 
 		//help button clicked
 		$( "#wprevpro_helpicon_posts" ).click(function() {
-		  openpopup("Tips", '<p>This page will let you search for and download twitter posts. </p>', "");
+		  openpopup("Tips", '<p>This page will let you search for and download posts from X (formerly Twitter). </p>', "");
 		});
 		
-		//display alert if changing to 30 day search and not have keys
+		//display alert if changing to full-archive search and not have keys
 		
 		$( "#wprevpro_endpoint" ).on( "change", function(event) {
 			var selval = $( this ).val();
-			var wprevpro_twitter_api_key = $( '#wprevpro_twitter_api_key' ).val();
-			var wprevpro_twitter_api_key_secret = $( '#wprevpro_twitter_api_key_secret' ).val();
-			var wprevpro_twitter_api_token = $( '#wprevpro_twitter_api_token' ).val();
-			var wprevpro_twitter_api_token_secret = $( '#wprevpro_twitter_api_token_secret' ).val();
-			if(selval!='7'){
-				if(wprevpro_twitter_api_key=="" || wprevpro_twitter_api_key_secret=="" || wprevpro_twitter_api_token=="" || wprevpro_twitter_api_token_secret==""){
-					alert('You must enter your Twitter API Keys in order to use the 30 day or Full archive search. Click the "Enter/Modify API Keys" button above.');
+			var hasOauth1 = $( '#wprevpro_twitter_api_key' ).val() && $( '#wprevpro_twitter_api_key_secret' ).val() && $( '#wprevpro_twitter_api_token' ).val() && $( '#wprevpro_twitter_api_token_secret' ).val();
+			var hasBearer = $( '#wprevpro_twitter_bearer' ).val();
+			if(selval=='all'){
+				if(!hasOauth1 && !hasBearer){
+					alert('Full-archive search requires your own X (Twitter) API credentials and elevated/paid API access. Click the "Enter/Modify API Keys" button above to enter OAuth 1.0a keys or a Bearer Token.');
 				}
 			}
 		});
@@ -213,7 +211,7 @@
 			//get id and badge type
 			getrevformtempid = $( this ).parent().attr( "templateid" );
 			var url = "#TB_inline?inlineId=retreivewspopupdiv";
-			tb_show("Download Tweets", url);
+			tb_show("Download Posts", url);
 			$( "#TB_window" ).css({ "height":"auto !important","width":"730px","margin-top":"-400px","margin-left":"-365px" });
 			$( "#TB_ajaxContent" ).css({ "max-height":"700px" });
 			$( "#TB_ajaxContent" ).css({ "width":"auto" });
@@ -295,6 +293,10 @@
 					if(typeof formobject =='object')
 					{
 						console.log(formobject);
+						if(formobject.ack === 'error'){
+							alert(formobject.msg || 'X API error. Please check your Bearer Token and API access tier.');
+							return;
+						}
 						var tweetsarray = formobject.statuses.results;
 					  // It is JSON, safe to continue here
 						if(tweetsarray && tweetsarray.length>0){
@@ -323,13 +325,13 @@
 								replycount = tweetsarray[i].reply_count;
 							}
 						
-							  tablehtml += '<tr class="'+spanbtntrbg+'"><td tw_lang="'+tweetsarray[i].lang+'" tw_rtc="'+tweetsarray[i].retweet_count+'" tw_rc="'+replycount+'" tw_fc="'+tweetsarray[i].favorite_count+'" tw_time="'+tweetsarray[i].created_at+'" tw_id="'+statusid+'" tw_sname="'+tweetsarray[i].user.screen_name+'" tw_name="'+tweetsarray[i].user.name+'" tw_text="'+tweettext+'" tw_img="'+tweetsarray[i].user.profile_image_url_https+'">'+spanbtnhtml+'</td><td><img src="'+tweetsarray[i].user.profile_image_url_https+'" alt="Avatar"></td><td>'+tweetsarray[i].user.name+'<br><a href="https://twitter.com/'+tweetsarray[i].user.screen_name+'" target="_blank">'+tweetsarray[i].user.screen_name+'</a></td><td>'+tweettext+'<a href="https://twitter.com/'+tweetsarray[i].user.screen_name+'/status/'+statusid+'" target="_blank"><span class="dashicons dashicons-share-alt2"></span></a></td><td>'+tweetsarray[i].created_at+'</td><td>Likes:'+tweetsarray[i].favorite_count+'<br>Replies:'+replycount+'<br>Retweets:'+tweetsarray[i].retweet_count+'</td></tr>';
+							  tablehtml += '<tr class="'+spanbtntrbg+'"><td tw_lang="'+tweetsarray[i].lang+'" tw_rtc="'+tweetsarray[i].retweet_count+'" tw_rc="'+replycount+'" tw_fc="'+tweetsarray[i].favorite_count+'" tw_time="'+tweetsarray[i].created_at+'" tw_id="'+statusid+'" tw_sname="'+tweetsarray[i].user.screen_name+'" tw_name="'+tweetsarray[i].user.name+'" tw_text="'+tweettext+'" tw_img="'+tweetsarray[i].user.profile_image_url_https+'">'+spanbtnhtml+'</td><td><img src="'+tweetsarray[i].user.profile_image_url_https+'" alt="Avatar"></td><td>'+tweetsarray[i].user.name+'<br><a href="https://x.com/'+tweetsarray[i].user.screen_name+'" target="_blank">'+tweetsarray[i].user.screen_name+'</a></td><td>'+tweettext+'<a href="https://x.com/'+tweetsarray[i].user.screen_name+'/status/'+statusid+'" target="_blank"><span class="dashicons dashicons-share-alt2"></span></a></td><td>'+tweetsarray[i].created_at+'</td><td>Likes:'+tweetsarray[i].favorite_count+'<br>Replies:'+replycount+'<br>Retweets:'+tweetsarray[i].retweet_count+'</td></tr>';
 							}
 							$( "#selecttweets" ).html(tablehtml);
 							
 
 						} else {
-							alert("Nothing found."+formobject.msg);
+							alert("Nothing found for that search in the last 7 days.\n\nTip: spaces mean AND (all words must appear in the same post). Try one keyword, or join terms with OR, e.g. Yellowhammer OR Huntsville. Use quotes for an exact phrase.");
 							
 						}
 					}

@@ -32,7 +32,7 @@ include("tabmenu.php");
 	<h3>Welcome! </h3>
 	<p>Thank you for being an awesome WP Review Slider customer! If you have trouble, please don't hesitate to contact me. </p>
 	<h3>Getting Started: </h3>
-	<p>1) Use the Facebook and/or Twitter Page to Download your reviews from different sites and save them to your database. (The <a href="https://wpreviewslider.com/" target="_blank">Pro version</a> can download revies from 85+ sites!)</p>
+	<p>1) Use the Facebook and/or X (Twitter) Page to Download your reviews from different sites and save them to your database. (The <a href="https://wpreviewslider.com/" target="_blank">Pro version</a> can download revies from 85+ sites!)</p>
 	<p>2) Once downloaded, all the reviews should show up on the "Review List" page of the plugin. </p>
 	<p>3) Create a Review Slider or Grid for your site on the "Templates" page. By default the review template will show all your reviews, you can use the filters to only show the reviews you want. </p>
 	

@@ -219,3 +219,11 @@ span.wprev-businessname {
 img.wprev-google-powered-img {
     vertical-align: middle !important;
 }
+img.wprevpro_t1_fb_logo {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    height: 32px;
+    width: unset;
+    margin-bottom: unset !important;
+}

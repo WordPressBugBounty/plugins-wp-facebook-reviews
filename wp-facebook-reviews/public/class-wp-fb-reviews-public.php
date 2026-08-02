@@ -88,6 +88,10 @@ class WP_FB_Reviews_Public {
 		 //combining everything to one now
 		 wp_register_style( 'wprev-fb-combine', plugin_dir_url( __FILE__ ) . 'css/wprev-fb-combine.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'wprev-fb-combine' );
+
+		//style 6 card layout css
+		wp_register_style( 'wprev-fb-template6', plugin_dir_url( __FILE__ ) . 'css/wprev-public_template6.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'wprev-fb-template6' );
 		
 		
 		//wp_register_style( 'wp-review-slider-pro-public_template1', plugin_dir_url( __FILE__ ) . 'css/wprev-public_template1.css', array(), $this->version, 'all' );
@@ -136,7 +140,11 @@ class WP_FB_Reviews_Public {
 		wp_enqueue_script( $this->_token."_unslider-swipe-min", plugin_dir_url( __FILE__ ) . 'js/wprs-unslider-swipe.js', array( 'jquery' ), $this->version, false );
 		
 		//wp_enqueue_script( $this->_token."_unslider-min", plugin_dir_url( __FILE__ ) . 'js/wprs-unslider-min.js', array( 'jquery' ), $this->version, false );
-		
+
+		//lity lightbox for review photos
+		wp_enqueue_style( $this->_token."_lity", plugin_dir_url( __FILE__ ) . 'css/lity.min.css', array(), $this->version, 'all' );
+		wp_enqueue_script( $this->_token."_lity", plugin_dir_url( __FILE__ ) . 'js/lity.min.js', array( 'jquery' ), $this->version, false );
+
 	wp_enqueue_script( $this->_token."_plublic", plugin_dir_url( __FILE__ ) . 'js/wprev-public.js', array( 'jquery' ), $this->version, false );
 	wp_localize_script($this->_token."_plublic", 'wprevpublicjs_script_vars', 
 				array(

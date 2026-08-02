@@ -42,12 +42,29 @@
 			$sorttable = "created_time_stamp ";
 			$sortdir = "DESC";
 		}
-		$rtype = "Facebook";
-		if($currentform[0]->rtype=='["fb"]'){
-			$rtype = "Facebook";
-		}
-		if($currentform[0]->rtype=='["google"]'){
-			$rtype = "Google";
+		// Map saved rtype JSON to DB type values (Facebook / Twitter / both).
+		$rtype_types = array( 'Facebook' );
+		$rtype_decoded = json_decode( $currentform[0]->rtype, true );
+		if ( is_array( $rtype_decoded ) ) {
+			$rtype_types = array();
+			if ( in_array( 'fb', $rtype_decoded, true ) ) {
+				$rtype_types[] = 'Facebook';
+			}
+			if ( in_array( 'google', $rtype_decoded, true ) ) {
+				$rtype_types[] = 'Google';
+			}
+			if ( in_array( 'twitter', $rtype_decoded, true ) ) {
+				$rtype_types[] = 'Twitter';
+			}
+			if ( empty( $rtype_types ) ) {
+				$rtype_types = array( 'Facebook' );
+			}
+		} else {
+			if ( $currentform[0]->rtype == '["twitter"]' ) {
+				$rtype_types = array( 'Twitter' );
+			} elseif ( $currentform[0]->rtype == '["google"]' ) {
+				$rtype_types = array( 'Google' );
+			}
 		}
 		$reviewsperpage= $currentform[0]->display_num*$currentform[0]->display_num_rows;
 		$tablelimit = $reviewsperpage;
@@ -55,13 +72,14 @@
 		if($currentform[0]->createslider == "yes"){
 			$tablelimit = $tablelimit*$currentform[0]->numslides;
 		}
-		
-			
+
+			$type_placeholders = implode( ', ', array_fill( 0, count( $rtype_types ), '%s' ) );
+			$prepare_args = array_merge( array( 0, $rlength ), $rtype_types );
 			$totalreviews = $wpdb->get_results(
 				$wpdb->prepare("SELECT * FROM ".$table_name."
-				WHERE id>%d AND review_length >= %d AND (type = %s OR type = %s)
+				WHERE id>%d AND review_length >= %d AND type IN (".$type_placeholders.")
 				ORDER BY ".$sorttable." ".$sortdir." 
-				LIMIT ".$tablelimit." ", "0","$rlength","$rtype","Twitter")
+				LIMIT ".$tablelimit." ", ...$prepare_args)
 			);
 			
 			//print_r($totalreviews);
@@ -145,7 +163,15 @@
 				if($currentform[0]->style=="4"){
 					$misc_style = $misc_style . '.wprev_preview_tcolor3_T'.$currentform[0]->style.'_widget {color:'.$template_misc_array['tcolor3'].';}';
 				}
-				
+				// Read More link color
+				if ( ! empty( $template_misc_array['read_more_color'] ) ) {
+					$rmc = trim( (string) $template_misc_array['read_more_color'] );
+					if ( preg_match( '/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $rmc )
+						|| preg_match( '/^rgba?\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*(,\s*[\d.]+\s*)?\)$/i', $rmc ) ) {
+						$misc_style .= '.wprs_rd_more{color:' . $rmc . ';}';
+					}
+				}
+
 				echo "<style>".$misc_style."</style>";
 			}
 

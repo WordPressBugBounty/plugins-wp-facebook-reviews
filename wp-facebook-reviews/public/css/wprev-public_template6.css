@@ -1,0 +1,108 @@
+/*------ template style 6 — card layout with avatar header row --------*/
+.wprevpro_t6_outer_div_widget{padding:0;margin:15px -10px}
+.wprevpro_t6_outer_div{padding:0 5px;margin:15px 0px}
+.wprev-slider .wprevpro_t6_outer_div{padding:0 0px;margin: 15px -5px;}
+.wpproslider_t6_DIV_1,.wprevpro_t6_DIV_1{margin-top:10px;margin-bottom:10px}
+.wpproslider_t6_DIV_1a{margin-left:8px;margin-right:8px}
+.wpproslider_t6_DIV_2,.wpproslider_t6_DIV_3,.wpproslider_t6_IMG_2{box-sizing:border-box;column-rule-color:#fff;outline:#fff none 0}
+.wpproslider_t6_DIV_2{color:#fff;background:#fdfdfd;border:1px solid #eee;border-radius:0 0 4px 4px;transition:all .4s ease-in-out 0s;padding:5px;position:relative}
+.wpproslider_t6_IMG_2{color:#fff;height:60px;vertical-align:middle;width:60px;border:0;border-radius:50%!important}
+.wpproslider_t6_DIV_3{border:0;overflow:hidden;margin-left:15px;min-height:80px}
+.wpproslider_t6_P_4,.wpproslider_t6_SPAN_6,.wpproslider_t6_STRONG_5{box-sizing:border-box;color:#555;border:0;outline:none 0}
+.wpproslider_t6_P_4{margin:0 15px 10px!important}
+.wpproslider_t6_STRONG_5{font-weight:700}
+.wpproslider_t6_DIV_3L{float:left;text-align:center;overflow:hidden;margin-right:10px;margin-left:10px;margin-top:10px}
+.wpproslider_t6_DIV_2_top{width:auto;position:relative;margin-left:5px}
+.wpproslider_t6_DIV_3_logo{position:absolute;top:4px;right:4px}
+img.wprevpro_t6_site_logo{margin:0;padding:0;height:32px}
+.t6displayname{margin-top:5px;font-size:medium;margin-bottom:0;padding-right:30px}
+.wpproslider_t6_star_DIV{line-height:1em;margin-top:1px;margin-bottom:0px}
+.wpproslider_t6_DIV_4{margin:4px 6px}
+.t6datediv,.wpproslider_t6_SPAN_6{font-style:italic}
+img.wptripadvisor_t6_star_img_file{width:100px;max-width:100px}
+a.wprs_rd_more{cursor:pointer}
+
+/*------ review media thumbnails (Lity lightbox) --------*/
+a.wprev_media_img_a{display:inline-block}
+img.wprev_media_img{height:50px;margin-right:5px;border-radius:5px;max-height:50px}
+.wprev_media_div{margin-bottom:0;margin-top:10px;margin-left:0;margin-right:0}
+.wpproslider_t6_DIV_2 .wprev_media_div{margin-left:10px;margin-right:10px}
+a.wprev_media_img_a:active,
+a.wprev_media_img_a:focus,
+a.wprev_media_img_a:hover{color:rgba(255,255,255,0)}
+
+/*------ badge star icons (CSS mask) --------*/
+.wprevpro_star_imgs span.svgicons{
+	width: 18px;
+    height: 18px;
+	background: gold;
+    display: inline-block;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+	-webkit-mask-position: bottom;
+	mask-position: bottom;
+	margin-bottom: -2px;
+	margin-right: 1px;
+}
+.svg-wprsp-star{
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='20' height='22' viewBox='0 0 20 22'%3E%3Cpath d='M20.429 8.14c0 0.221-0.16 0.43-0.319 0.589l-4.456 4.346 1.056 6.138c0.012 0.086 0.012 0.16 0.012 0.246 0 0.319-0.147 0.614-0.503 0.614-0.172 0-0.344-0.061-0.491-0.147l-5.512-2.897-5.512 2.897c-0.16 0.086-0.319 0.147-0.491 0.147-0.356 0-0.516-0.295-0.516-0.614 0-0.086 0.012-0.16 0.025-0.246l1.056-6.138-4.469-4.346c-0.147-0.16-0.307-0.368-0.307-0.589 0-0.368 0.381-0.516 0.687-0.565l6.163-0.896 2.762-5.586c0.11-0.233 0.319-0.503 0.602-0.503s0.491 0.27 0.602 0.503l2.762 5.586 6.163 0.896c0.295 0.049 0.688 0.196 0.688 0.565z'%3E%3C/path%3E%3C/svg%3E%0A");
+    mask-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='20' height='22' viewBox='0 0 20 22'%3E%3Cpath d='M20.429 8.14c0 0.221-0.16 0.43-0.319 0.589l-4.456 4.346 1.056 6.138c0.012 0.086 0.012 0.16 0.012 0.246 0 0.319-0.147 0.614-0.503 0.614-0.172 0-0.344-0.061-0.491-0.147l-5.512-2.897-5.512 2.897c-0.16 0.086-0.319 0.147-0.491 0.147-0.356 0-0.516-0.295-0.516-0.614 0-0.086 0.012-0.16 0.025-0.246l1.056-6.138-4.469-4.346c-0.147-0.16-0.307-0.368-0.307-0.589 0-0.368 0.381-0.516 0.687-0.565l6.163-0.896 2.762-5.586c0.11-0.233 0.319-0.503 0.602-0.503s0.491 0.27 0.602 0.503l2.762 5.586 6.163 0.896c0.295 0.049 0.688 0.196 0.688 0.565z'%3E%3C/path%3E%3C/svg%3E%0A");
+}
+
+/*------ badge layout --------*/
+.wprev_outer_wb{display:flex!important;margin-bottom:7px}
+.wprev_badge_div.badgeleft{margin:10px 5px 10px 10px!important}
+.wprev_badge_div.badgeright{margin:10px 10px 10px 5px!important}
+.wprev_outer_wb.wprev_badge_style6_side{align-items:flex-start!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeleft,
+.wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeright{margin-top:0!important;margin-bottom:0!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprevpro_t6_outer_div,
+.wprev_outer_wb.wprev_badge_style6_side .wprevpro_t6_outer_div_widget{margin-top:0!important;margin-bottom:0!important}
+/* Style 6 review cards default to margin-top:10px — remove so tops line up with badge */
+.wprev_outer_wb.wprev_badge_style6_side .wpproslider_t6_DIV_1,
+.wprev_outer_wb.wprev_badge_style6_side .wprevpro_t6_DIV_1{margin-top:0!important;padding:0 8px!important}
+/* Equal arrow↔review gaps on both sides (40px gutter, 25px arrow, 5px inset → 10px gap) */
+.wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeleft{margin-right:0!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeright{margin-left:0!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprev-slider{margin-left:40px!important;margin-right:40px!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprs_unslider-arrow.prev{left:12px!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprs_unslider-arrow.next{right:12px!important}
+.wprev_outer_wb.wprev_badge_style6_side .wprev-slider .wprevpro_t6_outer_div,
+.wprev_outer_wb.wprev_badge_style6_side .wprev-slider .wprevpro_t6_outer_div_widget{margin-left:0!important;margin-right:0!important}
+.wprev_outer_wb.wprev_badge_style6_side .wpproslider_t6_DIV_1a{margin-left:0!important;margin-right:0!important}
+/* Style 6, no badge: pull arrows in from 10px to 5px (siblings after unslider wrap) */
+.wprev-slider.wprev_style6_nobadge ~ .wprs_unslider-arrow.prev,
+.wprev-slider.wprev_style6_nobadge .wprs_unslider-arrow.prev{left:0px!important}
+.wprev-slider.wprev_style6_nobadge ~ .wprs_unslider-arrow.next,
+.wprev-slider.wprev_style6_nobadge .wprs_unslider-arrow.next{right:0px!important}
+.wprev-yelp-place{display:flex!important;padding:8px 12px!important;box-shadow:rgba(0,0,0,.08) 2px 2px 3px 0!important;border:1px solid #f5f5f5!important}
+.wprev-yelp-left{padding:10px 8px 10px 5px!important}
+.wprev-yelp-right{padding:3px!important}
+.wprev-yelp-right div{line-height:24px!important;font-size:15px!important;width:max-content!important}
+.wprev-yelp-name{font-weight:bold!important}
+.wprev-yelp-place a{text-decoration:none!important}
+a.wprev-yelp-wr-a{color:#fff!important;padding:3px 8px 5px!important;outline:none!important;border-radius:3px!important;background:#d32323!important;white-space:nowrap!important;vertical-align:middle!important;box-shadow:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24)!important;user-select:none!important;transition:all .2s ease-in-out!important;display:flex!important;align-items:center!important;width:fit-content!important}
+a.wprev-yelp-wr-a:hover{background:#d32323c7!important}
+.wprev-yelp-wr{margin:12px 0 6px!important}
+span.wprev-yelp-rating{font-size:18px!important;margin-right:5px!important;font-weight:500!important}
+span.wprev_btot{font-weight:600!important}
+.badgehideclass{display:none!important}
+.sprev-yelp-left-src{border-radius:5%!important;min-width:50px!important;min-height:50px!important;display:block;object-fit:cover!important}
+span.wprev-businessname{font-size:15px!important;color:#373737!important;font-weight:600!important}
+img.wprev-yelp-powered-img{vertical-align:middle!important;height:18px!important;width:auto!important;max-width:110px!important;max-height:20px!important;object-fit:contain!important;display:block}
+@media only screen and (max-width:600px){
+.wprev_outer_wb{flex-wrap:wrap}
+.wprev_badge_div.badgeleft{margin:10px!important;width:-webkit-fill-available}
+.wprev_outer_wb .wprs_unslider{max-width:-webkit-fill-available}
+.wprev_badge_div.badgeright{width:-webkit-fill-available}
+}
+/*------ end template style 6 --------*/
+
+/*------verified badge icon (Show Verified) --------*/
+span.svgicons.svg-wprsp-verified{width:18px;height:18px;background:#a3a29e;display:inline-block;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:bottom;mask-position:bottom;margin-bottom:-3px;margin-right:3px}
+.wprevpro_t6_outer_div span.svgicons.svg-wprsp-verified,.wprevpro_t6_outer_div_widget span.svgicons.svg-wprsp-verified{margin-bottom:-5px}
+.svg-wprsp-verified{-webkit-mask-image:url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='20' height='22' viewBox='0 0 24 24'%3E%3Cpath d='M23.016 12l-2.438-2.813 0.328-3.656-3.609-0.844-1.875-3.188-3.422 1.453-3.422-1.453-1.875 3.188-3.609 0.797 0.328 3.703-2.438 2.813 2.438 2.813-0.328 3.656 3.609 0.844 1.875 3.188 3.422-1.453 3.422 1.453 1.875-3.188 3.609-0.844-0.328-3.656zM10.078 16.734l-3.797-3.844 1.5-1.453 2.297 2.344 5.859-5.906 1.5 1.5z'%3E%3C/path%3E%3C/svg%3E%0A");mask-image:url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='20' height='22' viewBox='0 0 24 24'%3E%3Cpath d='M23.016 12l-2.438-2.813 0.328-3.656-3.609-0.844-1.875-3.188-3.422 1.453-3.422-1.453-1.875 3.188-3.609 0.797 0.328 3.703-2.438 2.813 2.438 2.813-0.328 3.656 3.609 0.844 1.875 3.188 3.422-1.453 3.422 1.453 1.875-3.188 3.609-0.844-0.328-3.656zM10.078 16.734l-3.797-3.844 1.5-1.453 2.297 2.344 5.859-5.906 1.5 1.5z'%3E%3C/path%3E%3C/svg%3E%0A")}
+.wprevtooltip{cursor:pointer}
+.wprevpro_tooltip{display:none;position:absolute;padding-left:10px;padding-right:10px;color:#efefef;background-color:#000000bf;border-radius:3px;font-family:sans-serif;font-style:normal;font-size:10px;line-height:24px;z-index:999999}

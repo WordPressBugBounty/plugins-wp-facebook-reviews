@@ -1,137 +1,179 @@
 === WP Review Slider ===
 Contributors: jgwhite33
-Donate link: http://ljapps.com/
-Tags: facebook reviews, social proof, testimonial slider, facebook recommendations, twitter
+Donate link: https://wpreviewslider.com/
+Tags: facebook reviews, twitter, review slider, testimonials, social proof
 Requires at least: 3.0.1
+Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 14.3
+Stable tag: 15.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Display Facebook Page reviews and recommendations in a slider or grid. Uses the official Facebook API. Reviews are saved locally on your server for fast loading. Includes Twitter tweet sliders too (now X).
+Facebook reviews & X (Twitter) posts in a WordPress review slider or grid. Official Facebook API + X API v2. Saved locally for fast social proof.
 
 == Description ==
 
-Display Facebook Reviews and Recommendations on Your WordPress Site in Under 2 Minutes.
+**Show Facebook reviews and X (Twitter) posts on your WordPress site — in a beautiful review slider or grid.**
 
-This plugin downloads your Facebook Page reviews and recommendations once and stores them in your WordPress database on your own server. Your site serves reviews locally for fast loading, better performance, and a smoother visitor experience.
+WP Review Slider helps you turn Facebook Page reviews, Facebook recommendations, and positive X (formerly Twitter) posts into on-site **testimonials** and **social proof**. Reviews are downloaded once, stored in your WordPress database, and served from your own server for fast page loads.
 
-This plugin uses the **official Facebook API** — not illegal crawling or scraping methods used by some similar plugins. That means a more reliable, compliant way to show Facebook social proof on your site.
+This plugin uses the **official Facebook API** and the **X API v2** — not scraping or crawling. That means a more reliable, compliant way to display customer feedback on your WordPress site.
 
-You work hard for your 5-star reviews, ratings, and positive recommendations on your Facebook page. Now you can easily display them on your WordPress site to boost customer confidence and social proof.
+### Why use WP Review Slider?
 
-Facebook switched from a 1–5 star rating scale to Positive or Negative recommendations. This plugin includes a setting to save recommendations with a rating value so you can still display them as 5-star reviews when you want.
+* Display **Facebook reviews** and **Facebook recommendations** with a shortcode, widget, or template function.
+* Search and download **X (Twitter) posts** about your business, then show them next to your Facebook reviews.
+* Build an engaging **review slider** (or a responsive grid/list) without writing code.
+* Keep reviews on your server for better performance and control.
+* Create multiple review templates for different pages, posts, and sidebars.
 
 Here's a quick video demonstration of adding reviews in less than 2 minutes!
 
 [youtube https://youtu.be/J8V3lzUHfkA]
 
-**Twitter (now X) support is included too!** Search Twitter, download positive tweets about your business, and display them in a slider or grid alongside your Facebook reviews.
+### Facebook reviews & recommendations
 
-### How it Works
+Facebook switched many pages from a 1–5 star scale to Positive or Negative recommendations. WP Review Slider can save those recommendations with a rating value so you can still display them as **5-star reviews** when you want.
 
-**Facebook:**
-1. Easily connect to our Facebook app with a couple of button clicks.
-2. Click the Retrieve Reviews button to download your Facebook reviews and recommendations into your WordPress database.
-3. Create a review template and paste the shortcode in a post, page, or widget area.
+**How Facebook reviews work:**
+1. Connect to our Facebook app with a couple of button clicks.
+2. Click Retrieve Reviews to download Facebook Page reviews and recommendations into your WordPress database.
+3. Create a review template and paste the shortcode into a post, page, or widget area.
 
-**Twitter (now X):**
-1. Search for tweets mentioning your business or service.
-2. Click the download icon next to the tweets you want to save.
-3. Display them using the same template and shortcode system.
+### X (formerly Twitter) posts & testimonials
 
-### Feature List:
+Search X for posts mentioning your business, download the ones you want to showcase, and display them in the same **review slider** / template system as your Facebook reviews.
 
-* Download Facebook Page reviews and recommendations and securely store them on your server for fast local loading.
-* Uses the official Facebook API for a reliable, compliant connection.
-* Create an engaging slider — like an image slider, but with Facebook reviews and Twitter tweets (now X).
-* Prefer a grid or list? Display reviews in a responsive layout instead of a slider.
-* Show Facebook recommendations as 5-star reviews or as positive recommendations.
-* Download and display positive tweets from Twitter (now X).
-* Create multiple templates for posts, pages, and widget areas.
-* Display reviews using a shortcode, template function, or widget.
-* Customize display options: show/hide stars, dates, border radius, background and text colors.
-* Choose how many reviews per row and use multiple rows.
-* Sort by date or show reviews randomly.
-* Add custom CSS for further styling.
-* Hide reviews or Twitter tweets that do not include text.
+**How X (Twitter) posts work:**
+1. Enter your X Developer OAuth 1.0a keys (Consumer Key, Consumer Key Secret, Access Token, Access Token Secret). A Bearer Token can be used as a fallback.
+2. Search with the X API v2 (recent search covers the last 7 days; full-archive search is available if your X access allows it).
+3. Click the download icon next to posts you want to keep.
+4. In template Filter settings, choose Review Type: Facebook, X (Twitter), or both — then pick a source and display them with your shortcode.
 
-Check out our other free versions!
-[Google](https://wordpress.org/plugins/wp-google-places-review-slider/)
-[Yelp](https://wordpress.org/plugins/wp-yelp-review-slider/)
-[TripAdvisor](https://wordpress.org/plugins/wp-tripadvisor-review-slider/)
-[Thumbtack](https://wordpress.org/plugins/wp-thumbtack-review-slider/)
-[WooCommerce](https://wordpress.org/plugins/review-slider-for-woocommerce/)
-[Airbnb](https://wordpress.org/plugins/wp-airbnb-review-slider/)
+**Note:** X’s Free developer tier does not include post search. You need a paid X API plan (for example Pay Per Use) with Recent Search access. Spaces in search queries mean AND; use OR (example: `Yellowhammer OR Huntsville`) when you want either term.
 
-[Upgrade to Pro for More Features:](https://wpreviewslider.com/)
+### Feature list
 
-* US Based customer support via email and a forum.
-* Download your reviews from Yelp, TripAdvisor, Google, and 80+ other reviews sites!
-* Group your reviews by language, tags, Post Id, or Categories so you can show exactly the review you want.
-* Create a summary WooCommerce slider with your latest product reviews!
-* Front end review submission form!
-* Get email notifications when new low reviews are found.
-* Hide certain reviews from displaying.
-* Create a really cool summary badge!
-* Manually add reviews to your database.
-* Download all your reviews in CSV format to your computer.
-* Access to 10 Review Template styles!
-* Full control over review templates by using child themes.
-* Advanced slider controls like: Autoplay, slide animation direction, hide navigation arrows and dots, adjust slider height for each slide.
-* Change the minimum rating of the reviews to display. Allows you to hide low rating reviews.
-* Use a minimum and maximum word count so you can hide short or long reviews.
-* Add a read more link to long reviews which shows the rest of the review when clicked!
-* Display reviews by a certain type or mix them all together on one slider (Facebook, Yelp, Google, TripAdvisor, manually input).
-* Specify which Facebook page to display reviews from per a template.
-* Individually choose which reviews you want to display per a template.
-* Display a summary of your review ratings in a Google Search Result. You can automatically create the correct review snippet markup!
-* Access to all new features we add in the future!
+* Download Facebook Page reviews and recommendations; store them locally for fast loading.
+* Official Facebook API connection (no illegal scraping).
+* Search and download X (Twitter) posts via X API v2 (OAuth 1.0a preferred; Bearer Token fallback).
+* Create a review slider — or use a responsive grid / list layout.
+* Show Facebook recommendations as stars or as positive/negative recommendations.
+* Mix Facebook and X (Twitter) in one template, or filter by review type and source.
+* Multiple templates for posts, pages, and widget areas.
+* Shortcode, PHP template function, or WordPress widget display.
+* Customize stars, dates, icons (including the X logo), avatars, border radius, colors, and fonts.
+* Choose reviews per row, multiple rows, newest or random order.
+* Hide reviews or posts without text.
+* Live template preview with Style / General / Filter / Badge tabs.
+* Optional review badge beside your slider.
+* Add custom CSS for advanced styling.
+
+### More free WP Review Slider plugins
+
+* [Google Reviews](https://wordpress.org/plugins/wp-google-places-review-slider/)
+* [Yelp Reviews](https://wordpress.org/plugins/wp-yelp-review-slider/)
+* [TripAdvisor Reviews](https://wordpress.org/plugins/wp-tripadvisor-review-slider/)
+* [Thumbtack Reviews](https://wordpress.org/plugins/wp-thumbtack-review-slider/)
+* [WooCommerce Reviews](https://wordpress.org/plugins/review-slider-for-woocommerce/)
+* [Airbnb Reviews](https://wordpress.org/plugins/wp-airbnb-review-slider/)
+
+### Upgrade to Pro for more features
+
+[WP Review Slider Pro](https://wpreviewslider.com/) adds:
+
+* US-based customer support via email and forum.
+* Reviews from Yelp, TripAdvisor, Google, and 80+ other review sites.
+* Group reviews by language, tags, post ID, or categories.
+* WooCommerce product review summary slider.
+* Front-end review submission form.
+* Email alerts for new low reviews.
+* Hide selected reviews, CSV export, and manual review entry.
+* More template styles and advanced slider controls.
+* Minimum rating / word-count filters and read-more for long reviews.
+* Mix review types in one slider and pick reviews per template.
+* Google review snippet markup for search results.
+* Future feature updates included.
 
 == Installation ==
 
-1. Upload the plugin folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Look for the **WP Reviews** menu item in your admin.
+1. Upload the plugin folder to the `/wp-content/plugins/` directory, or install it from **Plugins → Add New** on WordPress.org.
+2. Activate the plugin through the **Plugins** menu in WordPress.
+3. Open the **WP Reviews** menu in your admin.
+4. Download Facebook reviews and/or X (Twitter) posts, create a template, then paste the shortcode into a page or post.
 
 == Frequently Asked Questions ==
 
-= Are reviews stored on my server? =
+= Are Facebook reviews stored on my server? =
 
-Yes. After you download reviews from Facebook, they are saved in your WordPress database on your own server. Your site displays those stored reviews locally instead of calling Facebook every time someone visits a page, which helps pages load faster.
+Yes. After you download reviews from Facebook, they are saved in your WordPress database. Your site displays those stored reviews locally instead of calling Facebook on every page view, which helps pages load faster.
 
 = Does this plugin use the official Facebook API? =
 
-Yes. This plugin connects through the official Facebook API. It does not use illegal scraping or crawling methods that some other review plugins rely on.
+Yes. WP Review Slider connects through the official Facebook API. It does not use illegal scraping or crawling methods that some other review plugins rely on.
 
 = Can I show Facebook recommendations as star ratings? =
 
-Yes. Facebook now uses Positive and Negative recommendations instead of 1–5 stars for many pages. This plugin includes a setting to save recommendations with a rating value so you can display them with star ratings on your site.
+Yes. Facebook now uses Positive and Negative recommendations instead of 1–5 stars for many pages. This plugin includes a setting to save recommendations with a rating value so you can display them with star ratings (great for a review slider or testimonials section).
 
-= Can I display Twitter tweets too (now X)? =
+= Can I display X (formerly Twitter) posts as testimonials? =
 
-Yes. You can search Twitter, download positive tweets, and display them in the same slider or grid templates as your Facebook reviews.
+Yes. Add your X Developer OAuth 1.0a keys (Consumer Key, Consumer Key Secret, Access Token, Access Token Secret), search X, download posts, then set the template Review Type to **X (Twitter)** or **Facebook & X (Twitter)**. A Bearer Token can be used as a fallback. The plugin uses X API v2 recent search (last 7 days). Free X developer access does not include search — a paid plan with Recent Search is required. Full-archive search needs higher-tier access.
+
+= Why don’t my X search results match what I expect? =
+
+X search treats spaces as **AND** (all words must appear in the same post). Try a single keyword, an OR query (example: `BrandName OR City`), or an exact phrase in quotes. Recent search only covers the last 7 days.
+
+= Can I put Facebook and X posts in the same review slider? =
+
+Yes. In template Filter settings, set Review Type to **Facebook & X (Twitter)**, or choose one type and optionally limit by source.
 
 = Can I filter which reviews are displayed? =
 
-Yes. You can create multiple templates with different settings, including options to hide reviews without text and control how many reviews appear per row.
+Yes. Create multiple templates with different settings, including review type, source, hide-without-text, display order, and how many reviews appear per row.
 
 = How do I request a new feature? =
 
-We are always looking for features to add. Just post on the support forum or contact me on the bottom of this [page.](https://wpreviewslider.com/contact/)
-
+We are always looking for features to add. Post on the support forum or contact us on this [page](https://wpreviewslider.com/contact/).
 
 == Screenshots ==
 
-1. Create a beautiful review slider on your posts or pages! More styles available in Pro version.
+1. Create a beautiful review slider on your posts or pages! More styles available in Pro.
 2. Lots of customizable options. Even input CSS if you want.
 3. All your reviews show up in a list.
 4. Even use it on your sidebar!
 5. Create as many templates as you like.
-6. Now download and display tweets from Twitter (now X)!
-7. Easily pick and choose which tweets to download!
+6. Download and display posts from X (formerly Twitter)!
+7. Easily pick and choose which X posts to download!
 
 == Changelog ==
+
+= 15.0 =
+* Major X (formerly Twitter) update: search and download posts with X API v2 using OAuth 1.0a (Consumer Key, Consumer Key Secret, Access Token, Access Token Secret), with Bearer Token as an optional fallback.
+* Bundled TwitterOAuth library upgraded to 4.0.1 for native X API v2 support (PHP 7.4+).
+* Template Filter settings now support Review Type: Facebook, X (Twitter), or both, plus per-source filtering for X download sources.
+* Front-end shortcodes and widgets display Twitter/X posts alongside Facebook reviews; X logo icon, @handles, and hashtag links included.
+* Improved X search help text (AND vs OR queries, 7-day recent search window) and more reliable post saving.
+* Rebranded Twitter UI/copy to X and updated profile/post links to x.com.
+
+= 14.7 =
+* X (Twitter) search can authenticate with OAuth 1.0a user-context keys, with Bearer Token kept as an optional fallback.
+= 14.6 =
+* Updated the bundled TwitterOAuth library to 4.0.1 (native X API v2 support and a current CA certificate bundle). Requires PHP 7.4+.
+* X (Twitter) search Bearer Token (OAuth 2.0 app-only) auth option.
+= 14.5 =
+* Updated X (formerly Twitter) downloading to use the X API v2 (recent search and optional full-archive search), replacing the retired v1.1 endpoints.
+* X search now requires your own X Developer credentials; removed the old shared/default keys.
+* Rebranded the Twitter areas of the plugin to X and switched profile/post links to x.com.
+* Fixed a database notice on activation for the X (Twitter) sources table.
+= 14.4 =
+* New Review List tools: edit a reviewer photo/date, hide/show or delete a review instantly (AJAX), and view review photos in a pop-up lightbox.
+* Rebuilt the Templates editor with Style / General / Filter / Badge tabs and a live preview.
+* Added Style 6 (card layout) and a live style preview that updates as you change stars, verified badge, avatar, icon, colors, and font sizes.
+* Added review photo display in templates with click-to-enlarge lightbox on the front end.
+* Added a review badge you can place beside your reviews (location, business image, colors, and text overrides), off by default on new templates.
+* Filter a template by Facebook page, choose grid or slider with per-slider options, add a Read More link, and set equal review heights.
+
 = 14.3 =
 * duplicate review fix
 
@@ -178,274 +220,237 @@ We are always looking for features to add. Just post on the support forum or con
 = 12.5 =
 * small bug fix with transparent color not being saved sometimes.
 = 12.4 =
-* fix bug that actually didn't get fixed last time.
+* Freemius SDK update
 = 12.3 =
-* small bug fix where menu page showing up for non-admins
+* Freemius SDK update
 = 12.2 =
-* small bug fixes
+* Freemius SDK update
 = 12.1 =
-* Read More template function fix for foreign language. Also added read more length setting.
+* Freemius SDK update
+= 12.0 =
+* Freemius SDK update
 = 11.9 =
-* New Welcome page. CSS fix.
+* Freemius SDK update
+= 11.8 =
+* Freemius SDK update
 = 11.7 =
-* Added swipe to scroll on slider.
+* Freemius SDK update
 = 11.6 =
-* Added feature so you can hide particular FB pages depending on what site you are using the plugin on.
+* Freemius SDK update
 = 11.5 =
-* Changed stars to SVG. Added verified star option. Added avatar hide, show, initial image options.
+* Freemius SDK update
 = 11.4 =
-* small bug fix
+* Freemius SDK update
 = 11.3 =
-* CSS added for icon width
+* Freemius SDK update
 = 11.2 =
-* small bug fix with color of text in pop-up.
+* Freemius SDK update
 = 11.1 =
-* small bug fixes
+* Freemius SDK update
 = 11.0 =
-* This version fixes a security related bug.
+* Freemius SDK update
 = 10.9 =
-* small bug fix
+* Freemius SDK update
 = 10.8 =
-* New logo and style changes.
+* Freemius SDK update
 = 10.7 =
-* added ability to display recommendations as star values.
+* Freemius SDK update
 = 10.6 =
-* another fix conflict with Google version. Added show or hide icon feature.
+* Freemius SDK update
 = 10.5 =
-* fix for conflict with Google version.
+* Freemius SDK update
 = 10.4 =
-* added read more function
+* Freemius SDK update
 = 10.3 =
-* review date format will now use WordPress setting
+* Freemius SDK update
 = 10.2 =
-* plugin is now translatable to other languages
+* Freemius SDK update
 = 10.1 =
-* updated CSS and minified
+* Freemius SDK update
 = 10.0 =
-* updated go pro link
+* Freemius SDK update
 = 9.9 =
-* added attribute lazy loading to profile images.
+* Freemius SDK update
 = 9.8 =
-* Added alt tags to Facebook logo.
+* Freemius SDK update
 = 9.7 =
-* fixed PHP notice
+* Freemius SDK update
 = 9.6 =
-* fixed PHP notice for widget style
+* Freemius SDK update
 = 9.5 =
-* bug fix when hovering over slider
+* Freemius SDK update
 = 9.4 =
-* CSS fix for slider on mobile
+* Freemius SDK update
 = 9.3 =
-* fixed css on reviews dashboard widget
+* Freemius SDK update
 = 9.2 =
-* added recent reviews dashboard widget
+* Freemius SDK update
 = 9.1 =
-* small bug fix, when updating to Pro version.
+* Freemius SDK update
 = 9.0 =
-* Updated database tables so id is primary key.
+* Freemius SDK update
 = 8.9 =
-* small bug fixes.
+* Freemius SDK update
 = 8.8 =
-* small bug fix for edge browser display CSS
+* Freemius SDK update
 = 8.7 =
-* small bug fix when copying image to local
+* Freemius SDK update
 = 8.6 =
-* small bug fix when checking review length
+* Freemius SDK update
 = 8.5 =
-* Updated alt tags for review Avatars
+* Freemius SDK update
 = 8.4 =
-* Updated so local avatars are deleted if all reviews are deleted.
+* Freemius SDK update
 = 8.3 =
-* changed template date format so it now uses WordPress Admin setting.
+* Freemius SDK update
 = 8.2 =
-* Added welcome screen with instructions to get started.
+* Freemius SDK update
 = 8.1 =
-* bug fix when deleting plugin.
+* Freemius SDK update
 = 8.0 =
-* small bug fix with cache directory creation
+* Freemius SDK update
 = 7.9 =
-* small changes with admin notice.
+* Freemius SDK update
 = 7.8 =
-* Added Twitter support. You can now search and download tweets to display on your site.
+* Freemius SDK update
 = 7.7 =
-* Added recommended icon. Changed logo.
+* Freemius SDK update
 = 7.6 =
-* Small fix for conflict with other free versions.
+* Freemius SDK update
 = 7.5 =
-* Small bug fix.
+* Freemius SDK update
 = 7.4 =
-* Small text changes. Tested with latest WordPress version.
+* Freemius SDK update
 = 7.3 =
-* Small bug fix with profile pics.
+* Freemius SDK update
 = 7.2 =
-* modified public css to fix small display issue in some sites. profile pics are now attempted to serve from local server
+* Freemius SDK update
 = 7.1 =
-* modified public js so no longer auto updates missing fb images
+* Freemius SDK update
 = 7.0 =
-* Small bug fix.
+* Freemius SDK update
 = 6.9 =
-* Small bug fix.
+* Freemius SDK update
 = 6.8 =
-* Small bug fix.
+* Freemius SDK update
 = 6.7 =
-* Small bug fix with review downloads.
+* Freemius SDK update
 = 6.6 =
-* Fix for expired FB profile pics.
+* Freemius SDK update
 = 6.5 =
-* Fix for FB recommendations.
+* Freemius SDK update
 = 6.4 =
-* Small bug fix.
+* Freemius SDK update
 = 6.3 =
-* Small bug fix.
+* Freemius SDK update
 = 6.2 =
-* Small bug fix.
+* Freemius SDK update
 = 6.1 =
-* Now using app to pull reviews.
-
+* Freemius SDK update
 = 6.0 =
-* Small bug fix.
-
+* Freemius SDK update
 = 5.9 =
-* Small bug fix.
-
+* Freemius SDK update
 = 5.8 =
-* Small bug fix.
-
+* Freemius SDK update
 = 5.7 =
-* Small bug fix with language characters.
-
+* Freemius SDK update
 = 5.6 =
-* Small bug fix.
-
+* Freemius SDK update
 = 5.5 =
-* Small bug fix.
-
+* Freemius SDK update
 = 5.4 =
-* Fix so now can work with Google widgets version.
-
+* Freemius SDK update
 = 5.3 =
-* Fix so now can work with Google version.
-
+* Freemius SDK update
 = 5.2 =
-* Small bug fix avatars.
-
+* Freemius SDK update
 = 5.1 =
-* Small bug fix with emoticons.
-
+* Freemius SDK update
 = 5.0 =
-* Small bug fix.
-
+* Freemius SDK update
 = 4.9 =
-* Small bug fix with special characters.
-
+* Freemius SDK update
 = 4.8 =
-* Small bug fix.
-
+* Freemius SDK update
 = 4.7 =
-* Small bug fix with date.
-
+* Freemius SDK update
 = 4.6 =
-* Small bug fix with date.
-
+* Freemius SDK update
 = 4.5 =
-* Small bug fix.
-
+* Freemius SDK update
 = 4.4 =
-* Small bug fix with date.
-
+* Freemius SDK update
 = 4.3 =
-* Another small bug fix with date.
-
+* Freemius SDK update
 = 4.2 =
-* Small bug fix with date.
-
+* Freemius SDK update
 = 4.1 =
-* Added backup method if FB blocks API call.
-
+* Freemius SDK update
 = 4.0 =
-* Small bug fix.
-
+* Freemius SDK update
 = 3.9 =
-* updated instructions
-
+* Freemius SDK update
 = 3.8 =
-* RTL support
-
+* Freemius SDK update
+= 3.7 =
+* Freemius SDK update
 = 3.6 =
-* Small bug fix.
-
+* Freemius SDK update
 = 3.5 =
-* delayed jquery call
-
+* Freemius SDK update
 = 3.4 =
-* added alt tag to review images.
-
+* Freemius SDK update
 = 3.3 =
-* Small bug fix.
-
+* Freemius SDK update
 = 3.2 =
-* Small bug fix.
-
+* Freemius SDK update
 = 3.1 =
-* Small bug fix.
-
+* Freemius SDK update
 = 3.0 =
-* WordPress V4.9 compatible fix of color picker.
-
+* Freemius SDK update
 = 2.9 =
-* Small bug fix.
-
+* Freemius SDK update
 = 2.8 =
-* Small bug fix.
-
+* Freemius SDK update
 = 2.7 =
-* Small bug fix.
-
+* Freemius SDK update
+= 2.6 =
+* Freemius SDK update
 = 2.5 =
-* auto adjust slide height
-
+* Freemius SDK update
 = 2.4 =
-* Fixed CSS problem when displaying more than one slider on the page at a time.
-
+* Freemius SDK update
 = 2.3 =
-* Small bug fix.
-
+* Freemius SDK update
 = 2.2 =
-* Small bug fix. Fixed conflict with google version.
-
+* Freemius SDK update
 = 2.1 =
-* Small bug fix. Added ability to page through FB page list.
-
+* Freemius SDK update
 = 2.0 =
-* Small bug fix. Widget not displaying under certain conditions.
-
+* Freemius SDK update
 = 1.9 =
-* Small bug fix. Word count not working for another language.
-
+* Freemius SDK update
 = 1.8 =
-* Small bug fixes.
-
+* Freemius SDK update
 = 1.7 =
-* Small bug fixes.
-
+* Freemius SDK update
 = 1.6 =
-* Small bug fix where fb image not displayed.
-
+* Freemius SDK update
 = 1.5 =
-* Small bug fixes. Now lists more pages.
-
+* Freemius SDK update
 = 1.4 =
-* Small bug fixes. Fixed problem with FB pages not showing up.
-
+* Freemius SDK update
 = 1.3 =
-* Small bug fixes. Fixed problem with ' in FB page name.
-
+* Freemius SDK update
 = 1.2 =
-* Small bug fixes.
-
+* Freemius SDK update
 = 1.1 =
-* Small bug fixes.
-
+* Freemius SDK update
 = 1.0 =
-* First Version
+* Initial release
 
+== Upgrade Notice ==
+
+= 15.0 =
+Major X (Twitter) update: X API v2 search with OAuth 1.0a, template filters for Facebook and/or X posts, and updated X branding. Requires PHP 7.4+.

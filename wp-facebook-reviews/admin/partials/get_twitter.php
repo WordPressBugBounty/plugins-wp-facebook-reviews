@@ -81,106 +81,69 @@
 	
 
 	//form posting here--------------------------------
-	//for twitter save keys
+	//for saving X (Twitter) API credentials (OAuth 1.0a keys and/or Bearer Token)
 	$keystatus['ack'] = '';
 	$keystatus['msg'] ='';
 	$keystatus['html'] ='';
-	//namespace for twitterclass
-	use Abraham\TwitterOAuth\TwitterOAuth;
 	if (isset($_POST['wprevpro_savecookie'])){
 		//verify nonce wp_nonce_field( 'wprevpro_save_template');
 		check_admin_referer( 'wprevpro_save_cookie');
-		$wprevpro_twitter_api_key = sanitize_text_field($_POST['wprevpro_twitter_api_key']);
-		$wprevpro_twitter_api_key = trim($wprevpro_twitter_api_key);
+
+		$wprevpro_twitter_api_key = trim(sanitize_text_field($_POST['wprevpro_twitter_api_key']));
+		$wprevpro_twitter_api_key_secret = trim(sanitize_text_field($_POST['wprevpro_twitter_api_key_secret']));
+		$wprevpro_twitter_api_token = trim(sanitize_text_field($_POST['wprevpro_twitter_api_token']));
+		$wprevpro_twitter_api_token_secret = trim(sanitize_text_field($_POST['wprevpro_twitter_api_token_secret']));
 		update_option( 'wprevfb_twitterapi_key', $wprevpro_twitter_api_key );
-		
-		$wprevpro_twitter_api_key_secret = sanitize_text_field($_POST['wprevpro_twitter_api_key_secret']);
-		$wprevpro_twitter_api_key_secret = trim($wprevpro_twitter_api_key_secret);
 		update_option( 'wprevfb_twitterapi_key_secret', $wprevpro_twitter_api_key_secret );
-		
-		$wprevpro_twitter_api_token = sanitize_text_field($_POST['wprevpro_twitter_api_token']);
-		$wprevpro_twitter_api_token = trim($wprevpro_twitter_api_token);
 		update_option( 'wprevfb_twitterapi_token', $wprevpro_twitter_api_token );
-		
-		$wprevpro_twitter_api_token_secret = sanitize_text_field($_POST['wprevpro_twitter_api_token_secret']);
-		$wprevpro_twitter_api_token_secret = trim($wprevpro_twitter_api_token_secret);
 		update_option( 'wprevfb_twitterapi_token_secret', $wprevpro_twitter_api_token_secret );
-		
+
+		$wprevpro_twitter_bearer = trim(sanitize_text_field($_POST['wprevpro_twitter_bearer']));
+		//Users sometimes paste the header value including the "Bearer " prefix.
+		if(stripos($wprevpro_twitter_bearer, 'Bearer ') === 0){
+			$wprevpro_twitter_bearer = trim(substr($wprevpro_twitter_bearer, 7));
+		}
+		update_option( 'wprevfb_twitterapi_bearer', $wprevpro_twitter_bearer );
+
 		$justsavedkeys = true;
 	} else {
 		$justsavedkeys = false;
 	}
-	
-	//check if keys are good they are already good.
-	//check twitter keys
+
+	//load saved credentials.
 	$wprevpro_twitter_api_key = get_option('wprevfb_twitterapi_key');
 	$wprevpro_twitter_api_key_secret = get_option('wprevfb_twitterapi_key_secret');
 	$wprevpro_twitter_api_token = get_option('wprevfb_twitterapi_token');
 	$wprevpro_twitter_api_token_secret = get_option('wprevfb_twitterapi_token_secret');
-	
-	//testing=============
-	//$connection = new TwitterOAuth($wprevpro_twitter_api_key, $wprevpro_twitter_api_key_secret, $wprevpro_twitter_api_token, //$wprevpro_twitter_api_token_secret);
-	//$statuses = $connection->get("search/tweets", ["q" => "twitterapi"]);
-	
-	//print_r($statuses);
-	
-	if($wprevpro_twitter_api_key!=''){
-		$keysinput = true;
-		$connection = new TwitterOAuth($wprevpro_twitter_api_key, $wprevpro_twitter_api_key_secret, $wprevpro_twitter_api_token, $wprevpro_twitter_api_token_secret);
-		$content = $connection->get("account/verify_credentials");
-		
-		if ($connection->getLastHttpCode() == 200) {
-			// get account worked, these keys work
-			$keystatus['ack'] = 'success';
-			$keystatus['msg'] ='';
-			$keystatus['html'] ='<div style="color:green;">Success! These keys work.</div>';
-		} else {
-			// Handle error case
-			$keystatus['ack'] = 'error';
-			$temperrormessage = (array)$connection->getLastBody();
-			$temperrormessage = json_encode($temperrormessage);
-			$keystatus['msg'] = $temperrormessage;
-			$keystatus['html'] = '<div style="color:red;">Oops! These keys do not work. '.$temperrormessage.'</div>';
-		}
-		
-		//test premium sandbox search
-		//$connection = new TwitterOAuth($wprevpro_twitter_api_key, $wprevpro_twitter_api_key_secret, $wprevpro_twitter_api_token, $wprevpro_twitter_api_token_secret);
+	$wprevpro_twitter_bearer = get_option('wprevfb_twitterapi_bearer');
 
-		//$statuses = $connection->get("search/tweets", ["q" => '"Yellowhammer Brewing" OR "Yellowhammer Brewery" OR @YellowhammerAle',"count" => '100']);
-		//$statuses = $connection->get("tweets/search/30day/dev", ["query" => 'LocalbyFlywheel -from:LocalbyFlywheel',"maxResults" => '100']);
-		
-//print_r( $statuses);
-		
-		
-	} else {
-		$keysinput = false;
-	}
-	
-	//show or hide key form based on this above
-	$keyformhideshow = 'wprevpro_hide';	//hide by default
+	$has_oauth1 = ($wprevpro_twitter_api_key!='' && $wprevpro_twitter_api_key_secret!='' && $wprevpro_twitter_api_token!='' && $wprevpro_twitter_api_token_secret!='');
+	$has_bearer = ($wprevpro_twitter_bearer!='');
+	//credentials are validated on the first search (avoids burning paid read credits on a separate check).
+	$keysinput = ($has_oauth1 || $has_bearer);
+
+	//show or hide the key form: show it (with a confirmation) right after saving,
+	//show it when no credentials are saved yet, otherwise keep it hidden.
 	$keystatushtml = '';
-	if($keysinput){		//only doing this if keys are input, else we are just showing form.
-		if(!$justsavedkeys){
-			if($keystatus['ack']=='success'){
-				//saved keys earlier and they work, no need to show form
-				$keyformhideshow = 'wprevpro_hide';
-			} else if($keystatus['ack']=='error'){
-				//saved keys earlier, but they didn't work
-				$keyformhideshow = '';
-				$keystatushtml = $keystatus['html'];
+	if($justsavedkeys){
+		$keyformhideshow = '';
+		if($has_oauth1 || $has_bearer){
+			$keystatus['ack'] = 'success';
+			$savedparts = array();
+			if($has_oauth1){
+				$savedparts[] = 'OAuth 1.0a keys';
 			}
-		}
-		if($justsavedkeys){		//just saved the keys
-			if($keystatus['ack']=='success'){
-				//saved keys and they work show form with success msg
-				$keyformhideshow = '';
-				$keystatushtml = $keystatus['html'];
-			} else if($keystatus['ack']=='error'){
-				//just saved keys, but they didn't work
-				$keyformhideshow = '';
-				$keystatushtml = $keystatus['html'];
+			if($has_bearer){
+				$savedparts[] = 'Bearer Token';
 			}
+			$keystatushtml = '<div style="color:green;">Saved: '.esc_html(implode(' and ', $savedparts)).'. Credentials will be checked the first time you search for posts.</div>';
+		} else {
+			$keystatushtml = '<div style="color:red;">Enter either all four OAuth 1.0a keys, or a Bearer Token (or both).</div>';
 		}
+	} else if(!$keysinput){
+		$keyformhideshow = '';	//no credentials yet, show the form
+	} else {
+		$keyformhideshow = 'wprevpro_hide';	//credentials saved, hide by default
 	}
 	
 	
@@ -292,11 +255,11 @@ $url_tempdownload = admin_url( 'admin-post.php?action=print_reviewfunnel.csv' );
 
 <div class="w3-col wpfbr_margin10">
 <div class="wprevpro_margin10">
-	<a id="wprevpro_addnewtemplate" keycheck="<?php echo $keystatus['ack']; ?>" class="button dashicons-before dashicons-plus-alt"><?php _e('Add New Twitter Source', 'wp-fb-reviews'); ?></a>
+	<a id="wprevpro_addnewtemplate" keycheck="<?php echo $keystatus['ack']; ?>" class="button dashicons-before dashicons-plus-alt"><?php _e('Add New X (Twitter) Source', 'wp-fb-reviews'); ?></a>
 	<a id="wprevpro_addnewapikey" class="button dashicons-before dashicons-plus-alt"><?php _e('Enter/Modify API Keys', 'wp-fb-reviews'); ?></a>
 
 </div>
-<div class='bordereddiv'><?php _e('Use this page to search for and download tweets about your business/product/service. Click the <b>"Add New Twitter Source"</b> button to get started. If you need to search for tweets older than 7 days, or you get API Key errors, then you will need to use the <b>"Enter/Modify API Keys"</b> button to enter your own keys.', 'wp-fb-reviews'); ?> </div>
+<div class='bordereddiv'><?php _e('Use this page to search for and download posts about your business/product/service from X (formerly Twitter). Click the <b>"Add New X (Twitter) Source"</b> button to get started. Enter your X Developer credentials with <b>"Enter/Modify API Keys"</b> before searching. Prefer OAuth 1.0a (Consumer Key, Consumer Key Secret, Access Token, Access Token Secret); a Bearer Token can be used as a fallback.', 'wp-fb-reviews'); ?> </div>
 
 <div id="apikeyformdiv" class="<?php echo $keyformhideshow; ?> wprevpro_margin10 bordered_form" id="login_cookie">
 	    <form  action="?page=wpfb-get_twitter" method="post" name="logincookie" enctype="multipart/form-data">
@@ -304,20 +267,26 @@ $url_tempdownload = admin_url( 'admin-post.php?action=print_reviewfunnel.csv' );
 		<tbody>
 			<tr class="wprevpro_row">
 				<td scope="row" style="width:50%;">
-				<div class="twitter_key_header"><?php _e('Consumer API Keys:', 'wp-fb-reviews'); ?></div>
-				<div class="twitter_key_div"><?php _e('API Key:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_key" id="wprevpro_twitter_api_key" value="<?php echo esc_html(get_option('wprevfb_twitterapi_key')); ?>"></div>
-				<div class="twitter_key_div"><?php _e('API Secret Key:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_key_secret" id="wprevpro_twitter_api_key_secret" value="<?php echo esc_html(get_option('wprevfb_twitterapi_key_secret')); ?>"></div>
+				<div class="twitter_key_header"><?php _e('OAuth 1.0a — Consumer Key & Secret (recommended):', 'wp-fb-reviews'); ?></div>
+				<div class="twitter_key_div"><?php _e('Consumer Key:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_key" id="wprevpro_twitter_api_key" value="<?php echo esc_attr(get_option('wprevfb_twitterapi_key')); ?>"></div>
+				<div class="twitter_key_div"><?php _e('Consumer Key Secret:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_key_secret" id="wprevpro_twitter_api_key_secret" value="<?php echo esc_attr(get_option('wprevfb_twitterapi_key_secret')); ?>"></div>
 				</td>
 				<td scope="row" style="padding-left:10px;">
-				<div class="twitter_key_header"><?php _e('Access token & access token secret:', 'wp-fb-reviews'); ?></div>
-				<div class="twitter_key_div"><?php _e('Access Token:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_token" id="wprevpro_twitter_api_token" value="<?php echo esc_html(get_option('wprevfb_twitterapi_token')); ?>"></div>
-				<div class="twitter_key_div"><?php _e('Access Token Secret:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_token_secret" id="wprevpro_twitter_api_token_secret" value="<?php echo esc_html(get_option('wprevfb_twitterapi_token_secret')); ?>"></div>
+				<div class="twitter_key_header"><?php _e('OAuth 1.0a — Access Token & Secret:', 'wp-fb-reviews'); ?></div>
+				<div class="twitter_key_div"><?php _e('Access Token:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_token" id="wprevpro_twitter_api_token" value="<?php echo esc_attr(get_option('wprevfb_twitterapi_token')); ?>"></div>
+				<div class="twitter_key_div"><?php _e('Access Token Secret:', 'wp-fb-reviews'); ?> <input class="inputrow100per" type="text" name="wprevpro_twitter_api_token_secret" id="wprevpro_twitter_api_token_secret" value="<?php echo esc_attr(get_option('wprevfb_twitterapi_token_secret')); ?>"></div>
 				</td>
 			</tr>
 			<tr class="wprevpro_row">
-				<td scope="row" style="padding-left:10px;" colspan=2>
+				<td scope="row" colspan="2">
+				<div class="twitter_key_header"><?php _e('Bearer Token (optional fallback):', 'wp-fb-reviews'); ?></div>
+				<div class="twitter_key_div"><input class="inputrow100per" type="text" name="wprevpro_twitter_bearer" id="wprevpro_twitter_bearer" value="<?php echo esc_attr(get_option('wprevfb_twitterapi_bearer')); ?>"></div>
+				</td>
+			</tr>
+			<tr class="wprevpro_row">
+				<td scope="row" colspan="2">
 				<p class="description">
-				<?php _e('Twitter requires API Keys and Access Tokens to access their data. If you do not already have a Twitter Developer account, you\'ll need to create one. After that, you can create a Twitter application to get your keys and token. Instructions can be found on this <a href="https://ljapps.com/how-to-get-your-twitter-api-keys-access-tokens-access-premium-search-api/" target="_blank">page</a>.', 'wp-fb-reviews'); ?></p>
+				<?php _e('Create an App inside a Project at <a href="https://developer.x.com/" target="_blank">developer.x.com</a> / <a href="https://console.x.com/" target="_blank">console.x.com</a>. Under <b>OAuth 1.0a Keys</b>, copy the <b>Consumer Key</b>, <b>Consumer Key Secret</b>, then generate and copy the <b>Access Token</b> and <b>Access Token Secret</b> (preferred). You may also paste the <b>Bearer Token</b> as a fallback. Search uses OAuth 1.0a when all four keys are present; otherwise it uses the Bearer Token. Paid X API access (Pay Per Use or equivalent) is required for Recent Search. Instructions: <a href="https://wpreviewslider.com/how-to-get-your-x-twitter-api-keys-and-access-tokens/" target="_blank">this page</a>.', 'wp-fb-reviews'); ?></p>
 				</td>
 			</tr>
 			
@@ -328,7 +297,7 @@ $url_tempdownload = admin_url( 'admin-post.php?action=print_reviewfunnel.csv' );
 				wp_nonce_field( 'wprevpro_save_cookie');
 				?>
 			<input type="submit" name="wprevpro_savecookie" id="wprevpro_savecookie" class="button button-primary" value="<?php _e('Save', 'wp-fb-reviews'); ?>">
-&nbsp;&nbsp;<a href="https://ljapps.com/how-to-get-your-twitter-api-keys-access-tokens-access-premium-search-api/" target="_blank" id="instr" name="instr" class="button-secondary "><?php _e('API Instructions', 'wp-fb-reviews'); ?></a>
+&nbsp;&nbsp;<a href="https://wpreviewslider.com/how-to-get-your-x-twitter-api-keys-and-access-tokens/" target="_blank" id="instr" name="instr" class="button-secondary "><?php _e('API Instructions', 'wp-fb-reviews'); ?></a>
 <?php echo $keystatushtml; ?>
         </form>
 </div>
@@ -355,9 +324,9 @@ $url_tempdownload = admin_url( 'admin-post.php?action=print_reviewfunnel.csv' );
 				<td>
 					<input class="yelp_business_url" id="wprevpro_query" data-custom="custom" type="text" name="wprevpro_query" placeholder="" value='<?php echo esc_html($currentgetappform->query); ?>' required>
 					<p class="description">
-					<?php _e('The search terms to use in the query. 256 characters with 30-Day Sandbox tier, 128 with Full Archive Sandbox tier. See operators <a href="https://developer.twitter.com/en/docs/tweets/rules-and-filtering/overview/operators-by-product" target="_blank">here</a>.', 'wp-fb-reviews'); ?>		</p>
+					<?php _e('X search query rules apply. Spaces mean <b>AND</b> (all words must appear in the same post). Use <b>OR</b> to match either term, and quotes for an exact phrase. Recent search only covers the <b>last 7 days</b>. Operators: <a href="https://developer.x.com/en/docs/x-api/tweets/search/integrate/build-a-query" target="_blank">build a query</a>.', 'wp-fb-reviews'); ?>		</p>
 					<p class="description">
-					<?php _e('Example: LocalbyFlywheel -from:LocalbyFlywheel -RT', 'wp-fb-reviews'); ?></p>
+					<?php _e('Examples: <code>Yellowhammer</code> &nbsp;|&nbsp; <code>Yellowhammer OR Huntsville</code> &nbsp;|&nbsp; <code>"Yellowhammer Brewing"</code> &nbsp;|&nbsp; <code>Yellowhammer -is:retweet</code>', 'wp-fb-reviews'); ?></p>
 				</td>
 			</tr>
 			<tr class="wprevpro_row">
@@ -366,12 +335,11 @@ $url_tempdownload = admin_url( 'admin-post.php?action=print_reviewfunnel.csv' );
 				</th>
 				<td>
 					<select name="wprevpro_endpoint" id="wprevpro_endpoint">
-					  <option value="7" <?php if($currentgetappform->endpoint=='7' || $currentgetappform->endpoint==''){echo "selected";} ?>>Standard 7-day endpoint</option>
-					  <option value="30" <?php if($currentgetappform->endpoint=='30'){echo "selected";} ?>>30-day endpoint</option>
-					  <option value="all" <?php if($currentgetappform->endpoint=='all'){echo "selected";} ?>>Full-archive endpoint </option>
+					  <option value="7" <?php if($currentgetappform->endpoint=='7' || $currentgetappform->endpoint=='30' || $currentgetappform->endpoint==''){echo "selected";} ?>>Recent search (last 7 days)</option>
+					  <option value="all" <?php if($currentgetappform->endpoint=='all'){echo "selected";} ?>>Full-archive search</option>
 					</select>
 					<p class="description">
-					<?php _e('This plugin uses the Twitter Premium Search API to look for tweets. <b>If you choose 30 day search or Full archive, you must enter your API Keys above.</b> Twitter gives you 250 free 30-day searches and 50 all-time searches a month. <br><b>Important:</b> You <b>MUST</b> Go <a href="https://developer.twitter.com/en/account/environments" target="_blank">here</a> and click the "Set up dev environment" button. Make sure you use the label "<b>wprevdev</b>" for the "Dev environment label" and select the same app as the keys you used above.', 'wp-fb-reviews'); ?>		</p>
+					<?php _e('This plugin uses the X API v2 to look for posts. <b>Recent search</b> returns posts from the last 7 days and works with standard developer access. <b>Full-archive search</b> can return older posts but requires elevated/paid access to the <code>tweets/search/all</code> endpoint on your X Developer account. Either option requires your own API Keys entered above.', 'wp-fb-reviews'); ?>		</p>
 				</td>
 			</tr>
 			<tr class="wprevpro_row">
@@ -455,11 +423,11 @@ echo $dbmsg;
 				<th scope="col" class=" manage-column" style="min-width: 200px;"><b><span class="titlespan">'.esc_html($currentform->title).'</span></b></th>
 				<th scope="col" class="tdquery manage-column">'.esc_html($currentform->query).'</th>
 				<th scope="col" class=" manage-column">'.esc_html($lastranon).'</th>
-				<th scope="col" class="manage-column" limage="'.esc_url($currentform->profile_img).'" fcats="'.esc_attr($fcategories).'" fposts="'.esc_attr($fposts).'" ftitle="'.esc_attr($currentform->title).'" epoint="'.esc_attr($currentform->endpoint).'" squery="'.esc_attr($currentform->query).'"><a href="'.$url_tempeditbtn.'" class="rfbtn button button-secondary dashicons-before dashicons-admin-generic">'.__('Edit', 'wp-fb-reviews').'</a> <a href="'.$url_tempdelbtn.'" class="rfbtn button button-secondary dashicons-before dashicons-trash">'.__('Delete', 'wp-fb-reviews').'</a> <a href="'.$url_tempcopybtn.'" class="rfbtn button button-secondary dashicons-before dashicons-admin-page">'.__('Copy', 'wp-fb-reviews').'</a> <span class="rfbtn button button-primary dashicons-before dashicons-star-filled retreviewsbtn"> '.__('Get Tweets', 'wp-fb-reviews').'</span></th>
+				<th scope="col" class="manage-column" limage="'.esc_url($currentform->profile_img).'" fcats="'.esc_attr($fcategories).'" fposts="'.esc_attr($fposts).'" ftitle="'.esc_attr($currentform->title).'" epoint="'.esc_attr($currentform->endpoint).'" squery="'.esc_attr($currentform->query).'"><a href="'.$url_tempeditbtn.'" class="rfbtn button button-secondary dashicons-before dashicons-admin-generic">'.__('Edit', 'wp-fb-reviews').'</a> <a href="'.$url_tempdelbtn.'" class="rfbtn button button-secondary dashicons-before dashicons-trash">'.__('Delete', 'wp-fb-reviews').'</a> <a href="'.$url_tempcopybtn.'" class="rfbtn button button-secondary dashicons-before dashicons-admin-page">'.__('Copy', 'wp-fb-reviews').'</a> <span class="rfbtn button button-primary dashicons-before dashicons-star-filled retreviewsbtn"> '.__('Get Posts', 'wp-fb-reviews').'</span></th>
 			</tr>';
 	}
 	} else {
-		$html .= '<tr><td colspan="5">'.__('You can create a Review Form to download tweets from Twitter! Once downloaded, they will show up on the Review List page of the plugin and you can display them on your website with a Review Template. Click the "Add New Twitter Source Page" button above to get started.', 'wp-fb-reviews').'</td></tr>';
+		$html .= '<tr><td colspan="5">'.__('You can create a Review Form to download posts from X (formerly Twitter)! Once downloaded, they will show up on the Review List page of the plugin and you can display them on your website with a Review Template. Click the "Add New X (Twitter) Source" button above to get started.', 'wp-fb-reviews').'</td></tr>';
 	}
 		$html .= '</tbody></table>';
 echo $html;

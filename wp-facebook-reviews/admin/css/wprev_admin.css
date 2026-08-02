@@ -213,10 +213,56 @@ div#wpfbr_new_template {
 #wpfbr_new_template select {
     padding: 0 24px 0 8px;
 }
-#wpfbr_new_template .wp-picker-container .wp-color-result.button {
-    height: 32px;
-    min-height: 32px;
+/* Do not restyle WP color picker buttons — flex/padding/max-height break the swatch + "Select Color" label */
+#wp_rev_maindiv .wp-picker-container .wp-color-result.button,
+#wp_rev_maindiv .wp-picker-container a.wp-color-result.button,
+#wp_rev_maindiv .wp-picker-container button.wp-color-result.button,
+#wp_fb-settings .wp-picker-container .wp-color-result.button,
+#wp_fb-settings .wp-picker-container a.wp-color-result.button,
+#wp_fb-settings .wp-picker-container button.wp-color-result.button,
+#wpfbr_new_template .wp-picker-container .wp-color-result.button,
+#wpfbr_new_template .wp-picker-container a.wp-color-result.button,
+#wpfbr_new_template .wp-picker-container button.wp-color-result.button {
+    display: inline-block !important;
+    align-items: initial !important;
+    justify-content: initial !important;
+    width: auto !important;
+    min-width: 98px;
+    max-width: none !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: none !important;
+    padding: 0 0 0 30px !important;
     box-sizing: border-box;
+    line-height: 2.30769231 !important;
+    vertical-align: top;
+    text-decoration: none;
+    overflow: visible;
+    background-color: #f7f7f7;
+    border-color: #ccc;
+    color: #555;
+    box-shadow: 0 1px 0 #ccc;
+}
+#wp_rev_maindiv .wp-picker-container .wp-color-result.button .wp-color-result-text,
+#wp_rev_maindiv .wp-picker-container a.wp-color-result.button .wp-color-result-text,
+#wp_rev_maindiv .wp-picker-container button.wp-color-result.button .wp-color-result-text,
+#wp_fb-settings .wp-picker-container .wp-color-result.button .wp-color-result-text,
+#wpfbr_new_template .wp-picker-container .wp-color-result.button .wp-color-result-text,
+#wpfbr_new_template .wp-picker-container a.wp-color-result.button .wp-color-result-text,
+#wpfbr_new_template .wp-picker-container button.wp-color-result.button .wp-color-result-text {
+    display: block !important;
+    background: #f7f7f7;
+    border-radius: 0 2px 2px 0;
+    border-left: 1px solid #ccc;
+    color: #555;
+    height: 100%;
+    line-height: 28px;
+    padding: 0 6px;
+    text-align: center;
+    position: static;
+    margin: 0;
+    font-size: 11px;
+    white-space: nowrap;
 }
 #wpfbr_new_template table.form-table > tbody > tr.wpfbr_row:first-child th,
 #wpfbr_new_template table.form-table > tbody > tr.wpfbr_row:first-child td {
@@ -246,13 +292,13 @@ div#wpfbr_new_template {
 #wp_fb-settings select {
     padding: 0 24px 0 8px;
 }
-#wp_rev_maindiv .button,
-#wp_rev_maindiv .button-secondary,
-#wp_rev_maindiv a.button,
+#wp_rev_maindiv .button:not(.wp-color-result),
+#wp_rev_maindiv .button-secondary:not(.wp-color-result),
+#wp_rev_maindiv a.button:not(.wp-color-result),
 #wp_rev_maindiv input.button,
-#wp_fb-settings .button,
-#wp_fb-settings .button-secondary,
-#wp_fb-settings a.button,
+#wp_fb-settings .button:not(.wp-color-result),
+#wp_fb-settings .button-secondary:not(.wp-color-result),
+#wp_fb-settings a.button:not(.wp-color-result),
 #wp_fb-settings input.button {
     border-color: #ccc;
     background: #f6f7f7;
@@ -277,7 +323,7 @@ img.wprev_headerimg {
 #wp_rev_maindiv #newtemplateform a.button,
 #wp_rev_maindiv #wpfbr_submittemplatebtn,
 #wp_rev_maindiv #wpfbr_addnewtemplate_cancel,
-#wp_rev_maindiv #wprevpro_addnewtemplate_update {
+#wp_rev_maindiv #wpfbr_addnewtemplate_update {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -294,7 +340,7 @@ img.wprev_headerimg {
 }
 #wp_rev_maindiv #newtemplateform input[type="submit"].button-primary,
 #wp_rev_maindiv #wpfbr_submittemplatebtn,
-#wp_rev_maindiv #wprevpro_addnewtemplate_update {
+#wp_rev_maindiv #wpfbr_addnewtemplate_update {
     background: #2271b1;
     border-color: #2271b1;
     color: #fff;
@@ -357,7 +403,12 @@ tbody#review_list_select {
     cursor: pointer;
 }
 .wprevpre_temp_label_row {
-    height: 35px;
+    min-height: 35px;
+    height: auto;
+    overflow: visible;
+}
+.wprevpre_temp_label_row .wp-picker-container {
+    line-height: normal;
 }
 .wp-picker-container.wp-picker-active {
     z-index: 999 !important;
@@ -455,3 +506,215 @@ tr.hiddenrow {
     flex-wrap: wrap;
     gap: 6px;
 }
+
+/*-------- review list: icon buttons, media, edit modal (v14.4) -------*/
+.wprevpro_iconbtn {
+	cursor: pointer;
+	display: inline-block;
+}
+.wprevpro_iconbtn .dashicons {
+	color: #50575e;
+}
+.wprevpro_iconbtn:hover .dashicons {
+	color: #135e96;
+}
+.mediaimgsdiv {
+	margin-top: 6px;
+}
+.mediaimgsdiv a {
+	display: inline-block;
+	margin: 0 4px 4px 0;
+}
+.mediaimgsdiv img {
+	border-radius: 3px;
+}
+
+/*-------- review edit popup / modal -------*/
+.wprevpro_modal_overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.55);
+	z-index: 100050;
+	align-items: flex-start;
+	justify-content: center;
+	overflow-y: auto;
+	padding: 40px 20px;
+	box-sizing: border-box;
+}
+.wprevpro_modal_overlay.is-open {
+	display: flex;
+}
+.wprevpro_modal_box {
+	position: relative;
+	max-width: 600px;
+	width: 100%;
+	max-height: calc(100vh - 80px);
+	overflow-y: auto;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, .3);
+	padding: 25px 30px 20px !important;
+}
+.wprevpro_modal_box h2 {
+	margin-top: 0;
+}
+.wprevpro_modal_closebtn {
+	position: absolute;
+	top: 6px;
+	right: 12px;
+	background: transparent;
+	border: 0;
+	font-size: 28px;
+	line-height: 1;
+	color: #888;
+	cursor: pointer;
+	padding: 0;
+}
+.wprevpro_modal_closebtn:hover {
+	color: #333;
+}
+#wprevpro_save_review_msg .notice {
+	margin: 0 0 12px;
+}
+#wprevpro_save_review_msg .wprevpro_error_msg {
+	color: #b32d2e;
+	font-weight: 600;
+	margin: 0 0 12px;
+}
+
+/*-------- template editor: tabs, live preview, badge (v14.4) --------*/
+/* general button vertical centering (fixes "text too high") */
+#wp_rev_maindiv .button:not(.wp-color-result),
+#wp_rev_maindiv .button-secondary:not(.wp-color-result),
+#wp_rev_maindiv a.button:not(.wp-color-result),
+#wp_rev_maindiv input.button,
+#wp_fb-settings .button:not(.wp-color-result),
+#wp_fb-settings a.button:not(.wp-color-result),
+#wp_fb-settings input.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+/* clearfix the floated w3 grid so the preview column doesn't collapse */
+#wpfbr_new_template .w3_wprs-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+#wpfbr_new_template .settingstable td { padding-left: 0; }
+#wpfbr_new_template .wprevpre_temp_label_row select,
+#wpfbr_new_template .wprevpre_temp_label_row input[type="number"] {
+    max-width: 100%;
+}
+div#wprevpro_template_preview {
+    min-height: 120px;
+}
+#wprevpro_template_preview .wprevpro_t1_outer_div,
+#wprevpro_template_preview .wprevpro_t6_outer_div {
+    max-width: 360px;
+}
+#wprevpro_template_preview .w3_wprs-col {
+    float: none;
+    width: 100%;
+}
+.wprevtooltip { cursor: pointer; }
+.wprevpro_tooltip {
+    display: none;
+    position: absolute;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #efefef;
+    background-color: #000000bf;
+    border-radius: 3px;
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    line-height: 24px;
+    z-index: 999999;
+}
+
+/* help text hidden until the ? icon is clicked */
+#wpfbr_new_template p.description {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+#wpfbr_new_template p.description.wpfbr_desc_visible {
+    display: block !important;
+    margin: 0.4em 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+.wpfbr_helpicon_p.wpfbr_btnicononlyhelp::before {
+    padding-top: 0;
+    cursor: pointer;
+    margin-top: 0;
+}
+/* Match TripAdvisor/Google: tighter form-table th padding */
+#wpfbr_new_template .form-table th,
+#wp_rev_maindiv .form-table th {
+    padding: 15px 10px;
+}
+#wpfbr_new_template .settingstable th,
+#wpfbr_new_template .settingstable td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* "Next" tab button: dashicons only defines the arrow glyph on ::before,
+   so keep it on ::before but flip after the label with flex order. */
+#wp_rev_maindiv .button.dashicons-arrow-right-after::before,
+#wp_rev_maindiv a.button.dashicons-arrow-right-after::before,
+#wp_rev_maindiv span.button.dashicons-arrow-right-after::before {
+    font-family: dashicons;
+    content: "\f139";
+    order: 1;
+}
+
+/* tabs + badge settings */
+.cursorpointer { cursor: pointer; }
+.settingtab { cursor: pointer; }
+.settingtab.nav-tab { margin-left: 0; }
+.settingstable { border-bottom: 1px solid #ccc; margin-bottom: 10px; }
+.badgeinfo { display: flex; gap: 20px; flex-wrap: wrap; }
+.bsetlabel { font-weight: 600; }
+.badgeinfosetting.checkboxes { display: flex; align-items: center; gap: 2px; }
+.badgeinfosetting.checkboxes label { cursor: pointer; }
+#wpfbr_new_template .badgeinfosetting:not(.checkboxes) {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+}
+#wpfbr_new_template .badgeinfosetting:not(.checkboxes) .bsetlabel {
+    flex: 0 0 auto; margin: 0;
+}
+tr.wpfbr_row.tabnoterow td { padding: 10px; }
+tr.wpfbr_row.tabnoterow { background: #f6f6f6; }
+.nextprevbtn { margin-right: 6px; }
+.tabnote { font-size: 13px; color: #555; }
+.divtemplatestyles { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+
+/* server-rendered template preview */
+#update_form_msg_div { display: inline-block; vertical-align: middle; margin-left: 6px; }
+.wpfbr_form_spinner { float: none; margin: 0 4px 0 0; visibility: hidden; }
+.wpfbr_form_spinner.is-active { visibility: visible; }
+#update_form_msg { color: #46b450; font-weight: 600; }
+#update_form_msg .dashicons { color: #46b450; }
+#wpfbr_preview_outermost {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid #e2e4e7;
+    border-radius: 4px;
+    background: #fff;
+}
+#wpfbr_loading_prev_div { min-height: 20px; }
+.wpfbr_preview_spinner { float: none; margin: 0; visibility: hidden; }
+.wpfbr_preview_spinner.is-active { visibility: visible; }
+#wpfbr_preview_outer { margin-top: 10px; }

@@ -183,7 +183,7 @@ class WP_FB_Reviews_Activator {
 				id mediumint(9) NOT NULL AUTO_INCREMENT,
 				title varchar(200) DEFAULT '' NOT NULL,
 				site_type varchar(20) DEFAULT '' NOT NULL,
-				query text DEFAULT '' NOT NULL,
+				query text NOT NULL,
 				endpoint varchar(3) DEFAULT '' NOT NULL,
 				last_ran int(12) NOT NULL,
 				created_time_stamp int(12) NOT NULL,

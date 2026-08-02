@@ -183,6 +183,17 @@
 		$(".wprevpro_t1_outer_div").on('mousemove', '.wprevtooltip', function(e) {
 			$('.wprevpro_tooltip').css('top', (e.pageY - 15) + 'px').css('left', (e.pageX + 10) + 'px');
 		});
+
+		//open review photos in the Lity lightbox
+		$(document).on('click', 'a.wprev_media_img_a', function(e) {
+			var href = $(this).attr('href');
+			if (!href || typeof lity !== 'function') {
+				return;
+			}
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			lity(href);
+		});
 		
 	});
 

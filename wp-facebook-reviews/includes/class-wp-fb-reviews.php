@@ -78,7 +78,7 @@ class WP_FB_Reviews {
 	public function __construct() {
 
 		$this->_token = 'wp-fb-reviews';
-		$this->version = '14.3';
+		$this->version = '15.0';
 		//using this for development
 		//$this->version = time();
 
@@ -284,7 +284,7 @@ class WP_FB_Reviews {
 				id mediumint(9) NOT NULL AUTO_INCREMENT,
 				title varchar(200) DEFAULT '' NOT NULL,
 				site_type varchar(20) DEFAULT '' NOT NULL,
-				query text DEFAULT '' NOT NULL,
+				query text NOT NULL,
 				endpoint varchar(3) DEFAULT '' NOT NULL,
 				last_ran int(12) NOT NULL,
 				created_time_stamp int(12) NOT NULL,
@@ -460,6 +460,16 @@ class WP_FB_Reviews {
 		
 		//add ajax for downloading images to local
 		$this->loader->add_action( 'wp_ajax_wpfb_avatar_tolocal', $plugin_admin, 'wprevpro_download_avatar_tolocal' ); 
+		
+		//add ajax for hiding/deleting a single review from the Review List page
+		$this->loader->add_action( 'wp_ajax_wpfb_hide_review', $plugin_admin, 'wpfb_hidereview_ajax' ); 
+		
+		//add ajax for saving an edited review (avatar + date) from the Review List page
+		$this->loader->add_action( 'wp_ajax_wpfb_save_review', $plugin_admin, 'wpfb_savereview_ajax' ); 
+		
+		//add ajax for the Templates editor live preview + save
+		$this->loader->add_action( 'wp_ajax_wpfb_get_preview', $plugin_admin, 'wpfb_previewtemplate_ajax' ); 
+		$this->loader->add_action( 'wp_ajax_wpfb_save_template', $plugin_admin, 'wpfb_savetemplate_ajax' ); 
 		
 		//add ajax for adding FB backup method feedback to table
 		//$this->loader->add_action( 'wp_ajax_wpfb_fb_backup_reviews', $plugin_admin, 'wprevpro_ajax_download_fb_backup' );
