@@ -79,7 +79,7 @@ class WP_FB_Reviews_Admin {
 		 */
 		//only load for this plugin
 		if(isset($_GET['page'])){
-			if($_GET['page']=="wpfb-facebook" || $_GET['page']=="wpfb-get_twitter" || $_GET['page']=="wp_fb-settings" || $_GET['page']=="wpfb-reviews" || $_GET['page']=="wpfb-templates_posts" || $_GET['page']=="wp_fb-get_pro" || $_GET['page']=="wpfb-welcome-slug"){
+			if( strpos( $_GET['page'], "wpfb-" ) !== false || $_GET['page']=="wp_fb-settings" || $_GET['page']=="wp_fb-get_pro" ){
 				wp_enqueue_style( $this->_token, plugin_dir_url( __FILE__ ) . 'css/wprev_admin.css', array(), $this->version, 'all' );
 				wp_enqueue_style( $this->_token."_wprev_w3", plugin_dir_url( __FILE__ ) . 'css/wprev_w3.css', array(), $this->version, 'all' );
 				
@@ -101,6 +101,21 @@ class WP_FB_Reviews_Admin {
 				//style 6 layout css for the preview
 				wp_enqueue_style( $this->_token."_style6", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-public_template6.css', array(), $this->version, 'all' );
 
+			}
+
+			// Star SVG styles for Analytics summary boxes
+			if ( $_GET['page'] === 'wpfb-analytics' ) {
+				wp_enqueue_style( $this->_token."_style1", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-fb-combine.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'chart-min', plugin_dir_url( __FILE__ ) . 'css/Chart.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token . '_daterangepicker', plugin_dir_url( __FILE__ ) . 'css/daterangepicker.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token . '_select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token . '_jqcloud', plugin_dir_url( __FILE__ ) . 'css/jqcloud.css', array(), $this->version, 'all' );
+			}
+
+			// AI Analysis sample page
+			if ( $_GET['page'] === 'wpfb-ai_analysis' ) {
+				wp_enqueue_style( 'chart-min', plugin_dir_url( __FILE__ ) . 'css/Chart.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token."_style1", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-fb-combine.css', array(), $this->version, 'all' );
 			}
 			
 		}
@@ -129,7 +144,7 @@ class WP_FB_Reviews_Admin {
 
 		//scripts for all pages in this plugin
 		if(isset($_GET['page'])){
-			if($_GET['page']=="wpfb-facebook" || $_GET['page']=="wp_fb-settings" || $_GET['page']=="wpfb-reviews" || $_GET['page']=="wpfb-templates_posts" || $_GET['page']=="wp_fb-get_pro" || $_GET['page']=="wpfb-get_twitter"){
+			if( strpos( $_GET['page'], "wpfb-" ) !== false || $_GET['page']=="wp_fb-settings" || $_GET['page']=="wp_fb-get_pro" ){
 				//pop-up script
 				wp_register_script( 'simple-popup-js',  plugin_dir_url( __FILE__ ) . 'js/wprev_simple-popup.min.js' , '', $this->version, false );
 				wp_enqueue_script( 'simple-popup-js' );
@@ -258,6 +273,97 @@ class WP_FB_Reviews_Admin {
 				);
 				
 			}
+
+			//scripts for analytics page
+			if ( $_GET['page'] === 'wpfb-analytics' ) {
+				global $wpdb;
+				$reviews_table_name = $wpdb->prefix . 'wpfb_reviews';
+				$typearray          = $wpdb->get_col( "SELECT type FROM {$reviews_table_name} WHERE LOWER(type) IN ('facebook','twitter') GROUP BY type" );
+
+				wp_enqueue_script( 'wprevpro_analytics_page-js', plugin_dir_url( __FILE__ ) . 'js/wprevpro_analytics_page.js', array( 'jquery' ), $this->version, false );
+				wp_localize_script(
+					'wprevpro_analytics_page-js',
+					'adminjs_script_vars',
+					array(
+						'wpfb_nonce'            => wp_create_nonce( 'randomnoncestring' ),
+						'ajax_url'              => admin_url( 'admin-ajax.php' ),
+						'gmt_offset_minutes'    => (int) ( get_option( 'gmt_offset' ) * 60 ),
+						'pluginsUrl'            => wpfbrev_plugin_url,
+						'globalwprevtypearray'  => wp_json_encode( $typearray ),
+						'customSourcesIconUrls' => wp_json_encode( array() ),
+						'msg1'                  => esc_html__( 'Location Filter', 'wp-fb-reviews' ),
+						'msg2'                  => esc_html__( 'Type Filter', 'wp-fb-reviews' ),
+						'd1'                    => esc_html__( 'Today', 'wp-fb-reviews' ),
+						'd2'                    => esc_html__( 'Yesterday', 'wp-fb-reviews' ),
+						'd3'                    => esc_html__( 'Last 7 Days', 'wp-fb-reviews' ),
+						'd4'                    => esc_html__( 'Last 30 Days', 'wp-fb-reviews' ),
+						'd5'                    => esc_html__( 'Last 60 Days', 'wp-fb-reviews' ),
+						'd6'                    => esc_html__( 'Last 90 Days', 'wp-fb-reviews' ),
+						'd7'                    => esc_html__( 'This Month', 'wp-fb-reviews' ),
+						'd8'                    => esc_html__( 'Last Month', 'wp-fb-reviews' ),
+						'd9'                    => esc_html__( 'This Year', 'wp-fb-reviews' ),
+						'd10'                   => esc_html__( 'Last Year', 'wp-fb-reviews' ),
+						'd11'                   => esc_html__( 'All Time', 'wp-fb-reviews' ),
+						'msg3'                  => esc_html__( 'Error accessing language function via ajax.', 'wp-fb-reviews' ),
+						'msg4'                  => esc_html__( 'Ratings', 'wp-fb-reviews' ),
+						'msg5'                  => esc_html__( 'Error returning json object. Please try again or contact us and copy and send us the following:', 'wp-fb-reviews' ),
+						'msg6'                  => esc_html__( 'Overall Ratings (Old >> New)', 'wp-fb-reviews' ),
+						'msg7'                  => esc_html__( 'Review Response:', 'wp-fb-reviews' ),
+						'msg8'                  => esc_html__( 'Type', 'wp-fb-reviews' ),
+						'msg9'                  => esc_html__( 'Page', 'wp-fb-reviews' ),
+						'msg10'                 => esc_html__( 'Source URL', 'wp-fb-reviews' ),
+						'msg11'                 => esc_html__( 'Reviewer URL', 'wp-fb-reviews' ),
+						'msg12'                 => esc_html__( 'Review Details', 'wp-fb-reviews' ),
+					)
+				);
+
+				wp_register_script( $this->_token . 'chart-js', plugin_dir_url( __FILE__ ) . 'js/Chart.bundle.min.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . 'chart-js' );
+
+				wp_register_script( $this->_token . 'chart-js-trendline', plugin_dir_url( __FILE__ ) . 'js/chartjs-plugin-trendline.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . 'chart-js-trendline' );
+
+				wp_register_script( $this->_token . '_moment', plugin_dir_url( __FILE__ ) . 'js/moment.min.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . '_moment' );
+
+				wp_register_script( $this->_token . '_daterangepicker', plugin_dir_url( __FILE__ ) . 'js/daterangepicker.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . '_daterangepicker' );
+
+				wp_register_script( $this->_token . '_select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . '_select2' );
+
+				wp_register_script( $this->_token . '_jqcloud', plugin_dir_url( __FILE__ ) . 'js/jqcloud.min.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . '_jqcloud' );
+
+				wp_enqueue_script( 'thickbox' );
+				wp_enqueue_style( 'thickbox' );
+			}
+
+			//scripts for AI Analysis sample page
+			if ( $_GET['page'] === 'wpfb-ai_analysis' ) {
+				wp_enqueue_script( 'thickbox' );
+				wp_enqueue_style( 'thickbox' );
+
+				wp_register_script( $this->_token . 'chart-js', plugin_dir_url( __FILE__ ) . 'js/Chart.bundle.min.js', array(), $this->version, false );
+				wp_enqueue_script( $this->_token . 'chart-js' );
+
+				wp_enqueue_script(
+					'wprevpro_ai_analysis_page-js',
+					plugin_dir_url( __FILE__ ) . 'js/wprevpro_ai_analysis_page.js',
+					array( 'jquery', 'thickbox', $this->_token . 'chart-js' ),
+					$this->version,
+					false
+				);
+				wp_localize_script(
+					'wprevpro_ai_analysis_page-js',
+					'adminjs_script_vars',
+					array(
+						'wpfb_nonce' => wp_create_nonce( 'randomnoncestring' ),
+						'ajax_url'   => admin_url( 'admin-ajax.php' ),
+						'pluginsUrl' => wpfbrev_plugin_url,
+					)
+				);
+			}
 		}
 		
 	}
@@ -308,6 +414,36 @@ class WP_FB_Reviews_Admin {
 		$submenu_title = __('Templates', 'wp-fb-reviews');
 		$submenu_slug = 'wpfb-templates_posts';
 		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_templates_posts'));
+
+		// Analytics
+		$submenu_page_title = 'WP Reviews : Analytics';
+		$submenu_title = __('Analytics', 'wp-fb-reviews');
+		$submenu_slug = 'wpfb-analytics';
+		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_analytics'));
+
+		// Badges (Pro teaser)
+		$submenu_page_title = 'WP Reviews : Badges';
+		$submenu_title = __('Badges', 'wp-fb-reviews');
+		$submenu_slug = 'wpfb-badges';
+		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_badges'));
+
+		// Forms (Pro teaser)
+		$submenu_page_title = 'WP Reviews : Forms';
+		$submenu_title = __('Forms', 'wp-fb-reviews');
+		$submenu_slug = 'wpfb-forms';
+		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_forms'));
+
+		// Floats (Pro teaser)
+		$submenu_page_title = 'WP Reviews : Floats';
+		$submenu_title = __('Floats', 'wp-fb-reviews');
+		$submenu_slug = 'wpfb-float';
+		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_float'));
+
+		// AI Analysis (Pro teaser)
+		$submenu_page_title = 'WP Reviews : AI Analysis';
+		$submenu_title = __('AI Analysis', 'wp-fb-reviews');
+		$submenu_slug = 'wpfb-ai_analysis';
+		add_submenu_page($menu_slug, $submenu_page_title, $submenu_title, $capability, $submenu_slug, array($this,'wp_fb_ai_analysis'));
 	}
 	
 	public function wprev_add_external_link_admin_submenu() {
@@ -316,7 +452,7 @@ class WP_FB_Reviews_Admin {
 		//make sure this user can see menu.
 		if (array_key_exists($menu_slug, $submenu)) {
 			// add the external links to the slug you used when adding the top level menu
-			$submenu[$menu_slug][] = array('<div id="wprev-66021">Go Pro!</div>', 'manage_options', 'https://wpreviewslider.com/');
+			$submenu[$menu_slug][] = array('<div id="wprev-66021">&#11088; Go Pro!</div>', 'manage_options', 'https://wpreviewslider.com/');
 		}
 	}
 	public function wpse_66021_add_jquery() 
@@ -352,6 +488,21 @@ class WP_FB_Reviews_Admin {
 	
 	public function wp_fb_templates_posts() {
 		require_once plugin_dir_path( __FILE__ ) . '/partials/templates_posts.php';
+	}
+	public function wp_fb_analytics() {
+		require_once plugin_dir_path( __FILE__ ) . '/partials/analytics.php';
+	}
+	public function wp_fb_badges() {
+		require_once plugin_dir_path( __FILE__ ) . '/partials/badges.php';
+	}
+	public function wp_fb_forms() {
+		require_once plugin_dir_path( __FILE__ ) . '/partials/forms.php';
+	}
+	public function wp_fb_float() {
+		require_once plugin_dir_path( __FILE__ ) . '/partials/float.php';
+	}
+	public function wp_fb_ai_analysis() {
+		require_once plugin_dir_path( __FILE__ ) . '/partials/ai_analysis.php';
 	}
 	public function wp_fb_getpro() {
 		require_once plugin_dir_path( __FILE__ ) . '/partials/get_pro.php';

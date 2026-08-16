@@ -16,7 +16,7 @@
  * Plugin Name:       WP Review Slider
  * Plugin URI:        https://wpreviewslider.com/
  * Description:       Facebook reviews & X (Twitter) posts in a WordPress review slider or grid. Official Facebook API + X API v2. Saved locally for fast social proof.
- * Version:           15.0
+ * Version:           15.1
  * Author:            LJ Apps
  * Author URI:        http://ljapps.com/
  * License:           GPL-2.0+

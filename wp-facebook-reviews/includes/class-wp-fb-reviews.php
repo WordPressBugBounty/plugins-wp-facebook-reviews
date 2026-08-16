@@ -78,7 +78,7 @@ class WP_FB_Reviews {
 	public function __construct() {
 
 		$this->_token = 'wp-fb-reviews';
-		$this->version = '15.0';
+		$this->version = '15.1';
 		//using this for development
 		//$this->version = time();
 
@@ -378,6 +378,16 @@ class WP_FB_Reviews {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-fb-reviews-admin.php';
 
 		/**
+		 * Analytics AJAX handlers.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-fb-reviews-analytics.php';
+
+		/**
+		 * Sample AI Analysis AJAX handlers.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-fb-reviews-ai.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -496,6 +506,23 @@ class WP_FB_Reviews {
 		//add custom link to menu
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wprev_add_external_link_admin_submenu' );
 		$this->loader->add_action( 'admin_head', $plugin_admin, 'wpse_66021_add_jquery' );
+
+		// Analytics page AJAX
+		$plugin_analytics = new WP_FB_Reviews_Analytics();
+		$this->loader->add_action( 'wp_ajax_wppro_get_overall_chart_data', $plugin_analytics, 'wppro_get_overall_chart_data' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_analytics_volume', $plugin_analytics, 'wprevpro_ajax_analytics_volume' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_analytics_platform', $plugin_analytics, 'wprevpro_ajax_analytics_platform' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_analytics_platform_volume', $plugin_analytics, 'wprevpro_ajax_analytics_platform_volume' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_analytics_rating_trends', $plugin_analytics, 'wprevpro_ajax_analytics_rating_trends' );
+
+		// Sample AI Analysis AJAX
+		$plugin_ai = new WP_FB_Reviews_AI();
+		$this->loader->add_action( 'wp_ajax_wprevpro_ai_get_latest_report', $plugin_ai, 'wprevpro_ai_get_latest_report_ajax' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_ai_get_report', $plugin_ai, 'wprevpro_ai_get_report_ajax' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_ai_list_reports', $plugin_ai, 'wprevpro_ai_list_reports_ajax' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_ai_filters_options', $plugin_ai, 'wprevpro_ai_filters_options_ajax' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_ai_delete_report', $plugin_ai, 'wprevpro_ai_delete_report_ajax' );
+		$this->loader->add_action( 'wp_ajax_wprevpro_ai_reviews_by_date', $plugin_ai, 'wprevpro_ai_reviews_by_date_ajax' );
 		
 	}
 

@@ -206,11 +206,20 @@ include 'tabmenu.php';
 <div class="wpfbr_margin10">
 	<a id="wpfbr_helpicon" class="wpfbr_btnicononly button dashicons-before dashicons-editor-help"></a>
 	<a id="wpfbr_removeallbtn" data-sec="<?php echo esc_attr( $nonce ); ?>" class="button dashicons-before dashicons-no"><?php _e( 'Remove All Reviews', 'wp-fb-reviews' ); ?></a>
+	<a href="https://wpreviewslider.com/" target="_blank" class="button dashicons-before dashicons-plus-alt" title="<?php esc_attr_e( 'Pro feature', 'wp-fb-reviews' ); ?>"><?php _e( 'Add Review', 'wp-fb-reviews' ); ?> <span style="background:#ff6b35;color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:bold;margin-left:4px;">PRO</span></a>
+	<a href="https://wpreviewslider.com/" target="_blank" class="button dashicons-before dashicons-download" title="<?php esc_attr_e( 'Pro feature', 'wp-fb-reviews' ); ?>"><?php _e( 'Download CSV', 'wp-fb-reviews' ); ?> <span style="background:#ff6b35;color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:bold;margin-left:4px;">PRO</span></a>
+	<a href="https://wpreviewslider.com/" target="_blank" class="button" style="opacity:0.85;" title="<?php esc_attr_e( 'Pro feature - Search reviews', 'wp-fb-reviews' ); ?>"><?php esc_html_e( 'Search...', 'wp-fb-reviews' ); ?> <span style="background:#ff6b35;color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;font-weight:bold;margin-left:4px;">PRO</span></a>
+	<br><span class="small_message">
+	<?php
+	echo wp_kses_post(
+		__( 'Search reviews, manually add reviews, download/import a CSV, tag reviews, bulk edit, and more available in the <a href="https://wpreviewslider.com/" target="_blank">Pro Version</a> of this plugin!', 'wp-fb-reviews' )
+	);
+	?>
+	</span>
 	<p>
 	<?php
-	esc_html_e( 'Click the eye icon to hide or show a review, the wrench to edit the reviewer photo, or the trash icon to delete. More features are available in the', 'wp-fb-reviews' );
+	esc_html_e( 'Click the eye icon to hide or show a review, the wrench to edit the reviewer photo, or the trash icon to delete.', 'wp-fb-reviews' );
 	?>
-	<a href="?page=wp_fb-get_pro"><?php esc_html_e( 'Pro Version', 'wp-fb-reviews' ); ?></a>.
 	</p>
 	<div id="wprevpro_notices_area"><?php echo $dbmsg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- admin notice built above ?></div>
 </div>
@@ -477,7 +486,7 @@ if ( $reviewtotalcount > 0 ) {
 	}
 } else {
 	$html .= '<tr>
-						<th colspan="10" scope="col" class="manage-column">' . __( 'No reviews found. Please visit the <a href="?page=wpfb-facebook">Get FB Reviews</a> page to retrieve reviews from Facebook, or manually add one. If you\'ve already done that, then try de-activating and re-activating the plugin.', 'wp-fb-reviews' ) . '</th>
+						<th colspan="10" scope="col" class="manage-column">' . __( 'No reviews found. Please visit the <a href="?page=wpfb-facebook">Facebook</a> or <a href="?page=wpfb-get_twitter">X (Twitter)</a> page to retrieve reviews. If you\'ve already done that, then try de-activating and re-activating the plugin.', 'wp-fb-reviews' ) . '<br><br>' . __( 'Want to put this on autopilot? <a href="https://wpreviewslider.com/" target="_blank">Upgrade to Pro</a> to automatically sync new reviews, pull from 100+ sites, and collect reviews on your site. Use code <strong>WPPRO15</strong> for 15% off.', 'wp-fb-reviews' ) . '</th>
 					</tr>';
 }
 

@@ -5,7 +5,7 @@ Tags: facebook reviews, twitter, review slider, testimonials, social proof
 Requires at least: 3.0.1
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 15.0
+Stable tag: 15.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,10 @@ We are always looking for features to add. Post on the support forum or contact 
 7. Easily pick and choose which X posts to download!
 
 == Changelog ==
+
+= 15.1 =
+* Added a new Analytics page for review insights and charts.
+* Added Pro feature highlights and upgrade nudges throughout the admin.
 
 = 15.0 =
 * Major X (formerly Twitter) update: search and download posts with X API v2 using OAuth 1.0a (Consumer Key, Consumer Key Secret, Access Token, Access Token Secret), with Bearer Token as an optional fallback.
@@ -451,6 +455,9 @@ We are always looking for features to add. Post on the support forum or contact 
 * Initial release
 
 == Upgrade Notice ==
+
+= 15.1 =
+New Analytics page plus Pro feature highlights and upgrade nudges in the admin.
 
 = 15.0 =
 Major X (Twitter) update: X API v2 search with OAuth 1.0a, template filters for Facebook and/or X posts, and updated X branding. Requires PHP 7.4+.

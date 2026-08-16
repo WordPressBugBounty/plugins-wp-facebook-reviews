@@ -718,3 +718,229 @@ tr.wpfbr_row.tabnoterow { background: #f6f6f6; }
 .wpfbr_preview_spinner { float: none; margin: 0; visibility: hidden; }
 .wpfbr_preview_spinner.is-active { visibility: visible; }
 #wpfbr_preview_outer { margin-top: 10px; }
+
+.small_message {
+    color: #717171;
+    font-size: 13px;
+}
+
+.wpfbr-pro-tab-banner {
+    margin: 0 0 14px;
+    padding: 11px 14px;
+    border: 1px solid #dcdcde;
+    border-left: 4px solid #2271b1;
+    border-radius: 2px;
+    background: #f6f7f7;
+    color: #50575e;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Pro feature teaser pages (Badges, Forms, Floats, AI Analysis notice) */
+.wpfbr-pro-feature-panel {
+	background: #fff;
+	border-left: 4px solid #ff6b35;
+	padding: 20px;
+	margin: 20px 0;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.wpfbr-pro-feature-panel.wpfbr-pro-feature-panel--notice {
+	padding: 12px 15px;
+	margin: 15px 0 0 0;
+}
+
+/* AI Summary example thumbnails (Templates tab) */
+.wpfbr-ai-summary-thumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: flex-start;
+}
+.wpfbr-ai-summary-thumb {
+	display: block;
+	width: 180px;
+	height: 120px;
+	border: 1px solid #dcdcde;
+	border-radius: 2px;
+	overflow: hidden;
+	background: #fff;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	cursor: zoom-in;
+	text-decoration: none;
+}
+.wpfbr-ai-summary-thumb img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top left;
+}
+
+.form-table td.wpfbr-pro-tab-banner-cell {
+    padding: 0;
+}
+
+.wpfbr-pro-tab-banner p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.wpfbr-pro-tab-banner a {
+    margin-left: 4px;
+}
+
+.wpfbr-pro-tab-banner code {
+    padding: 2px 5px;
+    background: #fff;
+}
+
+/* Analytics page */
+.loadingspinner {
+	background: url('wpspin_light.gif') no-repeat;
+	background-size: 16px 16px;
+	opacity: .7;
+	filter: alpha(opacity=70);
+	width: 16px;
+	height: 16px;
+	margin: 5px 5px 0;
+}
+.boxcontent {
+	border-style: solid;
+	border-color: #e5e5e5;
+	border-width: 1px;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+#volumeChart,
+#platformChart,
+#platformVolumeChart,
+#ratingTrendsChart {
+	height: 300px !important;
+	max-height: 300px;
+	width: 100% !important;
+}
+.boxouter {
+	padding: 10px 0px;
+}
+.starrow {
+	color: gold;
+	margin: 5px;
+}
+.wppro_smallheader {
+	margin: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.w3-text-gold {
+	color: gold;
+}
+div#reportrange {
+	border-radius: 4px;
+	box-sizing: border-box;
+	height: 32px;
+	max-height: 32px;
+	line-height: 20px;
+	display: flex;
+	align-items: center;
+}
+div.wordclouddiv {
+	height: 300px;
+	width: 100%;
+}
+.jqcloud-word {
+	cursor: pointer;
+}
+input#wprevpro_analytics_filter_string {
+	width: 100%;
+	box-sizing: border-box;
+	box-shadow: unset;
+	height: 32px;
+	min-height: 32px;
+	max-height: 32px;
+	margin: 0;
+	padding: 0 8px;
+	line-height: 30px;
+	border: solid #e5e5e5 1px !important;
+	border-radius: 4px;
+}
+.analyticsbox {
+	padding: 5px;
+}
+.analyticsboxinner {
+	background: white;
+}
+/* Keep Location / Type / Search / Date filters the same height */
+#wp_rev_maindiv .select2-container {
+	width: 100% !important;
+}
+#wp_rev_maindiv .select2-selection--multiple {
+	border: solid #e5e5e5 1px !important;
+	outline: 0 !important;
+	border-radius: 4px !important;
+}
+#wp_rev_maindiv .select2-container .select2-selection--multiple {
+	box-sizing: border-box;
+	min-height: 32px !important;
+	height: 32px !important;
+	max-height: 32px !important;
+	overflow: hidden;
+}
+#wp_rev_maindiv .select2-container .select2-selection--multiple .select2-selection__rendered {
+	display: flex;
+	align-items: center;
+	height: 30px;
+	padding: 0 4px;
+	margin: 0;
+}
+#wp_rev_maindiv .select2-container .select2-selection--multiple .select2-selection__choice {
+	margin-right: 2px !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+#wp_rev_maindiv .select2-container .select2-search--inline {
+	margin: 0 !important;
+	float: none;
+}
+#wp_rev_maindiv .select2-container .select2-search--inline .select2-search__field {
+	margin: 0 !important;
+	padding: 0 !important;
+	height: 28px !important;
+	line-height: 28px !important;
+}
+
+/* AI Analysis sample cards */
+.ai-kpis{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.ai-kpi{background:#fff;border:1px solid #e5e5e5;border-radius:6px;padding:8px 12px}
+.ai-kpi-label{font-size:11px;color:#666;text-transform:uppercase}
+.ai-kpi-value{font-size:18px;font-weight:600}
+.ai-kpi-value.kpi-positive{color:green}
+.ai-kpi-value.kpi-neutral{color:#666}
+.ai-kpi-value.kpi-negative{color:red}
+.ai-card{background:#fff;border:1px solid #e5e5e5;border-radius:6px;margin:12px 0;padding:12px}
+.ai-card-title{font-weight:600;margin-bottom:8px}
+.ai-list{margin:0;padding-left:18px}
+.ai-list.ai-twocol{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ai-flexbetween{display:flex;justify-content:flex-start;align-items:flex-start;gap:12px}
+.ai-rightcol{max-width:50%}
+.ai-quote{font-size:12px;color:#555;margin:4px 0;font-style:italic}
+.ai-quote-more{margin-top:6px}
+.ai-grid{display:grid;gap:12px}
+.ai-grid--2cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ai-tile{border:1px solid #eee;border-radius:6px;padding:8px;background:#fafafa}
+.ai-tile-title{font-weight:600;margin-bottom:6px}
+.ai-empty{color:#888}
+a.ai-readmore{font-size:11px}
+li.ai-flexbetween >div{min-width:195px}
+.ai-chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;margin-right:6px;background:#eef3ff;color:#334}
+.ai-chip--info{background:#eef3ff}
+.ai-chip--high{background:#feeaea;color:#a11}
+.ai-chip--medium{background:#fff4e5;color:#a66}
+.ai-chip--low{background:#eaf7ea;color:#276}
+.ai-chip--tag{background:#f1f1f1;color:#333;margin-left:6px}
+.ai-rec-row{align-items:center;justify-content:space-between;gap:8px}
+.ai-rec-title{font-weight:600}
+.ai-rec-note{font-size:12px;color:#555;margin-top:4px}
+.ai-steps{margin:6px 0 0 18px}
+.sentiment_over_time_div .boxcontent,
+.boxcontent.executive_overview_div{background:white}
+div#ai_report_markdown{padding:10px}

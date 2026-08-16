@@ -63,7 +63,14 @@ include("tabmenu.php");
 		submit_button('Save Settings');
 		?>
 	</form>
-	<div id="pagelist"><h4><?php _e('Download Your Facebook Page Reviews', 'wp-fb-reviews'); ?></h4><p><?php _e('Click the button below for the page(s) you would like to display reviews for. Afterwords go to the "Reviews List" Page to see all your reviews.', 'wp-fb-reviews'); ?> </p><p><?php _e('Note: The Pro version allows you to set a cron job to automatically check for new reviews once a day.', 'wp-fb-reviews'); ?> </p>
+	<div id="pagelist"><h4><?php _e('Download Your Facebook Page Reviews', 'wp-fb-reviews'); ?></h4><p><?php _e('Click the button below for the page(s) you would like to display reviews for. Afterwords go to the "Reviews List" Page to see all your reviews.', 'wp-fb-reviews'); ?> </p>
+	<p class="small_message" style="margin-top:8px;">
+		<?php
+		echo wp_kses_post(
+			__( 'Tired of downloading manually? <a href="https://wpreviewslider.com/" target="_blank">Upgrade to Pro</a> to auto-sync new reviews daily and pull from 100+ sites. Use code <strong>WPPRO15</strong> for 15% off.', 'wp-fb-reviews' )
+		);
+		?>
+	</p>
 	<table class="wp-list-table widefat fixed striped posts">
 		<thead>
 			<tr>
