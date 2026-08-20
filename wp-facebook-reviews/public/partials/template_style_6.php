@@ -9,7 +9,7 @@
 
 $imgs_url = esc_url( plugins_url( 'imgs/', __FILE__ ) );
 require_once 'template_class.php';
-$templateclass = new Template_Functions();
+$templateclass = new WP_FB_Reviews_Template_Functions();
 
 for ( $x = 0; $x < count( $rowarray ); $x++ ) {
 	if ( $currentform[0]->template_type === 'widget' ) {

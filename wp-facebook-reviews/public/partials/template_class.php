@@ -1,5 +1,6 @@
 <?php
-class Template_Functions {
+if ( ! class_exists( 'WP_FB_Reviews_Template_Functions' ) ) {
+class WP_FB_Reviews_Template_Functions {
 	
 	//============================================================
 	//functions for creating and setting up the template display, each template will call these functions
@@ -156,6 +157,7 @@ class Template_Functions {
 	}
 
 }
+} // class_exists WP_FB_Reviews_Template_Functions
 	
 	//========================================
 	

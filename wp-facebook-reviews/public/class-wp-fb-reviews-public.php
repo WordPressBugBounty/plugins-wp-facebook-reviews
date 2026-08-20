@@ -170,9 +170,13 @@ class WP_FB_Reviews_Public {
 				'tid' => '0',
 				'bar' => 'something',
 			), $atts );		//$a['tid'] to get id
+
+				require_once plugin_dir_path( __FILE__ ) . 'partials/wprev-badge-compat.php';
+				$own_display = plugin_dir_path( __FILE__ ) . 'partials/wp-fb-reviews-public-display.php';
+				$display_file = wprev_free_resolve_template_display_file( $a['tid'], $own_display, 'facebook' );
 	
 				ob_start();
-				include plugin_dir_path( __FILE__ ) . '/partials/wp-fb-reviews-public-display.php';
+				include $display_file;
 				return ob_get_clean();
 	}
 	

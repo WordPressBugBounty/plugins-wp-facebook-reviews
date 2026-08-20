@@ -181,9 +181,11 @@
 			if($bhpow =="yes"){$bhpowclass = "badgehideclass";}
 			
 		
+			$badge_scope_class = 'wprev-badge-scope-' . intval( $currentform[0]->id );
+			$bs = '.' . $badge_scope_class;
 			$badge_style = "";
-			$badge_style = $badge_style . 'a.wprev-google-wr-a {background: '.$bbtncolor.' !important;}';
-			$badge_style = $badge_style . 'a.wprev-google-wr-a:hover {background: '.$bbtncolor.'de !important;}';
+			$badge_style = $badge_style . $bs.' a.wprev-google-wr-a {background: '.$bbtncolor.' !important;}';
+			$badge_style = $badge_style . $bs.' a.wprev-google-wr-a:hover {background: '.$bbtncolor.'de !important;}';
 
 			$badge_place_style = 'background: '.$bbackgroundcolor.' !important;border-radius:'.$bborderradius.'px !important;';
 			if($bborderwidth > 0){
@@ -194,19 +196,19 @@
 			} else {
 				$badge_place_style .= 'border:none !important;';
 			}
-			$badge_style = $badge_style . '.wprev-google-place {'.$badge_place_style.'}';
+			$badge_style = $badge_style . $bs.' .wprev-google-place {'.$badge_place_style.'}';
 			if($bdropsh=="yes"){
-				$badge_style = $badge_style . '.wprev-google-place {box-shadow: rgba(0, 0, 0, .08) 2px 2px 3px 0px !important;}';
+				$badge_style = $badge_style . $bs.' .wprev-google-place {box-shadow: rgba(0, 0, 0, .08) 2px 2px 3px 0px !important;}';
 			} else {
-				$badge_style = $badge_style . '.wprev-google-place {box-shadow: none !important;}';
+				$badge_style = $badge_style . $bs.' .wprev-google-place {box-shadow: none !important;}';
 			}
 			if($bcenter=="yes" && $template_misc_array['blocation']!="abovewide"){
-				$badge_style = $badge_style . '.wprev-google-place {flex-direction: column !important;align-items: center !important;}';
-				$badge_style = $badge_style . '.wprev-google-right {display: flex!important;align-items: center!important;flex-direction: column!important;}';
-				$badge_style = $badge_style . '.wprev-google-name{margin-bottom: 3px !important;}';
+				$badge_style = $badge_style . $bs.' .wprev-google-place {flex-direction: column !important;align-items: center !important;}';
+				$badge_style = $badge_style . $bs.' .wprev-google-right {display: flex!important;align-items: center!important;flex-direction: column!important;}';
+				$badge_style = $badge_style . $bs.' .wprev-google-name{margin-bottom: 3px !important;}';
 			}
 			if($bshape=="round"){
-				$badge_style = $badge_style . 'img.sprev-google-left-src {border-radius: 50%;}';
+				$badge_style = $badge_style . $bs.' img.sprev-google-left-src {border-radius: 50%;}';
 			}
 			
 			//finally getting average and total here (computed straight from the reviews table).
@@ -227,6 +229,13 @@
 				}
 			}
 
+			require_once plugin_dir_path( __FILE__ ) . 'wprev-badge-compat.php';
+			$badge_source = wprev_free_badge_source_from_rtype( $currentform[0]->rtype );
+			if ( $badge_source === '' ) {
+				$badge_source = 'facebook';
+			}
+			$badge_branding = wprev_free_badge_branding( $badge_source );
+
 			//badge text overrides (Based on.. / Review us..).
 			$bobasedon = isset($template_misc_array['bobasedon']) ? $template_misc_array['bobasedon'] : '';
 			if($bobasedon!=''){
@@ -234,17 +243,15 @@
 			} else {
 				$basedontext = 'Based on <span class="wprev_btot">'.$badgetotal.'</span> reviews';
 			}
-			$default_borevus = in_array( 'Twitter', $rtype_types, true ) && ! in_array( 'Facebook', $rtype_types, true )
-				? 'Find us on X!'
-				: 'Review us on Facebook!';
+			$default_borevus = $badge_branding['default_reviewus'];
 			$borevustext = ( isset($template_misc_array['borevus']) && $template_misc_array['borevus']!='' ) ? $template_misc_array['borevus'] : $default_borevus;
 
 			//if this is left mid then add a style
 			if($template_misc_array['blocation']=="leftmid" || $template_misc_array['blocation']=="rightmid" ){
-				$badge_style = $badge_style . '.wprev_outer_wb {align-items: center !important;}';
+				$badge_style = $badge_style . $bs.'.wprev_outer_wb {align-items: center !important;}';
 			}
 			// Style 6 adds outer/card top margin; normalize when badge is beside slider.
-			$wprev_outer_wb_class = 'wprev_outer_wb';
+			$wprev_outer_wb_class = 'wprev_outer_wb ' . $badge_scope_class;
 			if ( isset( $currentform[0]->style ) && (string) $currentform[0]->style === '6' ) {
 				$badge_side_locations = array( 'left', 'right', 'leftmid', 'rightmid' );
 				if ( in_array( $template_misc_array['blocation'], $badge_side_locations, true ) ) {
@@ -253,14 +260,14 @@
 			}
 			//if this is above then we slightly change html again
 			if($template_misc_array['blocation']=="above"){
-				$badge_style = $badge_style . '.wprev_outer_wb {flex-direction: column !important;}.wprev_badge_div.badgeleft {margin-left: auto !important;margin-right: auto !important;}';
+				$badge_style = $badge_style . $bs.'.wprev_outer_wb {flex-direction: column !important;}'.$bs.' .wprev_badge_div.badgeleft {margin-left: auto !important;margin-right: auto !important;}';
 			}
 			//if this is above and wide then we change html again
 			$badgeabovewide1 = '';
 			$badgeabovewide2 = '';
 			$badgeabovewideclose ='';
 			if($template_misc_array['blocation']=="abovewide"){
-				$badge_style = $badge_style . '.wprev_outer_wb {flex-direction: column !important;}.wprev_badge_div.badgeleft {margin-left: auto !important;margin-right: auto !important;}.wprev_badge_div.badgeleft {margin: 0px 46px !important;}.wprev-google-place {justify-content: space-between !important;align-items: center !important;}.wprev-google-leftboth {display: flex;}';
+				$badge_style = $badge_style . $bs.'.wprev_outer_wb {flex-direction: column !important;}'.$bs.' .wprev_badge_div.badgeleft {margin-left: auto !important;margin-right: auto !important;}'.$bs.' .wprev_badge_div.badgeleft {margin: 0px 46px !important;}'.$bs.' .wprev-google-place {justify-content: space-between !important;align-items: center !important;}'.$bs.' .wprev-google-leftboth {display: flex;}';
 				$badgeabovewide1 = '<div class="wprev-google-leftboth">';
 				$badgeabovewide2 = '<div class="wprev-google-right">';
 				$badgeabovewideclose = '</div>'; 
@@ -269,7 +276,7 @@
 			$bimgsize = 50;
 			if(isset($template_misc_array['bimgsize']) &&  $template_misc_array['bimgsize']>0){
 				$bimgsize =$template_misc_array['bimgsize'];
-				$badge_style = $badge_style . 'img.sprev-google-left-src {min-width:'.$bimgsize.'px !important;min-height:'.$bimgsize.'px !important;}';
+				$badge_style = $badge_style . $bs.' img.sprev-google-left-src {min-width:'.$bimgsize.'px !important;min-height:'.$bimgsize.'px !important;}';
 			}
 			
 			echo "<style>".$badge_style."</style>";
@@ -277,7 +284,7 @@
 			
 
 			
-			$badgehtml = '<div class="wprev-google-place">'.$badgeabovewide1.'<div class="wprev-google-left '.$bhphotoclass.'"><img class="sprev-google-left-src" src="'.esc_url($imageurl).'" alt="'.esc_attr($businessname).'" width="'.$bimgsize.'" height="'.$bimgsize.'" title="'.esc_attr($businessname).'"></div><div class="wprev-google-right"><div class="wprev-google-name '.$bhnameclass.'"><a href="'.esc_url($bnameurl).'" target="_blank" rel="nofollow noopener"><span class="wprev-businessname">'.esc_html($businessname).'</span></a></div><div class="wprevstardiv"><span class="wprev-google-rating">'.$badgeavg.'</span><span class="wprevpro_star_imgs_T1"><span class="starloc1 wprevpro_star_imgs wprevpro_star_imgsloc1"><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span></span></span></div><div class="wprev-google-basedon '.$bhbasedclass.'">'.$basedontext.'</div>'.$badgeabovewideclose.$badgeabovewideclose.$badgeabovewide2.'<div class="wprev-google-powered '.$bhpowclass.'"><span class="wprev-google-powered-txt" style="font-size:12px;color:#777;">powered by Facebook</span></div><div class="wprev-google-wr '.$bhbtnclass.'"><a class="wprev-google-wr-a" rel="nofollow noopener" href="'.esc_url($butnlinkurl).'" onclick="">'.esc_html($borevustext).' <svg viewBox="0 0 512 512" height="18" width="18"><circle cx="256" cy="256" r="256" fill="#ffffff"></circle><path fill="#1877f2" d="M355.6 330.2l11.4-74.2h-71.2v-48.1c0-20.3 9.9-40.1 41.8-40.1h32.4V104.9s-29.4-5-57.5-5c-58.7 0-97 35.6-97 100v56.6h-65.2v74.2h65.2V512h80.3V330.2h59.5z"></path></svg></a></div></div></div>'.$badgeabovewideclose;
+			$badgehtml = '<div class="wprev-google-place wprev-badge-src-'.esc_attr($badge_source).'">'.$badgeabovewide1.'<div class="wprev-google-left '.$bhphotoclass.'"><img class="sprev-google-left-src" src="'.esc_url($imageurl).'" alt="'.esc_attr($businessname).'" width="'.$bimgsize.'" height="'.$bimgsize.'" title="'.esc_attr($businessname).'"></div><div class="wprev-google-right"><div class="wprev-google-name '.$bhnameclass.'"><a href="'.esc_url($bnameurl).'" target="_blank" rel="nofollow noopener"><span class="wprev-businessname">'.esc_html($businessname).'</span></a></div><div class="wprevstardiv"><span class="wprev-google-rating">'.$badgeavg.'</span><span class="wprevpro_star_imgs_T1"><span class="starloc1 wprevpro_star_imgs wprevpro_star_imgsloc1"><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span></span></span></div><div class="wprev-google-basedon '.$bhbasedclass.'">'.$basedontext.'</div>'.$badgeabovewideclose.$badgeabovewideclose.$badgeabovewide2.'<div class="wprev-google-powered '.$bhpowclass.'">'.$badge_branding['powered'].'</div><div class="wprev-google-wr '.$bhbtnclass.'"><a class="wprev-google-wr-a" rel="nofollow noopener" href="'.esc_url($butnlinkurl).'" onclick="">'.esc_html($borevustext).' '.$badge_branding['icon'].'</a></div></div></div>'.$badgeabovewideclose;
 							
 		}
 			//actually adding badge html here for left and top

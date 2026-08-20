@@ -15,7 +15,7 @@
 $plugin_dir = WP_PLUGIN_DIR;
 $imgs_url = esc_url( plugins_url( 'imgs/', __FILE__ ) );
 require_once("template_class.php");
-$templateclass = new Template_Functions();
+$templateclass = new WP_FB_Reviews_Template_Functions();
 
 //loop if more than one row
 for ($x = 0; $x < count($rowarray); $x++) {
