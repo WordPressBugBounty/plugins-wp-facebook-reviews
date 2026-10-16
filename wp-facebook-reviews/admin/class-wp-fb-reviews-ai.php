@@ -161,6 +161,29 @@ class WP_FB_Reviews_AI {
 					),
 				),
 				'metrics_narrative'  => 'Based on customer reviews, Earth and Stone maintains an excellent reputation with consistently high ratings. The majority of feedback is positive, focusing on food quality, service, and atmosphere. The restaurant has built a loyal customer base that appreciates authentic wood-fired pizza and exceptional service.',
+				'review_growth'      => array(
+					'summary' => 'Most guests already leave happy. The fastest gains come from asking at the table and following up while the meal is still fresh.',
+					'tactics' => array(
+						array(
+							'title'     => 'Ask at the table after a great meal',
+							'rationale' => 'Guests who just praised the pizza are the most likely to leave a public review before they walk out.',
+							'steps'     => array(
+								'Train servers to ask when a guest compliments the food or service.',
+								'Hand them a small card with a QR code that opens the Facebook review page.',
+								'Thank them in the moment so the request feels personal, not scripted.',
+							),
+						),
+						array(
+							'title'     => 'Follow up with recent guests',
+							'rationale' => 'A short message the next day catches people who meant to review and forgot.',
+							'steps'     => array(
+								'Send one text or email within 24 hours of the visit.',
+								'Include a direct link to leave a Facebook review.',
+								'Skip guests who already reviewed or had a poor experience that still needs a reply.',
+							),
+						),
+					),
+				),
 				'metrics'            => array(
 					'counts'     => array(
 						'total_reviews' => 247,
@@ -182,88 +205,7 @@ class WP_FB_Reviews_AI {
 					),
 				),
 			),
-			'report_markdown' => "# Earth and Stone Wood-Fired Pizza - AI Analysis Report
-
-## Executive Summary
-
-Earth and Stone Wood-Fired Pizza has established a strong reputation for quality food and exceptional service. Customer reviews consistently highlight the authentic wood-fired pizza, friendly staff, and welcoming atmosphere. The restaurant excels in creating memorable dining experiences that encourage repeat visits.
-
-## Key Themes
-
-### Authentic Wood-Fired Pizza (45 mentions)
-Customers consistently praise the authentic wood-fired flavor and perfectly crispy crust. The wood-fired oven preparation method is a key differentiator that sets Earth and Stone apart from competitors.
-
-### Excellent Service (38 mentions)
-The staff receives frequent praise for being friendly, attentive, and professional. Service quality is a significant strength that contributes to positive customer experiences.
-
-### Great Atmosphere (32 mentions)
-The cozy, welcoming environment appeals to various customer segments including families, couples, and groups. The rustic decor and warm ambiance create an inviting dining experience.
-
-### Quality Ingredients (28 mentions)
-Customers appreciate the fresh, high-quality ingredients used in all dishes. The premium toppings and fresh preparation are frequently mentioned in positive reviews.
-
-## Pain Points
-
-**Wait Times During Peak Hours (Medium Severity)**
-- Can get busy on weekends, expect a wait
-- Popular times mean longer wait for a table
-
-**Limited Parking (Low Severity)**
-- Parking can be tight during dinner rush
-- Street parking only, can be challenging
-
-## Customer Personas
-
-**Food Enthusiasts**: Customers who appreciate authentic, high-quality pizza and are willing to pay a premium for exceptional taste.
-
-**Family Diners**: Families seeking a welcoming atmosphere with quality food that appeals to both adults and children.
-
-**Date Night Couples**: Couples looking for a romantic, cozy dining experience with great food and service.
-
-## SWOT Analysis
-
-**Strengths**
-- Authentic wood-fired pizza preparation
-- Consistently friendly and attentive staff
-- High-quality, fresh ingredients
-- Welcoming, cozy atmosphere
-
-**Weaknesses**
-- Limited parking availability
-- Wait times during peak hours
-- Limited seating capacity
-
-**Opportunities**
-- Expand parking options or offer valet
-- Reservation system for peak times
-- Loyalty program for repeat customers
-- Catering services for events
-
-**Threats**
-- Competition from other pizza restaurants
-- Rising ingredient costs
-- Changing customer preferences
-
-## Recommendations
-
-1. **Implement Online Reservation System** (High Impact, Medium Effort)
-   - Reduce wait times and improve customer satisfaction during peak hours
-
-2. **Develop Loyalty Program** (High Impact, Low Effort)
-   - Encourage repeat visits and reward loyal customers
-
-3. **Explore Parking Solutions** (Medium Impact, High Effort)
-   - Address one of the main customer pain points
-
-## Metrics
-
-- Total Reviews: 247
-- Average Rating: 4.6/5.0
-- Positive Reviews: 198 (80%)
-- Neutral Reviews: 35 (14%)
-- Negative Reviews: 14 (6%)
-
-Based on customer reviews, Earth and Stone maintains an excellent reputation with consistently high ratings. The majority of feedback is positive, focusing on food quality, service, and atmosphere.",
+			'report_markdown' => "Earth and Stone Wood-Fired Pizza has established a strong reputation for quality food and exceptional service. Customer reviews consistently highlight the authentic wood-fired pizza, friendly staff, and welcoming atmosphere. The restaurant excels in creating memorable dining experiences that encourage repeat visits.\n\nBased on 247 reviews, Earth and Stone holds a 4.6 average rating, with about 80% of feedback positive. The restaurant has built a loyal customer base, and the themes, pain points, personas, and recommended actions below show where that reputation is strongest and what to improve next.",
 		);
 	}
 

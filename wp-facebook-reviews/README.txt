@@ -5,7 +5,7 @@ Tags: facebook reviews, twitter, review slider, testimonials, social proof
 Requires at least: 3.0.1
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 15.2
+Stable tag: 15.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,10 @@ We are always looking for features to add. Post on the support forum or contact 
 7. Easily pick and choose which X posts to download!
 
 == Changelog ==
+
+= 15.3 =
+* Checks the reviews table encoding on update and converts legacy utf8 (3-byte) tables to utf8mb4 so reviews containing emojis can be saved.
+* Updated Freemius SDK.
 
 = 15.2 =
 * Fix badge branding when a Facebook slider and a Google slider are used on the same page.

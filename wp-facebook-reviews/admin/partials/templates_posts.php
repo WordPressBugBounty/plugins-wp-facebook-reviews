@@ -94,6 +94,15 @@ if ( isset( $_POST['wpfbr_submittemplatebtn'] ) ) {
 	$title            = sanitize_text_field( wp_unslash( $_POST['wpfbr_template_title'] ) );
 	$template_type    = sanitize_text_field( wp_unslash( $_POST['wpfbr_template_type'] ) );
 	$style            = sanitize_text_field( wp_unslash( $_POST['wprevpro_template_style'] ) );
+	if ( $style !== '1' && $style !== '6' ) {
+		$style = '1';
+		if ( ! empty( $t_id ) ) {
+			$existing_style = $wpdb->get_var( $wpdb->prepare( "SELECT style FROM {$table_name} WHERE id = %d", absint( $t_id ) ) );
+			if ( $existing_style === '1' || $existing_style === '6' ) {
+				$style = $existing_style;
+			}
+		}
+	}
 	$display_num      = intval( $_POST['wpfbr_t_display_num'] );
 	$display_num_rows = intval( $_POST['wpfbr_t_display_num_rows'] );
 	$display_order    = sanitize_text_field( wp_unslash( $_POST['wpfbr_t_display_order'] ) );
@@ -478,8 +487,24 @@ $wpfb_imgs_base = trailingslashit( wpfbrev_plugin_url ) . 'public/partials/imgs/
 					<div class="w3_wprs-col s6">
 						<div class="wprevpre_temp_label_row">
 							<select name="wprevpro_template_style" id="wprevpro_template_style">
-							  <option value="1" <?php if ( $currenttemplate->style == '1' || $currenttemplate->style === '' ) { echo 'selected'; } ?>>Style 1</option>
-							  <option value="6" <?php if ( $currenttemplate->style == '6' ) { echo 'selected'; } ?>>Style 6</option>
+							<?php
+							$wprev_pro_only_styles = array( '2', '3', '4', '5', '7', '8', '9', '10', '11', '12', '13', '14', '15' );
+							for ( $wprev_style_num = 1; $wprev_style_num <= 15; $wprev_style_num++ ) {
+								$wprev_style_val      = (string) $wprev_style_num;
+								$wprev_style_selected = ( $currenttemplate->style == $wprev_style_val || ( $wprev_style_val === '1' && $currenttemplate->style == '' ) );
+								$wprev_style_is_pro   = in_array( $wprev_style_val, $wprev_pro_only_styles, true );
+								echo '<option value="' . esc_attr( $wprev_style_val ) . '"';
+								if ( $wprev_style_is_pro ) {
+									echo ' class="wprevpro-pro-style" style="color:#a7aaad;background-color:#fff;"';
+								} else {
+									echo ' style="color:#1d2327;background-color:#fff;"';
+								}
+								if ( $wprev_style_selected ) {
+									echo ' selected';
+								}
+								echo '>' . esc_html( sprintf( __( 'Style %d', 'wp-fb-reviews' ), $wprev_style_num ) ) . '</option>';
+							}
+							?>
 							</select>
 							<a href="https://wpreviewslider.com/features/#templatedivid" target="_blank" rel="noopener noreferrer" style="font-size: 11px; margin-left: 8px; vertical-align: middle;"><?php esc_html_e( '15 styles in Pro Version!', 'wp-fb-reviews' ); ?></a>
 						</div>
@@ -552,6 +577,7 @@ $wpfb_imgs_base = trailingslashit( wpfbrev_plugin_url ) . 'public/partials/imgs/
 				  </div>
 				  <div class="w3_wprs-col s6">
 						<div class="wprevpre_temp_label_row"><strong><?php _e( 'Live Preview:', 'wp-fb-reviews' ); ?></strong></div>
+						<p id="wprevpro_pro_style_note" class="wprevpro-pro-style-note"><?php esc_html_e( 'Pro version only style', 'wp-fb-reviews' ); ?></p>
 						<div id="wprevpro_template_preview"></div>
 						<p class="description"><i><?php _e( 'This preview updates as you change the settings on the left. Date format is based on your WordPress > Settings value.', 'wp-fb-reviews' ); ?></i></p>
 						<div>
@@ -997,6 +1023,7 @@ if ( ! isset( $template_misc_array['borevus'] ) ) { $template_misc_array['borevu
 	<a id="wpfbr_addnewtemplate_cancel" class="button button-secondary"><?php _e( 'Cancel', 'wp-fb-reviews' ); ?></a>
 	<input type="submit" name="wpfbr_submittemplatebtn" id="wpfbr_submittemplatebtn" class="button button-primary" value="<?php _e( 'Save &amp; Close', 'wp-fb-reviews' ); ?>">
 	<a id="wpfbr_addnewtemplate_update" class="button button-primary"><?php _e( 'Update', 'wp-fb-reviews' ); ?></a>
+	<span id="wprevpro_pro_save_note" class="wprevpro-pro-save-note" data-msg="<?php echo esc_attr( __( 'Style %s is Pro version only, please select style 1 or 6.', 'wp-fb-reviews' ) ); ?>"></span>
 	<div id="update_form_msg_div">
 		<span class="spinner wpfbr_form_spinner" id="savingformimg"></span>
 		<span id="update_form_msg" style="display:none;"><span class="dashicons dashicons-saved"></span> <?php _e( 'Saved!', 'wp-fb-reviews' ); ?></span>
