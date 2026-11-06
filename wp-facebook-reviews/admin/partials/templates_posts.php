@@ -110,11 +110,24 @@ if ( isset( $_POST['wpfbr_submittemplatebtn'] ) ) {
 	$template_css     = sanitize_textarea_field( wp_unslash( $_POST['wpfbr_template_css'] ) );
 	$createslider     = sanitize_text_field( wp_unslash( $_POST['wpfbr_t_createslider'] ) );
 	$numslides        = intval( $_POST['wpfbr_t_numslides'] );
+	if ( 'no' !== $createslider ) {
+		$createslider = 'yes';
+	}
+	$numslides = absint( $numslides );
+	if ( $numslides < 2 ) {
+		$numslides = 3;
+	}
+	if ( $numslides > 10 ) {
+		$numslides = 10;
+	}
 	$read_more        = sanitize_text_field( wp_unslash( $_POST['wprevpro_t_read_more'] ) );
 	$read_more_text   = sanitize_text_field( wp_unslash( $_POST['wprevpro_t_read_more_text'] ) );
 	$read_more_num    = isset( $_POST['wprevpro_t_read_more_num'] ) ? intval( $_POST['wprevpro_t_read_more_num'] ) : 30;
 	$min_rating       = isset( $_POST['wpfbr_t_min_rating'] ) ? intval( $_POST['wpfbr_t_min_rating'] ) : 1;
-	$slidermobileview = isset( $_POST['wpfbr_slidermobileview'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_slidermobileview'] ) ) : '';
+	$slidermobileview = '';
+	if ( isset( $_POST['wpfbr_slidermobileview'] ) && 'one' === sanitize_text_field( wp_unslash( $_POST['wpfbr_slidermobileview'] ) ) ) {
+		$slidermobileview = 'one';
+	}
 	$review_same_hgt  = isset( $_POST['wpfbr_t_review_same_height'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_review_same_height'] ) ) : 'no';
 	$filtersource     = isset( $_POST['wpfbr_t_filtersource'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_filtersource'] ) ) : '';
 	$filterrtype      = isset( $_POST['wpfbr_t_rtype'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_rtype'] ) ) : 'fb';
@@ -149,13 +162,33 @@ if ( isset( $_POST['wpfbr_submittemplatebtn'] ) ) {
 	$templatemiscarray['tfont2']         = $tfont2_val > 0 ? (string) $tfont2_val : '';
 
 	// General-tab options (slider + read more).
-	$templatemiscarray['slidespeed']         = isset( $_POST['wpfbr_t_slidespeed'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_slidespeed'] ) ) : '1';
-	$templatemiscarray['slideautodelay']     = isset( $_POST['wpfbr_t_slideautodelay'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_slideautodelay'] ) ) : '5';
-	$templatemiscarray['sliderautoplay']     = isset( $_POST['wpfbr_sliderautoplay'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderautoplay'] ) ) : '';
-	$templatemiscarray['sliderhideprevnext'] = isset( $_POST['wpfbr_sliderhideprevnext'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderhideprevnext'] ) ) : '';
-	$templatemiscarray['sliderhidedots']     = isset( $_POST['wpfbr_sliderhidedots'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderhidedots'] ) ) : '';
-	$templatemiscarray['sliderfixedheight']  = isset( $_POST['wpfbr_sliderfixedheight'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderfixedheight'] ) ) : '';
-	$templatemiscarray['slidermobileview']   = $slidermobileview;
+	if ( isset( $_POST['wpfbr_sliderarrows'] ) ) {
+		$templatemiscarray['sliderhideprevnext'] = ( 'no' === sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderarrows'] ) ) ) ? 'yes' : '';
+	} elseif ( isset( $_POST['wpfbr_sliderhideprevnext'] ) ) {
+		$templatemiscarray['sliderhideprevnext'] = sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderhideprevnext'] ) );
+	} else {
+		$templatemiscarray['sliderhideprevnext'] = '';
+	}
+	if ( isset( $_POST['wpfbr_sliderdots'] ) ) {
+		$templatemiscarray['sliderhidedots'] = ( 'no' === sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderdots'] ) ) ) ? 'yes' : '';
+	} elseif ( isset( $_POST['wpfbr_sliderhidedots'] ) ) {
+		$templatemiscarray['sliderhidedots'] = sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderhidedots'] ) );
+	} else {
+		$templatemiscarray['sliderhidedots'] = '';
+	}
+	if ( isset( $_POST['wpfbr_sliderheight'] ) ) {
+		$templatemiscarray['sliderfixedheight'] = ( 'no' === sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderheight'] ) ) ) ? 'yes' : '';
+	} elseif ( isset( $_POST['wpfbr_sliderfixedheight'] ) ) {
+		$templatemiscarray['sliderfixedheight'] = sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderfixedheight'] ) );
+	} else {
+		$templatemiscarray['sliderfixedheight'] = '';
+	}
+	$templatemiscarray['sliderautoplay'] = isset( $_POST['wpfbr_sliderautoplay'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_sliderautoplay'] ) ) : '';
+	$templatemiscarray['slidespeed'] = isset( $_POST['wpfbr_t_slidespeed'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_slidespeed'] ) ) : '1';
+	$templatemiscarray['slideautodelay'] = isset( $_POST['wpfbr_t_slideautodelay'] ) ? sanitize_text_field( wp_unslash( $_POST['wpfbr_t_slideautodelay'] ) ) : '5';
+	$templatemiscarray['slidermobileview'] = ( isset( $_POST['wpfbr_slidermobileview'] ) && 'one' === sanitize_text_field( wp_unslash( $_POST['wpfbr_slidermobileview'] ) ) ) ? 'one' : '';
+	$slidermobileview = $templatemiscarray['slidermobileview'];
+
 	$templatemiscarray['review_same_height'] = $review_same_hgt;
 	$templatemiscarray['read_more_num']      = (string) $read_more_num;
 	$templatemiscarray['read_more_color']    = $wpfb_sanitize_color( isset( $_POST['wprevpro_t_read_more_color'] ) ? wp_unslash( $_POST['wprevpro_t_read_more_color'] ) : '' );
@@ -634,38 +667,223 @@ $wpfb_imgs_base = trailingslashit( wpfbrev_plugin_url ) . 'public/partials/imgs/
 			<p class="description"><?php _e( 'Display any photos attached to a review. Click a photo to open it in a pop-up.', 'wp-fb-reviews' ); ?></p>
 		</td>
 	</tr>
-	<tr class="wpfbr_row">
-		<th scope="row" style="min-width:220px"><?php _e( 'Slider or Grid:', 'wp-fb-reviews' ); ?><a class="wpfbr_helpicon_p wpfbr_btnicononlyhelp dashicons-before dashicons-editor-help"></a></th>
-		<td>
-			<div class="divtemplatestyles">
-				<select name="wpfbr_t_createslider" id="wpfbr_t_createslider">
-					<option value="no" <?php if ( $currenttemplate->createslider == 'no' ) { echo 'selected'; } ?>><?php _e( 'Grid', 'wp-fb-reviews' ); ?></option>
-					<option value="yes" <?php if ( $currenttemplate->createslider == 'yes' ) { echo 'selected'; } ?>><?php _e( 'Slider', 'wp-fb-reviews' ); ?></option>
-				</select>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label for="wpfbr_t_numslides"><?php _e( 'Total slides:', 'wp-fb-reviews' ); ?>&nbsp;</label>
-				<select name="wpfbr_t_numslides" id="wpfbr_t_numslides">
-					<?php for ( $si = 2; $si <= 10; $si++ ) : ?>
-					<option value="<?php echo $si; ?>" <?php if ( $currenttemplate->numslides == (string) $si ) { echo 'selected'; } ?>><?php echo $si; ?></option>
-					<?php endfor; ?>
-				</select>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label for="wpfbr_t_slidespeed"><?php _e( 'Slide speed:', 'wp-fb-reviews' ); ?>&nbsp;</label>
-				<input id="wpfbr_t_slidespeed" type="number" name="wpfbr_t_slidespeed" placeholder="" value="<?php echo esc_attr( $template_misc_array['slidespeed'] > 0 ? $template_misc_array['slidespeed'] : '1' ); ?>" style="width: 4em">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label for="wpfbr_t_slideautodelay"><?php _e( 'Auto-play delay:', 'wp-fb-reviews' ); ?>&nbsp;</label>
-				<input id="wpfbr_t_slideautodelay" type="number" name="wpfbr_t_slideautodelay" placeholder="" value="<?php echo esc_attr( $template_misc_array['slideautodelay'] > 0 ? $template_misc_array['slideautodelay'] : '5' ); ?>" style="width: 4em">
-			</div>
-			<div class="divtemplatestyles" style="margin-top:8px;">
-				<label style="margin-right:12px;"><input type="checkbox" id="wpfbr_slidermobileview" name="wpfbr_slidermobileview" value="one" <?php if ( $template_misc_array['slidermobileview'] == 'one' ) { echo 'checked="checked"'; } ?>> <?php _e( 'One review on mobile', 'wp-fb-reviews' ); ?></label>
-				<label style="margin-right:12px;"><input type="checkbox" id="wpfbr_sliderhideprevnext" name="wpfbr_sliderhideprevnext" value="yes" <?php if ( $template_misc_array['sliderhideprevnext'] == 'yes' ) { echo 'checked="checked"'; } ?>> <?php _e( 'Hide Prev/Next', 'wp-fb-reviews' ); ?></label>
-				<label style="margin-right:12px;"><input type="checkbox" id="wpfbr_sliderhidedots" name="wpfbr_sliderhidedots" value="yes" <?php if ( $template_misc_array['sliderhidedots'] == 'yes' ) { echo 'checked="checked"'; } ?>> <?php _e( 'Hide Dots', 'wp-fb-reviews' ); ?></label>
-				<label style="margin-right:12px;"><input type="checkbox" id="wpfbr_sliderautoplay" name="wpfbr_sliderautoplay" value="yes" <?php if ( $template_misc_array['sliderautoplay'] == 'yes' ) { echo 'checked="checked"'; } ?>> <?php _e( 'Auto-play', 'wp-fb-reviews' ); ?></label>
-				<label style="margin-right:12px;"><input type="checkbox" id="wpfbr_sliderfixedheight" name="wpfbr_sliderfixedheight" value="yes" <?php if ( $template_misc_array['sliderfixedheight'] == 'yes' ) { echo 'checked="checked"'; } ?>> <?php _e( 'Static Height', 'wp-fb-reviews' ); ?></label>
-			</div>
-			<p class="description"><?php _e( 'Allows you to create a slide show with your reviews.', 'wp-fb-reviews' ); ?></p>
-		</td>
-	</tr>
+				<?php
+			if ( ! isset( $template_misc_array['sliderhideprevnext'] ) ) {
+				$template_misc_array['sliderhideprevnext'] = '';
+			}
+			if ( ! isset( $template_misc_array['sliderautoplay'] ) ) {
+				$template_misc_array['sliderautoplay'] = '';
+			}
+			if ( ! isset( $template_misc_array['slidespeed'] ) ) {
+				$template_misc_array['slidespeed'] = '';
+			}
+			if ( ! isset( $template_misc_array['slideautodelay'] ) ) {
+				$template_misc_array['slideautodelay'] = '';
+			}
+			if ( ! isset( $template_misc_array['sliderhidedots'] ) ) {
+				$template_misc_array['sliderhidedots'] = '';
+			}
+			if ( ! isset( $template_misc_array['sliderfixedheight'] ) ) {
+				$template_misc_array['sliderfixedheight'] = '';
+			}
+			$wprev_slider_arrows   = ( 'yes' === $template_misc_array['sliderhideprevnext'] ) ? 'no' : 'yes';
+			$wprev_slider_dots     = ( 'yes' === $template_misc_array['sliderhidedots'] ) ? 'no' : 'yes';
+			$wprev_slider_height   = ( 'yes' === $template_misc_array['sliderfixedheight'] ) ? 'no' : 'yes';
+			$wprev_slider_mobile   = 'stack';
+			if ( isset( $currenttemplate->slidermobileview ) && 'one' === $currenttemplate->slidermobileview ) {
+				$wprev_slider_mobile = 'one';
+			} elseif ( isset( $template_misc_array['slidermobileview'] ) && 'one' === $template_misc_array['slidermobileview'] ) {
+				$wprev_slider_mobile = 'one';
+			}
+			$wprev_slider_autoplay = ( 'yes' === $template_misc_array['sliderautoplay'] ) ? 'yes' : 'no';
+			$wprev_slider_delay    = ( $template_misc_array['slideautodelay'] > 0 ) ? (string) $template_misc_array['slideautodelay'] : '5';
+			$wprev_slider_speed    = ( $template_misc_array['slidespeed'] > 0 ) ? $template_misc_array['slidespeed'] : '1';
+			$wprev_pro_slide_counts = array( 15, 20, 25, 30, 40, 50, 75, 100, 150, 200 );
+			$wprev_pro_badge        = '<span class="wprevpro-pro-badge">' . esc_html__( 'PRO', 'wp-fb-reviews' ) . '</span>';
+			?>
+
+			<tr class="wpfbr_row">
+				<th scope="row" style="min-width:220px">
+					<?php esc_html_e( 'Slider Or Grid', 'wp-fb-reviews' ); ?><a class="wpfbr_helpicon_p wpfbr_btnicononlyhelp dashicons-before dashicons-editor-help"></a>
+				</th>
+				<td>
+					<div class="divtemplatestyles">
+						<select name="wpfbr_t_createslider" id="wpfbr_t_createslider">
+							<option value="no" <?php selected( $currenttemplate->createslider, 'no' ); ?>><?php esc_html_e( 'Grid', 'wp-fb-reviews' ); ?></option>
+							<option value="yes" <?php selected( $currenttemplate->createslider, 'yes' ); ?>><?php esc_html_e( 'Slider - Normal', 'wp-fb-reviews' ); ?></option>
+							<option value="sli" class="wprevpro-pro-style" style="color:#a7aaad;background-color:#fff;"><?php esc_html_e( 'Slider - Advanced', 'wp-fb-reviews' ); ?></option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label id="wpfbr_t_numslides_label" for="wpfbr_t_numslides" <?php echo ( 'no' === $currenttemplate->createslider || '' === $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>><?php esc_html_e( 'How many total slides?', 'wp-fb-reviews' ); ?></label>&nbsp;
+						<select name="wpfbr_t_numslides" id="wpfbr_t_numslides" <?php echo ( 'no' === $currenttemplate->createslider || '' === $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<?php
+							for ( $wprev_slide_count = 2; $wprev_slide_count <= 10; $wprev_slide_count++ ) {
+								echo '<option value="' . esc_attr( $wprev_slide_count ) . '" ' . selected( (string) $currenttemplate->numslides, (string) $wprev_slide_count, false ) . '>' . esc_html( $wprev_slide_count ) . '</option>';
+							}
+							foreach ( $wprev_pro_slide_counts as $wprev_slide_count ) {
+								echo '<option value="' . esc_attr( $wprev_slide_count ) . '" class="wprevpro-pro-style" disabled="disabled" style="color:#a7aaad;background-color:#fff;">' . esc_html( $wprev_slide_count ) . '</option>';
+							}
+							?>
+						</select>
+					</div>
+					<p class="description">
+						<?php esc_html_e( 'Allows you to create a slide show with your reviews. One slide equals one page of reviews.', 'wp-fb-reviews' ); ?>
+					</p>
+					<p id="wprevpro_pro_slider_note" class="wprevpro-pro-style-note"><?php esc_html_e( 'Slider - Advanced is available in Pro.', 'wp-fb-reviews' ); ?></p>
+				</td>
+			</tr>
+
+			<tr class="wpfbr_row" id="slidersettingsrow" <?php echo ( 'no' === $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+				<th scope="row">
+					<?php esc_html_e( 'Slider Settings:', 'wp-fb-reviews' ); ?>
+				</th>
+				<td>
+					<div class="w3_wprs-row slidersettingsdivs">
+						<div class="w3_wprs-col s12">
+							<div class="w3_wprs-col s4 slidersettingsdivtoprow"><?php esc_html_e( 'Autoplay Slides:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8">
+								<input type="radio" name="wpfbr_sliderautoplay" id="wpfbr_sliderautoplay1-radio" value="no" <?php checked( $wprev_slider_autoplay, 'no' ); ?>>
+								<label for="wpfbr_sliderautoplay1-radio"><?php esc_html_e( 'No', 'wp-fb-reviews' ); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="wpfbr_sliderautoplay" id="wpfbr_sliderautoplay2-radio" value="yes" <?php checked( $wprev_slider_autoplay, 'yes' ); ?>>
+								<label for="wpfbr_sliderautoplay2-radio"><?php esc_html_e( 'Yes', 'wp-fb-reviews' ); ?></label>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<label class="timedelay <?php echo ( 'yes' !== $wprev_slider_autoplay ) ? 'wprevhiddenClass' : ''; ?>" for="wpfbr_t_slideautodelay"><?php esc_html_e( 'Time delay between slides:', 'wp-fb-reviews' ); ?></label>
+								<select class="timedelay <?php echo ( 'yes' !== $wprev_slider_autoplay ) ? 'wprevhiddenClass' : ''; ?>" name="wpfbr_t_slideautodelay" id="wpfbr_t_slideautodelay">
+									<option value="0" disabled="disabled"><?php esc_html_e( '0 sec', 'wp-fb-reviews' ); ?></option>
+									<?php
+									$wprev_delay_options = array( '1', '3', '5', '7', '9', '11', '13', '15', '20', '25' );
+									if ( ! in_array( $wprev_slider_delay, $wprev_delay_options, true ) ) {
+										$wprev_delay_options[] = $wprev_slider_delay;
+										sort( $wprev_delay_options, SORT_NUMERIC );
+									}
+									foreach ( $wprev_delay_options as $wprev_delay_option ) {
+										echo '<option value="' . esc_attr( $wprev_delay_option ) . '" ' . selected( $wprev_slider_delay, $wprev_delay_option, false ) . '>' . esc_html( sprintf( /* translators: %s: number of seconds. */ __( '%s sec', 'wp-fb-reviews' ), $wprev_delay_option ) ) . '</option>';
+									}
+									?>
+								</select>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12">
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Slide Animation:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="radio" name="wpfbr_sliderdirection" id="wpfbr_sliderdirection1-radio" value="horizontal" checked="checked">
+								<label for="wpfbr_sliderdirection1-radio"><?php esc_html_e( 'Horizontal', 'wp-fb-reviews' ); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="wprevpro-pro-locked">
+									<input type="radio" id="wpfbr_sliderdirection3-radio" value="fade" disabled="disabled">
+									<label for="wpfbr_sliderdirection3-radio"><?php esc_html_e( 'Fade', 'wp-fb-reviews' ); ?></label>
+									<?php echo $wprev_pro_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</span>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12">
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Show Navigation Arrows:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="radio" name="wpfbr_sliderarrows" id="wpfbr_sliderarrows1-radio" value="yes" <?php checked( $wprev_slider_arrows, 'yes' ); ?>>
+								<label for="wpfbr_sliderarrows1-radio"><?php esc_html_e( 'Yes', 'wp-fb-reviews' ); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="wprevpro-pro-locked">
+									<input type="radio" id="wpfbr_sliderarrows3-radio" value="des" disabled="disabled">
+									<label for="wpfbr_sliderarrows3-radio"><?php esc_html_e( 'Desktop Only', 'wp-fb-reviews' ); ?></label>
+									<?php echo $wprev_pro_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="wpfbr_sliderarrows" id="wpfbr_sliderarrows2-radio" value="no" <?php checked( $wprev_slider_arrows, 'no' ); ?>>
+								<label for="wpfbr_sliderarrows2-radio"><?php esc_html_e( 'No', 'wp-fb-reviews' ); ?></label>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="wprevpro-pro-locked">
+									<label><?php esc_html_e( 'Color:', 'wp-fb-reviews' ); ?></label>
+									<input type="text" value="" disabled="disabled" class="wprevpro-pro-color-placeholder" title="<?php esc_attr_e( 'Arrow color is available in Pro.', 'wp-fb-reviews' ); ?>">
+									<?php echo $wprev_pro_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</span>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12">
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Show Navigation Dots:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="radio" name="wpfbr_sliderdots" id="wpfbr_sliderdots1-radio" value="yes" <?php checked( $wprev_slider_dots, 'yes' ); ?>>
+								<label for="wpfbr_sliderdots1-radio"><?php esc_html_e( 'Yes', 'wp-fb-reviews' ); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="wprevpro-pro-locked">
+									<input type="radio" id="wpfbr_sliderdots3-radio" value="des" disabled="disabled">
+									<label for="wpfbr_sliderdots3-radio"><?php esc_html_e( 'Desktop Only', 'wp-fb-reviews' ); ?></label>
+									<?php echo $wprev_pro_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="wpfbr_sliderdots" id="wpfbr_sliderdots2-radio" value="no" <?php checked( $wprev_slider_dots, 'no' ); ?>>
+								<label for="wpfbr_sliderdots2-radio"><?php esc_html_e( 'No', 'wp-fb-reviews' ); ?></label>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="wprevpro-pro-locked">
+									<label><?php esc_html_e( 'Color:', 'wp-fb-reviews' ); ?></label>
+									<input type="text" value="" disabled="disabled" class="wprevpro-pro-color-placeholder" title="<?php esc_attr_e( 'Dot color is available in Pro.', 'wp-fb-reviews' ); ?>">
+									<?php echo $wprev_pro_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</span>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12">
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Change Height of Each Slide:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="radio" name="wpfbr_sliderheight" id="wpfbr_sliderheight2-radio" value="no" <?php checked( $wprev_slider_height, 'no' ); ?>>
+								<label for="wpfbr_sliderheight2-radio"><?php esc_html_e( 'No', 'wp-fb-reviews' ); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="wpfbr_sliderheight" id="wpfbr_sliderheight1-radio" value="yes" <?php checked( $wprev_slider_height, 'yes' ); ?>>
+								<label for="wpfbr_sliderheight1-radio"><?php esc_html_e( 'Yes', 'wp-fb-reviews' ); ?></label>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12">
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Animation Speed:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="number" name="wpfbr_t_slidespeed" id="wpfbr_t_slidespeed" style="width: 4em;min-width: 4em;" min="0" step="0.1" value="<?php echo esc_attr( $wprev_slider_speed ); ?>">
+								<label for="wpfbr_t_slidespeed"><?php esc_html_e( 'How long (in seconds) the slider should animate between slides.', 'wp-fb-reviews' ); ?></label>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12 onepermobilerow">
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Mobile Slide View:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="radio" name="wpfbr_slidermobileview" id="wpfbr_slidermobile2-radio" value="stack" <?php checked( $wprev_slider_mobile, 'stack' ); ?>>
+								<label for="wpfbr_slidermobile2-radio"><?php esc_html_e( 'Stack Reviews', 'wp-fb-reviews' ); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="wpfbr_slidermobileview" id="wpfbr_slidermobile1-radio" value="one" <?php checked( $wprev_slider_mobile, 'one' ); ?>>
+								<label for="wpfbr_slidermobile1-radio"><?php esc_html_e( 'One Review per Slide', 'wp-fb-reviews' ); ?></label>
+							</div>
+						</div>
+						<div class="w3_wprs-col s12 slickdiv wprevpro-pro-locked-heading wprevpro-pro-locked" <?php echo ( 'sli' !== $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<strong><?php esc_html_e( 'Advanced Slider', 'wp-fb-reviews' ); ?></strong>
+							<?php echo $wprev_pro_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+						<div class="w3_wprs-col s12 slickdiv wprevpro-pro-locked" <?php echo ( 'sli' !== $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Infinite Scroll:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="checkbox" id="wpfbr_sli_infinite" value="yes" disabled="disabled">
+							</div>
+						</div>
+						<div class="w3_wprs-col s12 slickdiv wprevpro-pro-locked" <?php echo ( 'sli' !== $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Scroll One Review:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="checkbox" id="wpfbr_sli_slidestoscroll" value="yes" disabled="disabled">
+							</div>
+						</div>
+						<div class="w3_wprs-col s12 slickdiv wprevpro-pro-locked" <?php echo ( 'sli' !== $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Center Mode:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="checkbox" id="wpfbr_sli_centermode" value="yes" disabled="disabled">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<label for="wpfbr_sli_centermode_padding"><?php esc_html_e( 'Center Padding:', 'wp-fb-reviews' ); ?></label>
+								<input type="number" style="width: 4em;min-width: 4em;" id="wpfbr_sli_centermode_padding" value="60" disabled="disabled">
+							</div>
+						</div>
+						<div class="w3_wprs-col s12 slickdiv wprevpro-pro-locked" <?php echo ( 'sli' !== $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Avatar Navigation:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<input type="checkbox" id="wpfbr_sli_avatarnav" value="yes" disabled="disabled">
+							</div>
+						</div>
+						<div class="w3_wprs-col s12 slickdiv wprevpro-pro-locked" <?php echo ( 'sli' !== $currenttemplate->createslider ) ? 'style="display:none;"' : ''; ?>>
+							<div class="w3_wprs-col s4 slidersettingsdiv"><?php esc_html_e( 'Responsive Breakpoints:', 'wp-fb-reviews' ); ?></div>
+							<div class="w3_wprs-col s8 slidersettingsdivrt">
+								<label for="wpfbr_sli_bp_tablet"><?php esc_html_e( 'Tablet (px):', 'wp-fb-reviews' ); ?></label>
+								<input type="number" style="width: 5em;min-width: 5em;" id="wpfbr_sli_bp_tablet" value="992" disabled="disabled">
+								&nbsp;&nbsp;
+								<label for="wpfbr_sli_bp_mobile"><?php esc_html_e( 'Mobile (px):', 'wp-fb-reviews' ); ?></label>
+								<input type="number" style="width: 5em;min-width: 5em;" id="wpfbr_sli_bp_mobile" value="600" disabled="disabled">
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
 	<?php
 	if ( ! isset( $currenttemplate->read_more ) ) {
 		$currenttemplate->read_more      = '';

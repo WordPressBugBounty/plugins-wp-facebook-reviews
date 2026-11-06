@@ -361,17 +361,35 @@ img.wprev_headerimg {
     padding: 10px;
 }
 .slidersettingsdivs {
+    display: flex;
+    flex-direction: column;
     border-style: solid;
     border-width: 1px;
     border-color: #dadada;
     padding: 8px;
 }
-.slidersettingsdiv {
-    margin-bottom: 8px;
-    margin-top: 8px;
+.slidersettingsdivs > .w3_wprs-col.s12 {
+    display: flex;
+    align-items: center;
+    float: none;
+    width: 100%;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    box-sizing: border-box;
 }
+.slidersettingsdivs > .w3_wprs-col.s12 > .w3_wprs-col {
+    float: none;
+}
+.slidersettingsdivs input[type="radio"],
+.slidersettingsdivs input[type="checkbox"] {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.slidersettingsdiv,
+.slidersettingsdivrt,
 .slidersettingsdivtoprow {
-    margin-top: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 select#wpfbr_t_display_num {
     margin-right: 20px;
@@ -935,6 +953,56 @@ input#wprevpro_analytics_filter_string {
     font-weight: 700;
     vertical-align: middle;
 }
+.wprevhiddenClass {
+	visibility: hidden;
+}
+.wprevpro-pro-badge {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 1px 5px;
+	border-radius: 3px;
+	background: #ff6b35;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1.4;
+	vertical-align: middle;
+}
+.wprevpro-pro-locked,
+.wprevpro-pro-locked label,
+.wprevpro-pro-locked input {
+	color: #a7aaad;
+}
+.wprevpro-pro-locked {
+	cursor: pointer;
+}
+.wprevpro-pro-locked input:disabled,
+.wprevpro-pro-color-placeholder:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+.wprevpro-pro-color-placeholder {
+	width: 4em;
+	min-width: 4em;
+	height: 24px;
+	background: #f0f0f1;
+	border: 1px solid #dcdcde;
+}
+.wprevpro-pro-locked-heading {
+	margin-top: 6px;
+	padding-top: 12px;
+	border-top: 1px dashed #dcdcde;
+	color: #646970;
+}
+#wpfbr_t_createslider option.wprevpro-pro-style,
+#wpfbr_t_numslides option.wprevpro-pro-style {
+	color: #a7aaad;
+	background-color: #fff;
+}
+#wpfbr_t_createslider.wprevpro-pro-selected {
+	color: #1d2327;
+}
+
 
 /* AI Analysis dashboard */
 #wprevpro_ai_analysis_page {

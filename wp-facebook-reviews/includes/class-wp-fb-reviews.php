@@ -78,7 +78,7 @@ class WP_FB_Reviews {
 	public function __construct() {
 
 		$this->_token = 'wp-fb-reviews';
-		$this->version = '15.3';
+		$this->version = '15.4';
 		//using this for development
 		//$this->version = time();
 
@@ -95,6 +95,7 @@ class WP_FB_Reviews {
 			
 		}
 		$this->define_public_hooks();
+		$this->define_block_hooks();
 		//save version number to db
 		$this->_log_version_number();
 		
@@ -412,6 +413,8 @@ class WP_FB_Reviews {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wp-fb-reviews-template_action.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-fb-reviews-block.php';
+
 		
 		/**
 		 * The class responsible for parsing yelp and tripadvisor pages
@@ -542,6 +545,22 @@ class WP_FB_Reviews {
 	 * @since    1.0.0
 	 * @access   private
 	 */
+
+	/**
+	 * Register the review template block.
+	 *
+	 * Runs on the front end as well as in wp-admin so the render callback is available.
+	 *
+	 * @since 15.4
+	 */
+	private function define_block_hooks() {
+		$block = new WP_FB_Reviews_Block();
+
+		$this->loader->add_action( 'init', $block, 'register_block' );
+		$this->loader->add_action( 'enqueue_block_editor_assets', $block, 'enqueue_editor_data' );
+		$this->loader->add_action( 'enqueue_block_assets', $block, 'enqueue_preview_assets' );
+	}
+
 	private function define_public_hooks() {
 
 		$plugin_public = new WP_FB_Reviews_Public( $this->get_token(), $this->get_version() );

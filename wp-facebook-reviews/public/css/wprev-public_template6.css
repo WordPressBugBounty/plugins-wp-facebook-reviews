@@ -53,8 +53,9 @@ a.wprev_media_img_a:hover{color:rgba(255,255,255,0)}
 
 /*------ badge layout --------*/
 .wprev_outer_wb{display:flex!important;margin-bottom:7px}
-.wprev_badge_div.badgeleft{margin:10px 5px 10px 10px!important}
-.wprev_badge_div.badgeright{margin:10px 10px 10px 5px!important}
+/* 8px toward reviews + 8px card padding = 16px, matching the gap between reviews. */
+.wprev_badge_div.badgeleft{margin:10px 8px 10px 10px!important}
+.wprev_badge_div.badgeright{margin:10px 10px 10px 8px!important}
 .wprev_outer_wb.wprev_badge_style6_side{align-items:flex-start!important}
 .wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeleft,
 .wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeright{margin-top:0!important;margin-bottom:0!important}
@@ -63,20 +64,34 @@ a.wprev_media_img_a:hover{color:rgba(255,255,255,0)}
 /* Style 6 review cards default to margin-top:10px — remove so tops line up with badge */
 .wprev_outer_wb.wprev_badge_style6_side .wpproslider_t6_DIV_1,
 .wprev_outer_wb.wprev_badge_style6_side .wprevpro_t6_DIV_1{margin-top:0!important;padding:0 8px!important}
-/* Equal arrow↔review gaps on both sides (40px gutter, 25px arrow, 5px inset → 10px gap) */
-.wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeleft{margin-right:0!important}
-.wprev_outer_wb.wprev_badge_style6_side .wprev_badge_div.badgeright{margin-left:0!important}
-.wprev_outer_wb.wprev_badge_style6_side .wprev-slider{margin-left:40px!important;margin-right:40px!important}
-.wprev_outer_wb.wprev_badge_style6_side .wprs_unslider-arrow.prev{left:12px!important}
-.wprev_outer_wb.wprev_badge_style6_side .wprs_unslider-arrow.next{right:12px!important}
+.wprev_outer_wb.wprev_badge_style6_side .wpproslider_t6_DIV_1a{margin-left:0!important;margin-right:0!important}
 .wprev_outer_wb.wprev_badge_style6_side .wprev-slider .wprevpro_t6_outer_div,
 .wprev_outer_wb.wprev_badge_style6_side .wprev-slider .wprevpro_t6_outer_div_widget{margin-left:0!important;margin-right:0!important}
-.wprev_outer_wb.wprev_badge_style6_side .wpproslider_t6_DIV_1a{margin-left:0!important;margin-right:0!important}
-/* Style 6, no badge: pull arrows in from 10px to 5px (siblings after unslider wrap) */
-.wprev-slider.wprev_style6_nobadge ~ .wprs_unslider-arrow.prev,
-.wprev-slider.wprev_style6_nobadge .wprs_unslider-arrow.prev{left:0px!important}
-.wprev-slider.wprev_style6_nobadge ~ .wprs_unslider-arrow.next,
-.wprev-slider.wprev_style6_nobadge .wprs_unslider-arrow.next{right:0px!important}
+/* Drop extra row padding/pull so the badge-facing card edge is the 8px column gutter. */
+.wprev_outer_wb.wprev_badge_style6_side:has(.wprev_badge_div.badgeleft) .wprevpro_t6_outer_div,
+.wprev_outer_wb.wprev_badge_style6_side:has(.wprev_badge_div.badgeleft) .wprevpro_t6_outer_div_widget{padding-left:0}
+.wprev_outer_wb.wprev_badge_style6_side:has(.wprev_badge_div.badgeright) .wprevpro_t6_outer_div,
+.wprev_outer_wb.wprev_badge_style6_side:has(.wprev_badge_div.badgeright) .wprevpro_t6_outer_div_widget{padding-right:0}
+.wprev_outer_wb:not(.wprev_badge_abovewide):has(.wprev_badge_div.badgeleft) .wprevpro_t1_outer_div{padding-left:0}
+.wprev_outer_wb:not(.wprev_badge_abovewide):has(.wprev_badge_div.badgeright) .wprevpro_t1_outer_div{padding-right:0}
+.wprs_unslider .wprevpro_t1_outer_div{padding-left:0;padding-right:0}
+.wprs_unslider .wprevpro_t6_outer_div,
+.wprs_unslider .wprevpro_t6_outer_div_widget{margin-left:0;margin-right:0}
+/* Arrow occupies the unslider gutter; do not add a second badge gap on that side. */
+.wprev_outer_wb:not(.wprev_badge_abovewide):has(.wprs_unslider-arrow) .wprev_badge_div.badgeleft{margin-right:0!important}
+.wprev_outer_wb:not(.wprev_badge_abovewide):has(.wprs_unslider-arrow) .wprev_badge_div.badgeright{margin-left:0!important}
+/* Above Wide: same width as the review cards; inset by the arrow gutter when arrows show. */
+.wprev_outer_wb.wprev_badge_abovewide .wprevpro_t1_outer_div{padding:0!important;margin-left:0;margin-right:0}
+.wprev_outer_wb.wprev_badge_abovewide .wprevpro_t6_outer_div,
+.wprev_outer_wb.wprev_badge_abovewide .wprevpro_t6_outer_div_widget{padding:0!important;margin-left:0;margin-right:0}
+.wprev_outer_wb.wprev_badge_abovewide .wprev_badge_div.badgeleft{margin:0 8px 10px 8px!important;align-self:stretch;width:auto;max-width:none;flex:0 0 auto}
+.wprev_outer_wb.wprev_badge_abovewide:has(.wprs_unslider-arrow) .wprev_badge_div.badgeleft{margin-left:48px!important;margin-right:48px!important}
+/* Match Airbnb: 8px | 32px arrow | 8px, collapse gutter when arrows are hidden. */
+.wprev-slider{margin-left:0;margin-right:0}
+.wprs_unslider{margin:0 40px}
+.wprs_unslider:not(:has(.wprs_unslider-arrow)){margin-left:0;margin-right:0}
+.wprs_unslider-arrow{width:32px;height:32px;right:-32px;margin-top:-16px}
+.wprs_unslider-arrow.prev{left:-32px;right:auto}
 .wprev-yelp-place{display:flex!important;padding:8px 12px!important;box-shadow:rgba(0,0,0,.08) 2px 2px 3px 0!important;border:1px solid #f5f5f5!important}
 .wprev-yelp-left{padding:10px 8px 10px 5px!important}
 .wprev-yelp-right{padding:3px!important}

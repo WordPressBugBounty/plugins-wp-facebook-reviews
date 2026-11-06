@@ -80,7 +80,7 @@ class WP_FB_Reviews_Admin {
 		//only load for this plugin
 		if(isset($_GET['page'])){
 			if( strpos( $_GET['page'], "wpfb-" ) !== false || $_GET['page']=="wp_fb-settings" || $_GET['page']=="wp_fb-get_pro" ){
-				wp_enqueue_style( $this->_token, plugin_dir_url( __FILE__ ) . 'css/wprev_admin.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token, plugin_dir_url( __FILE__ ) . 'css/wprev_admin.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'css/wprev_admin.css' ), 'all' );
 				wp_enqueue_style( $this->_token."_wprev_w3", plugin_dir_url( __FILE__ ) . 'css/wprev_w3.css', array(), $this->version, 'all' );
 				
 				// load font awesome on all pages.
@@ -97,9 +97,9 @@ class WP_FB_Reviews_Admin {
 			//load template styles for wp_pro-templates_posts page
 			if($_GET['page']=="wpfb-templates_posts" || $_GET['page']=="wp_fb-get_pro" || $_GET['page']=="wpfb-welcome-slug"){
 				//enque template styles for preview
-				wp_enqueue_style( $this->_token."_style1", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-fb-combine.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token."_style1", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-fb-combine.css', array(), filemtime( plugin_dir_path( dirname( __FILE__ ) ) . 'public/css/wprev-fb-combine.css' ), 'all' );
 				//style 6 layout css for the preview
-				wp_enqueue_style( $this->_token."_style6", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-public_template6.css', array(), $this->version, 'all' );
+				wp_enqueue_style( $this->_token."_style6", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-public_template6.css', array(), filemtime( plugin_dir_path( dirname( __FILE__ ) ) . 'public/css/wprev-public_template6.css' ), 'all' );
 				if ( $_GET['page'] == 'wpfb-templates_posts' ) {
 					wp_enqueue_style( $this->_token . '_pro_style_preview', plugin_dir_url( __FILE__ ) . 'css/wprev_pro_style_preview.css', array( $this->_token . '_style1', $this->_token . '_style6' ), $this->version, 'all' );
 				}
@@ -233,7 +233,7 @@ class WP_FB_Reviews_Admin {
 				wp_enqueue_script( 'wp-color-picker-alpha', plugin_dir_url( __FILE__ ) . 'js/wprevpro-wp-color-picker-alpha.js', array( 'wp-color-picker' ), '3.0.0', false );
 
 				wp_enqueue_media();
-				wp_enqueue_script('templates_posts_page-js', plugin_dir_url( __FILE__ ) . 'js/templates_posts_page.js', array( 'jquery', 'wp-color-picker', 'wp-color-picker-alpha' ), $this->version, false );
+				wp_enqueue_script('templates_posts_page-js', plugin_dir_url( __FILE__ ) . 'js/templates_posts_page.js', array( 'jquery', 'wp-color-picker', 'wp-color-picker-alpha' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/templates_posts_page.js' ), false );
 				wp_localize_script('templates_posts_page-js', 'adminjs_script_vars', 
 					array(
 					'wpfb_nonce'=> wp_create_nonce('randomnoncestring'),
@@ -2002,11 +2002,21 @@ class WP_FB_Reviews_Admin {
 		$template_css     = sanitize_textarea_field( $get( 'wpfbr_template_css' ) );
 		$createslider     = sanitize_text_field( $get( 'wpfbr_t_createslider', 'no' ) );
 		$numslides        = sanitize_text_field( $get( 'wpfbr_t_numslides', '3' ) );
+		if ( 'no' !== $createslider ) {
+			$createslider = 'yes';
+		}
+		$numslides = absint( $numslides );
+		if ( $numslides < 2 ) {
+			$numslides = 3;
+		}
+		if ( $numslides > 10 ) {
+			$numslides = 10;
+		}
 		$read_more        = sanitize_text_field( $get( 'wprevpro_t_read_more', 'no' ) );
 		$read_more_text   = sanitize_text_field( $get( 'wprevpro_t_read_more_text', 'read more' ) );
 		$read_more_num    = absint( $get( 'wprevpro_t_read_more_num', '30' ) );
 		$min_rating       = sanitize_text_field( $get( 'wpfbr_t_min_rating', '1' ) );
-		$slidermobileview = sanitize_text_field( $get( 'wpfbr_slidermobileview' ) );
+		$slidermobileview = ( 'one' === sanitize_text_field( $get( 'wpfbr_slidermobileview' ) ) ) ? 'one' : '';
 		$review_same_hgt  = sanitize_text_field( $get( 'wpfbr_t_review_same_height', 'no' ) );
 		$filtersource     = sanitize_text_field( $get( 'wpfbr_t_filtersource' ) );
 		$filterrtype      = sanitize_text_field( $get( 'wpfbr_t_rtype', 'fb' ) );
@@ -2041,13 +2051,30 @@ class WP_FB_Reviews_Admin {
 		$templatemiscarray['tfont2'] = $ajax_tfont2 > 0 ? (string) $ajax_tfont2 : '';
 
 		// General-tab options (slider + read more).
-		$templatemiscarray['slidespeed']         = sanitize_text_field( $get( 'wpfbr_t_slidespeed', '1' ) );
-		$templatemiscarray['slideautodelay']     = sanitize_text_field( $get( 'wpfbr_t_slideautodelay', '5' ) );
-		$templatemiscarray['sliderautoplay']     = sanitize_text_field( $get( 'wpfbr_sliderautoplay' ) );
-		$templatemiscarray['sliderhideprevnext'] = sanitize_text_field( $get( 'wpfbr_sliderhideprevnext' ) );
-		$templatemiscarray['sliderhidedots']     = sanitize_text_field( $get( 'wpfbr_sliderhidedots' ) );
-		$templatemiscarray['sliderfixedheight']  = sanitize_text_field( $get( 'wpfbr_sliderfixedheight' ) );
-		$templatemiscarray['slidermobileview']   = $slidermobileview;
+		$slider_arrows_posted = sanitize_text_field( $get( 'wpfbr_sliderarrows' ) );
+		if ( $slider_arrows_posted !== '' ) {
+			$templatemiscarray['sliderhideprevnext'] = ( 'no' === $slider_arrows_posted ) ? 'yes' : '';
+		} else {
+			$templatemiscarray['sliderhideprevnext'] = sanitize_text_field( $get( 'wpfbr_sliderhideprevnext' ) );
+		}
+		$slider_dots_posted = sanitize_text_field( $get( 'wpfbr_sliderdots' ) );
+		if ( $slider_dots_posted !== '' ) {
+			$templatemiscarray['sliderhidedots'] = ( 'no' === $slider_dots_posted ) ? 'yes' : '';
+		} else {
+			$templatemiscarray['sliderhidedots'] = sanitize_text_field( $get( 'wpfbr_sliderhidedots' ) );
+		}
+		$slider_height_posted = sanitize_text_field( $get( 'wpfbr_sliderheight' ) );
+		if ( $slider_height_posted !== '' ) {
+			$templatemiscarray['sliderfixedheight'] = ( 'no' === $slider_height_posted ) ? 'yes' : '';
+		} else {
+			$templatemiscarray['sliderfixedheight'] = sanitize_text_field( $get( 'wpfbr_sliderfixedheight' ) );
+		}
+		$templatemiscarray['sliderautoplay'] = sanitize_text_field( $get( 'wpfbr_sliderautoplay' ) );
+		$templatemiscarray['slidespeed'] = sanitize_text_field( $get( 'wpfbr_t_slidespeed', '1' ) );
+		$templatemiscarray['slideautodelay'] = sanitize_text_field( $get( 'wpfbr_t_slideautodelay', '5' ) );
+		$templatemiscarray['slidermobileview'] = ( 'one' === sanitize_text_field( $get( 'wpfbr_slidermobileview' ) ) ) ? 'one' : '';
+		$slidermobileview = $templatemiscarray['slidermobileview'];
+
 		$templatemiscarray['review_same_height'] = $review_same_hgt;
 		$templatemiscarray['read_more_num']      = (string) $read_more_num;
 		$templatemiscarray['read_more_color']    = $this->wpfb_sanitize_css_color( $get( 'wprevpro_t_read_more_color' ) );
