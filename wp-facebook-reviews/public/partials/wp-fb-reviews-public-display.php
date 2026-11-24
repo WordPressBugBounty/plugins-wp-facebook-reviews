@@ -120,6 +120,17 @@
 			);
 		}
 
+		/**
+		 * Filters the reviews a template shows. The setup wizard uses it to preview
+		 * a template with sample reviews before the real ones have downloaded.
+		 *
+		 * @since 15.5
+		 * @param array  $totalreviews Review rows.
+		 * @param int    $tid          Template id.
+		 * @param string $filtersource Source page id the template is filtered to.
+		 */
+		$totalreviews = apply_filters( 'wpfb_template_reviews', $totalreviews, $tid, isset( $template_misc_array['filtersource'] ) ? (string) $template_misc_array['filtersource'] : '' );
+
 		//if we are adding a badge then wrap the slider in another outer div with flex box and add another div beside slider.
 		if(!isset($template_misc_array['blocation'])){$template_misc_array['blocation']="";}
 		
@@ -229,6 +240,16 @@
 				}
 			}
 
+			/**
+			 * Filters the badge's average rating and total. The setup wizard uses it to
+			 * preview a badge with sample numbers before the real reviews have downloaded.
+			 *
+			 * @since 15.5
+			 * @param array  $avg_total  array( average, total ).
+			 * @param string $templaceid Source page id the template is filtered to.
+			 */
+			list( $badgeavg, $badgetotal ) = apply_filters( 'wpfb_badge_avg_total', array( $badgeavg, $badgetotal ), $templaceid );
+
 			require_once plugin_dir_path( __FILE__ ) . 'wprev-badge-compat.php';
 			$badge_source = wprev_free_badge_source_from_rtype( $currentform[0]->rtype );
 			if ( $badge_source === '' ) {
@@ -272,6 +293,8 @@
 				$badgeabovewide1 = '<div class="wprev-google-leftboth">';
 				$badgeabovewide2 = '<div class="wprev-google-right">';
 				$badgeabovewideclose = '</div>'; 
+				// Wide badge: right-align the logo above the button.
+				$badge_style = $badge_style . $bs.'.wprev_badge_abovewide .wprev-google-place > .wprev-google-right {display: flex !important;flex-direction: column !important;align-items: flex-end !important;}';
 			}
 			
 			$bimgsize = 50;
@@ -412,6 +435,7 @@
 		
 		$loopnum = 1;
 		foreach ( $totalreviewschunked as $reviewschunked ){
+			$rowarray = array(); // Start each slide with empty rows.
 			//echo "loop1";
 			$totalreviewstemp = $reviewschunked;
 			

@@ -111,6 +111,7 @@
 		}
 		
 		foreach ( $totalreviewschunked as $reviewschunked ){
+			$rowarray = array(); // Start each slide with empty rows.
 			//echo "loop1";
 			$totalreviewstemp = $reviewschunked;
 			

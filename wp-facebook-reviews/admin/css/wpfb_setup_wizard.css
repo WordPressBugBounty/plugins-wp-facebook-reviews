@@ -1,0 +1,576 @@
+/* Setup wizard (admin.php?page=wpfb-setup). */
+
+.wpfb-wiz {
+	--wiz-accent: #1877f2;
+	--wiz-blue: #2271b1;
+	--wiz-green: #00a32a;
+	--wiz-border: #dcdcde;
+	--wiz-muted: #646970;
+	max-width: 1120px;
+	margin: 20px auto 40px;
+	padding: 0 20px;
+	box-sizing: border-box;
+}
+
+.wpfb-wiz *,
+.wpfb-wiz *::before,
+.wpfb-wiz *::after {
+	box-sizing: border-box;
+}
+
+.wpfb-wiz [hidden] {
+	display: none !important;
+}
+
+/* Header */
+.wpfb-wiz__header {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.wpfb-wiz__logo {
+	display: block;
+	width: auto;
+	height: 44px;
+}
+
+.wpfb-wiz__titles {
+	flex: 1 1 auto;
+	min-width: 0;
+	text-align: center;
+}
+
+.wpfb-wiz__titles h1 {
+	margin: 0;
+	padding: 0;
+	font-size: 22px;
+	line-height: 1.3;
+}
+
+.wpfb-wiz__titles p {
+	margin: 2px 0 0;
+	color: var(--wiz-muted);
+}
+
+.wpfb-wiz__exit {
+	flex: none;
+}
+
+/* Stepper */
+.wpfb-wiz__steps {
+	display: flex;
+	gap: 8px;
+	margin: 0 0 16px;
+	padding: 0;
+	list-style: none;
+	counter-reset: none;
+}
+
+.wpfb-wiz__stepitem {
+	flex: 1 1 0;
+	margin: 0;
+}
+
+.wpfb-wiz__stepbtn {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid var(--wiz-border);
+	border-radius: 6px;
+	background: #fff;
+	color: #1d2327;
+	font: inherit;
+	text-align: start;
+	cursor: pointer;
+}
+
+.wpfb-wiz__stepbtn:disabled {
+	cursor: default;
+	color: var(--wiz-muted);
+}
+
+.wpfb-wiz__stepbtn:not(:disabled):hover {
+	border-color: var(--wiz-blue);
+}
+
+.wpfb-wiz__stepbtn:focus-visible {
+	outline: 2px solid var(--wiz-blue);
+	outline-offset: 1px;
+}
+
+.wpfb-wiz__stepnum {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: 2px solid var(--wiz-border);
+	border-radius: 50%;
+	font-weight: 600;
+	line-height: 1;
+}
+
+.wpfb-wiz__stepnum .dashicons {
+	display: none;
+	width: 20px;
+	height: 20px;
+	font-size: 20px;
+}
+
+.wpfb-wiz__steplabel {
+	font-weight: 600;
+}
+
+.wpfb-wiz__stepitem.is-current .wpfb-wiz__stepbtn {
+	border-color: var(--wiz-blue);
+	box-shadow: inset 0 -3px 0 var(--wiz-blue);
+}
+
+.wpfb-wiz__stepitem.is-current .wpfb-wiz__stepnum {
+	border-color: var(--wiz-blue);
+	background: var(--wiz-blue);
+	color: #fff;
+}
+
+.wpfb-wiz__stepitem.is-done .wpfb-wiz__stepnum {
+	border-color: var(--wiz-green);
+	background: var(--wiz-green);
+	color: #fff;
+}
+
+.wpfb-wiz__stepitem.is-done .wpfb-wiz__n {
+	display: none;
+}
+
+.wpfb-wiz__stepitem.is-done .wpfb-wiz__stepnum .dashicons {
+	display: block;
+}
+
+/* Cards */
+.wpfb-wiz__card {
+	padding: 24px 28px;
+	border: 1px solid var(--wiz-border);
+	border-radius: 8px;
+	background: #fff;
+}
+
+.wpfb-wiz__card h2 {
+	margin: 0 0 6px;
+	font-size: 18px;
+	line-height: 1.35;
+}
+
+.wpfb-wiz__card h2:focus {
+	outline: none;
+}
+
+.wpfb-wiz__card h3 {
+	margin: 0 0 6px;
+	font-size: 15px;
+}
+
+.wpfb-wiz__lead {
+	max-width: 70ch;
+	margin: 0 0 18px;
+	color: #3c434a;
+	font-size: 14px;
+}
+
+.wpfb-wiz__muted {
+	color: var(--wiz-muted);
+}
+
+.wpfb-wiz__note {
+	margin: 20px 0 0;
+	padding-top: 14px;
+	border-top: 1px solid #f0f0f1;
+	color: var(--wiz-muted);
+}
+
+.wpfb-wiz__input {
+	width: 100%;
+	max-width: 640px;
+	margin: 4px 0;
+}
+
+.wpfb-wiz__input--short {
+	max-width: 360px;
+}
+
+.wpfb-wiz .description {
+	display: block;
+	max-width: 640px;
+	color: var(--wiz-muted);
+}
+
+.wpfb-wiz__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.wpfb-wiz__actions .spinner {
+	float: none;
+	margin: 0;
+}
+
+/* Status messages */
+.wpfb-wiz__status {
+	max-width: 760px;
+	margin: 12px 0 0;
+	padding: 10px 12px;
+	border-left: 4px solid var(--wiz-blue);
+	background: #f0f6fc;
+}
+
+.wpfb-wiz__status.is-success {
+	border-left-color: var(--wiz-green);
+	background: #edfaef;
+}
+
+.wpfb-wiz__status.is-error {
+	border-left-color: #d63638;
+	background: #fcf0f1;
+}
+
+/* Step 1: sources */
+.wpfb-wiz__sources {
+	display: grid;
+	gap: 8px;
+	max-width: 640px;
+	margin: 0 0 16px;
+	padding: 0;
+	border: 0;
+}
+
+.wpfb-wiz__sources legend {
+	margin-bottom: 8px;
+	padding: 0;
+	font-weight: 600;
+}
+
+.wpfb-wiz__source {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	border: 1px solid var(--wiz-border);
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.wpfb-wiz__source input {
+	margin: 0;
+}
+
+.wpfb-wiz__source > span {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 10px;
+}
+
+.wpfb-wiz__source:has(input:checked) {
+	border-color: var(--wiz-blue);
+	background: #f6fafd;
+}
+
+.wpfb-wiz__sourcelist {
+	display: grid;
+	gap: 8px;
+}
+
+/* Step 1: connect Facebook first */
+.wpfb-wiz__connect {
+	max-width: 760px;
+	margin: 0 0 16px;
+	padding: 16px 18px;
+	border: 1px solid var(--wiz-border);
+	border-left: 4px solid var(--wiz-accent);
+	border-radius: 6px;
+	background: #f6f9ff;
+}
+
+.wpfb-wiz__connect p {
+	margin: 0 0 8px;
+}
+
+.wpfb-wiz__connect .wpfb-wiz__actions {
+	margin: 12px 0 0;
+}
+
+.wpfb-wiz__list.wpfb-wiz__list--steps {
+	margin-top: 0;
+	list-style: decimal;
+}
+
+[data-get-wrap] .description .button-link,
+.wpfb-wiz__connect .description .button-link {
+	vertical-align: baseline;
+}
+
+/* Step 1: paste the Secret Access Code */
+.wpfb-wiz__connect .wpfb-wiz__codefield {
+	margin: 14px 0 8px;
+}
+
+.wpfb-wiz__codefield .wpfb-wiz__actions {
+	margin: 4px 0 0;
+}
+
+.wpfb-wiz__codefield .wpfb-wiz__input {
+	flex: 1 1 220px;
+	margin: 0;
+}
+
+.wpfb-wiz__connect .description {
+	margin: 12px 0 0;
+}
+
+/* Step 2: controls */
+.wpfb-wiz__controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px 28px;
+	margin-bottom: 18px;
+}
+
+.wpfb-wiz__group {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.wpfb-wiz__group legend {
+	margin-bottom: 6px;
+	padding: 0;
+	font-weight: 600;
+}
+
+.wpfb-wiz__segmented {
+	display: inline-flex;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.wpfb-wiz__segmented label {
+	position: relative;
+	margin: 0;
+}
+
+.wpfb-wiz__segmented input {
+	position: absolute;
+	opacity: 0;
+	inset: 0;
+	margin: 0;
+	cursor: pointer;
+}
+
+.wpfb-wiz__segmented span {
+	display: block;
+	min-width: 40px;
+	padding: 6px 14px;
+	border-left: 1px solid #c3c4c7;
+	background: #fff;
+	color: #2c3338;
+	text-align: center;
+	cursor: pointer;
+}
+
+.wpfb-wiz__segmented label:first-child span {
+	border-left: 0;
+}
+
+.wpfb-wiz__segmented input:checked + span {
+	background: var(--wiz-blue);
+	color: #fff;
+}
+
+.wpfb-wiz__segmented input:focus-visible + span {
+	outline: 2px solid var(--wiz-blue);
+	outline-offset: -4px;
+	box-shadow: inset 0 0 0 4px #fff;
+}
+
+.wpfb-wiz__hint {
+	margin: -6px 0 14px;
+	color: var(--wiz-muted);
+	font-style: italic;
+}
+
+.wpfb-wiz__check {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding-top: 6px;
+}
+
+.wpfb-wiz__check input {
+	margin: 0;
+}
+
+/* Step 2: preview */
+.wpfb-wiz__preview {
+	border: 1px solid var(--wiz-border);
+	border-radius: 6px;
+	background: #f6f7f7;
+}
+
+.wpfb-wiz__previewbar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 40px;
+	padding: 8px 14px;
+	border-bottom: 1px solid var(--wiz-border);
+}
+
+.wpfb-wiz__previewbar .spinner {
+	float: none;
+	margin: 0;
+}
+
+.wpfb-wiz__previewbody {
+	min-height: 220px;
+	max-width: 100%;
+	padding: 20px 24px;
+	overflow-x: auto;
+	background: #fff;
+	transition: opacity 0.15s ease;
+}
+
+.wpfb-wiz__preview.is-loading .wpfb-wiz__previewbody {
+	opacity: 0.55;
+}
+
+.wpfb-wiz__preview.is-sample .wpfb-wiz__previewbar {
+	background: #fcf9e8;
+}
+
+.wpfb-wiz__preview.is-sample [data-preview-msg] {
+	color: #614a19;
+}
+
+.wpfb-wiz__waiting {
+	max-width: 60ch;
+	margin: 60px auto;
+	color: var(--wiz-muted);
+	text-align: center;
+}
+
+/* Step 3: choices */
+.wpfb-wiz__choices {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+}
+
+.wpfb-wiz__choice {
+	padding: 18px 20px;
+	border: 1px solid var(--wiz-border);
+	border-radius: 6px;
+}
+
+.wpfb-wiz__choice p {
+	margin: 0 0 10px;
+}
+
+.wpfb-wiz__shortcode {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.wpfb-wiz__shortcode code {
+	padding: 6px 8px;
+	font-size: 13px;
+	user-select: all;
+}
+
+/* Step 4 */
+.wpfb-wiz__list {
+	margin: 8px 0 0 1.4em;
+	list-style: disc;
+	line-height: 1.7;
+}
+
+/* Navigation */
+.wpfb-wiz__nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+	margin-top: 16px;
+}
+
+.wpfb-wiz__nav [data-prev] {
+	order: 0;
+}
+
+.wpfb-wiz__count {
+	order: 1;
+	color: var(--wiz-muted);
+}
+
+.wpfb-wiz__navmsg {
+	order: 2;
+	flex: 1 1 auto;
+	color: #b32d2e;
+	text-align: end;
+}
+
+.wpfb-wiz__nav [data-next] {
+	order: 3;
+	margin-inline-start: auto;
+}
+
+.wpfb-wiz__navmsg:empty + [data-next] {
+	margin-inline-start: auto;
+}
+
+@media (max-width: 782px) {
+	.wpfb-wiz {
+		padding: 0 12px;
+	}
+
+	.wpfb-wiz__header {
+		flex-wrap: wrap;
+	}
+
+	.wpfb-wiz__logo {
+		height: 36px;
+	}
+
+	.wpfb-wiz__steps {
+		flex-wrap: wrap;
+	}
+
+	.wpfb-wiz__stepitem {
+		flex: 1 1 calc(50% - 8px);
+	}
+
+	.wpfb-wiz__card {
+		padding: 18px 16px;
+	}
+
+	.wpfb-wiz__choices {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.wpfb-wiz__previewbody {
+		padding: 14px 10px;
+	}
+
+	.wpfb-wiz__navmsg {
+		flex-basis: 100%;
+		order: 4;
+		text-align: start;
+	}
+}

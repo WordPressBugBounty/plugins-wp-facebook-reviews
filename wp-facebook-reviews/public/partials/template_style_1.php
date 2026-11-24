@@ -85,6 +85,8 @@ for ($x = 0; $x < count($rowarray); $x++) {
 		} else if($template_misc_array['showicon']=="yes"){
 			if($review->type=="Twitter"){
 				$yelp_logo = '<img src="'.$imgs_url.'twitter_small_icon.svg" alt="X" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'" width="16" height="16">';
+			} else if($review->type=="Facebook"){
+				$yelp_logo = '<img src="'.$imgs_url.'facebook_badge_icon.svg" alt="Facebook Logo" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'" width="26" height="26">';
 			} else {
 				$yelp_logo = '<img src="'.$imgs_url.''.$typelower.'_small_icon.png" alt="'.$review->type.' Logo" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'">';
 			}
@@ -92,7 +94,7 @@ for ($x = 0; $x < count($rowarray); $x++) {
 			 if($review->type=="Facebook") {
 				//facebook logo
 				$burl = "https://www.facebook.com/pg/".$review->pageid."/reviews/";
-				$yelp_logo = '<a href="'.$burl.'" target="_blank" rel="nofollow"><img src="'.$imgs_url.'facebook_small_icon.png" alt="" class="wprevpro_t1_fb_logo sitetype_'.$review->type.'"></a>';
+				$yelp_logo = '<a href="'.$burl.'" target="_blank" rel="nofollow"><img src="'.$imgs_url.'facebook_badge_icon.svg" alt="" class="wprevpro_t1_fb_logo sitetype_'.$review->type.'" width="26" height="26"></a>';
 			} else if($review->type=="Google") {
 			 $burl = $review->from_url;
 			$yelp_logo = '<a href="'.$burl.'" target="_blank" rel="nofollow noreferrer" class="wprevpro_t1_site_logo_a"><img src="'.$imgs_url.''.$typelower.'_small_icon.png" alt="'.$review->type.' Logo" class="wprevpro_t1_site_logo siteicon sitetype_'.$review->type.'"></a>';

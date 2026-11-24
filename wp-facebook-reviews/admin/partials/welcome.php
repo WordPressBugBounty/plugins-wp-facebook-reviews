@@ -25,13 +25,15 @@
 <?php 
 include("tabmenu.php");
 ?>
+<?php $wpfb_wizard_done = WP_FB_Reviews_Wizard::is_done(); ?>
 <div class="welcomecontainer wpfbr_margin10 w3-row-padding w3-section w3-stretch">
 
-<div class="w3-col s12 m6 w3-container ">
+<div class="w3-col s12 m12 l4 w3-container ">
 <div class="welcomediv w3-white w3-border w3-border-light-gray2 w3-round-small">
 	<h3>Welcome! </h3>
-	<p>Thank you for being an awesome WP Review Slider customer! If you have trouble, please don't hesitate to contact me. </p>
-	<h3>Getting Started: </h3>
+	<p>Thank you for being an awesome WP Review Slider customer! If you have trouble, please don't hesitate to contact me. Follow the Wizard or use the steps below to get started.</p>
+	<a class="button button-primary wpfb-wizard-cta__btn" href="<?php echo esc_url( WP_FB_Reviews_Wizard::url() ); ?>"><?php echo esc_html( $wpfb_wizard_done ? __( 'Run the Setup Wizard', 'wp-fb-reviews' ) : __( 'Start the Setup Wizard', 'wp-fb-reviews' ) ); ?></a>
+	<h3>Getting Started Steps: </h3>
 	<p>1) Use the Facebook and/or X (Twitter) Page to Download your reviews from different sites and save them to your database. (The <a href="https://wpreviewslider.com/" target="_blank">Pro version</a> can download revies from 85+ sites!)</p>
 	<p>2) Once downloaded, all the reviews should show up on the "Review List" page of the plugin. </p>
 	<p>3) Create a Review Slider or Grid for your site on the "Templates" page. By default the review template will show all your reviews, you can use the filters to only show the reviews you want. </p>
@@ -41,25 +43,9 @@ include("tabmenu.php");
 
 </div>
 </div>
-<div class="w3-col s12 m6 welcomediv w3-container ">
+<div class="w3-col s12 m12 l8 welcomediv w3-container ">
 <div class="welcomediv w3-white w3-border w3-border-light-gray2 w3-round-small">
-<a id="provimg" href="https://wpreviewslider.com/" target="_blank"><img class="wprev_wpproimg" src="<?php echo plugin_dir_url( __FILE__ ) . 'sitelogo4.png?v='.$this->version; ?>"></a>
-	<h3>Pro Version Features! </h3>
-	<ul style="list-style-type: circle;margin-left: 20px;">
-	<li>Personal support from the developer! I'll even help set it up!</li>
-	<li>Download new reviews automatically. </li>
-	<li>Also get reviews from Google, Facebook, and 90+ other sites!</li>
-	<li>Show reviews in a Grid, Rows, Slider, Masonry, with endless scroll and different pagination options!</li>
-	<li>Hide certain reviews from displaying.</li>
-	<li>Review submission form with a review gate to catch low reviews before they get to social media!</li>
-	<li>Manually add reviews to your database even upload a CSV file.</li>
-	<li>Access 11 Review Template styles and even create a child theme.</li>
-	<li>Lots of cool badges, floats, and pop-ins!</li>
-	<li>Advanced slider controls like: Autoplay, slide animation, timing, hide navigation arrows and dots, adjust slider height and more.</li>
-	<li>Tons of filters like review length, source page, rating, date, keywords, tags, or even individually choose which reviews you want to display.</li>
-	<li>Automatically create Google schema review snippet markup!</li>
-	<li>See all features <b><a href="https://wpreviewslider.com/features/" target="_blank">here</a></b>. Plus get access to all new features I add in the future!</li>
-</ul>
+<?php include plugin_dir_path( __FILE__ ) . 'other_plugins.php'; ?>
 
 </div>
 </div>

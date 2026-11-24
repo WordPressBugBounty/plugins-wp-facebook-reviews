@@ -43,7 +43,7 @@ class WP_FB_Reviews_Template_Functions {
 								//is youtube
 								$tempclass = 'youtu';
 							}
-							$media= $media . '<a class="wprev_media_img_a '.$tempclass.'" href="'.$urlvalue.'" data-lity><img src="'.$thumburl.'" class="wprev_media_img"  alt="media thumbnail '.$n.'"></a>';
+							$media= $media . '<a class="wprev_media_img_a '.$tempclass.'" href="'.$urlvalue.'" data-lity-desc="Review media"><img src="'.$thumburl.'" class="wprev_media_img"  alt="media thumbnail '.$n.'"></a>';
 						}
 						$n++;
 					}

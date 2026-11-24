@@ -78,7 +78,7 @@ class WP_FB_Reviews {
 	public function __construct() {
 
 		$this->_token = 'wp-fb-reviews';
-		$this->version = '15.4';
+		$this->version = '15.5';
 		//using this for development
 		//$this->version = time();
 
@@ -388,6 +388,11 @@ class WP_FB_Reviews {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-fb-reviews-admin.php';
 
 		/**
+		 * Setup wizard screen and its AJAX handlers.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-fb-reviews-wizard.php';
+
+		/**
 		 * Analytics AJAX handlers.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-fb-reviews-analytics.php';
@@ -476,6 +481,9 @@ class WP_FB_Reviews {
 		
 		//add menu page
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu_pages' );
+
+		$this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'admin_footer_text', 1 );
+		$this->loader->add_action( 'wp_ajax_wpfb_footer_rated', $plugin_admin, 'ajax_footer_rated' );
 		
 		//add ajax for adding feedback to table
 		$this->loader->add_action( 'wp_ajax_wpfb_get_results', $plugin_admin, 'wpfb_process_ajax' );
@@ -491,8 +499,20 @@ class WP_FB_Reviews {
 		
 		//add ajax for the Templates editor live preview + save
 		$this->loader->add_action( 'wp_ajax_wpfb_get_preview', $plugin_admin, 'wpfb_previewtemplate_ajax' ); 
-		$this->loader->add_action( 'wp_ajax_wpfb_save_template', $plugin_admin, 'wpfb_savetemplate_ajax' ); 
-		
+		$this->loader->add_action( 'wp_ajax_wpfb_save_template', $plugin_admin, 'wpfb_savetemplate_ajax' );
+
+		//setup wizard (opened from the Welcome page)
+		$plugin_wizard = new WP_FB_Reviews_Wizard( $plugin_admin, $this->get_version() );
+		$this->loader->add_action( 'admin_menu', $plugin_wizard, 'menu' );
+		$this->loader->add_filter( 'admin_title', $plugin_wizard, 'admin_title', 10, 2 );
+		$this->loader->add_filter( 'parent_file', $plugin_wizard, 'parent_file' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_wizard, 'assets' );
+		$this->loader->add_action( 'wp_ajax_wpfb_wizard_sources', $plugin_wizard, 'ajax_sources' );
+		$this->loader->add_action( 'wp_ajax_wpfb_wizard_save_code', $plugin_wizard, 'ajax_save_code' );
+		$this->loader->add_action( 'wp_ajax_wpfb_wizard_save_template', $plugin_wizard, 'ajax_save_template' );
+		$this->loader->add_action( 'wp_ajax_wpfb_wizard_create_page', $plugin_wizard, 'ajax_create_page' );
+		$this->loader->add_action( 'wp_ajax_wpfb_wizard_finish', $plugin_wizard, 'ajax_finish' );
+
 		//add ajax for adding FB backup method feedback to table
 		//$this->loader->add_action( 'wp_ajax_wpfb_fb_backup_reviews', $plugin_admin, 'wprevpro_ajax_download_fb_backup' );
 		

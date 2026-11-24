@@ -16,7 +16,7 @@
  * Plugin Name:       WP Review Slider
  * Plugin URI:        https://wpreviewslider.com/
  * Description:       Facebook reviews & X (Twitter) posts in a WordPress review slider or grid. Official Facebook API + X API v2. Saved locally for fast social proof.
- * Version:           15.4
+ * Version:           15.5
  * Author:            LJ Apps
  * Author URI:        http://ljapps.com/
  * License:           GPL-2.0+
@@ -78,7 +78,9 @@ function activate_WP_FB_Reviews($networkwide) {
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wprevfb_action_links' );
 function wprevfb_action_links( $links )
 {
-    $links[] = '<a href="https://wpreviewslider.com/" target="_blank"><strong style="color: #009040; display: inline;">Go Pro!</strong></a>';
+    // Black Friday sale until the end of Dec 2, 2026 (site time), then back to "Go Pro!".
+    $pro_label = ( current_time( 'Y-m-d' ) <= '2026-12-02' ) ? __( '30% Off Black Friday Special', 'wp-fb-reviews' ) : 'Go Pro!';
+    $links[] = '<a href="https://wpreviewslider.com/" target="_blank"><strong style="color: #009040; display: inline;">' . esc_html( $pro_label ) . '</strong></a>';
     return $links;
 }
 

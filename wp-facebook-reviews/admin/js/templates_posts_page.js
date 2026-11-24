@@ -33,9 +33,9 @@
 		var starhtmlt6 = '<span class="wprev_stars_wrap wprevpro_star_imgs_T6"><span class="starloc1 wprevpro_star_imgs wprevpro_star_imgsloc1"><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span><span class="svgicons svg-wprsp-star"></span></span></span>';
 		var sampltext = 'This is a sample review. Hands down the best experience we have had! Awesome staff and service. We will gladly recommend this gem to all our friends!';
 		var verified1 = '<span class="verifiedloc1 wprevpro_verified_svg wprevtooltip" data-wprevtooltip="Verified on Facebook"><span class="svgicons svg-wprsp-verified"></span></span>';
-		var iconhref = pluginsUrl + '/public/partials/imgs/facebook_small_icon.png';
-		var iconhtml = '<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t1_fb_logo siteicon">';
-		var iconhtmlt6 = '<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t6_site_logo siteicon">';
+		var iconhref = pluginsUrl + '/public/partials/imgs/facebook_badge_icon.svg';
+		var iconhtml = '<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t1_fb_logo siteicon" width="26" height="26">';
+		var iconhtmlt6 = '<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t6_site_logo siteicon sitetype_Facebook" width="26" height="26">';
 
 		var imagehref = pluginsUrl + '/admin/partials/sample_avatar.jpg';
 		var imagehrefmystery = pluginsUrl + '/admin/partials/fb_profile.jpg';
@@ -85,7 +85,7 @@
 								<div class="wpproslider_t2_DIV_3">	\
 									<p class="wpproslider_t2_P_4 wprev_preview_tcolor1">	\
 										'+starhtml+''+verified1+''+sampltext+'		</p> <strong class="wpproslider_t2_STRONG_5 wprev_preview_tcolor2">'+displayname+'</strong> <span class="wpproslider_t2_SPAN_6 wprev_preview_tcolor2">'+datehtml+'</span>	\
-										<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t2_site_logo siteicon">	\
+										<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t2_site_logo siteicon" width="32" height="32">	\
 								</div></div></div></div>';
 
 		var style3html = '<div class="wprevpro_t3_outer_div w3_wprs-row-padding">	\
@@ -97,7 +97,7 @@
 					</div>	\
 					'+displayname3+'</div>	\
 				<p class="wpproslider_t3_P_3 wprev_preview_tcolor1"><img src="'+quoteimg+'" alt="" class="wpproslider_t3_quote">'+starhtml+''+verified1+''+sampltext+' '+datehtml+'</p>	\
-				<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t3_site_logo siteicon">	\
+				<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t3_site_logo siteicon" width="32" height="32">	\
 			</div>	\
 		</div>	\
 		</div>';
@@ -112,7 +112,7 @@
 			<span class="wpproslider_t4_SPAN_4">'+starhtml+''+verified1+'</span>	\
 			<p class="wpproslider_t4_P_5 wprev_preview_tcolor2">'+sampltext+'</p>	\
 			<span class="wpproslider_t4_date wprev_preview_tcolor3">'+datehtml+'</span>	\
-			<div><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t4_site_logo siteicon"></div>	\
+			<div><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t4_site_logo siteicon" width="32" height="32"></div>	\
 		</div></div></div>';
 
 		var style5html = '<div class="wprevpro_t5_outer_div w3_wprs-row-padding">	\
@@ -123,7 +123,7 @@
 									<p class="wpproslider_t5_P_4 wprev_preview_tcolor1">	\
 										'+starhtml+''+verified1+''+sampltext+'<span class="wpproslider_t5_SPAN_6 wprev_preview_tcolor2"> - '+datehtml+'</span></p> 	\
 								</div>	\
-								<div class="wpproslider_t5_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t5_site_logo wprevsiteicon siteicon"></div>	\
+								<div class="wpproslider_t5_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t5_site_logo wprevsiteicon siteicon" width="32" height="32"></div>	\
 								</div></div></div>';
 
 		var style7html = '<div class="wprevpro_t7_outer_div w3_wprs-row-padding">	\
@@ -131,7 +131,7 @@
 								<div class="wpproslider_t7_DIV_2 wprev_preview_bg1 wprev_preview_bradius">	\
 								<div class="wpproslider_t7_DIV_2_top">	\
 									<div class="wpproslider_t7_DIV_3L">	\
-										<div class="wpproslider_t7_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t7_site_logo siteicon"></div>	\
+										<div class="wpproslider_t7_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t7_site_logo siteicon" width="32" height="32"></div>	\
 										<div class="wpproslider_t7_star_DIV">'+starhtml+''+verified1+'</div>	\
 									</div>	\
 								</div>	\
@@ -156,7 +156,7 @@
 										</div>	\
 										</div>	\
 									</div>	\
-									<div class="wpproslider_t8_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t8_site_logo siteicon"></div>	\
+									<div class="wpproslider_t8_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t8_site_logo siteicon" width="32" height="32"></div>	\
 								</div></div></div>';
 
 		var style9html = '<div class=" wprevpro_t9_DIV_1 w3_wprs-col">	\
@@ -165,7 +165,7 @@
 									<div class="wpproslider_t9_DIV_2_top">	\
 										<div class="wpproslider_t9_DIV_3L"><img src="'+avatarimg+'" alt="Avatar" class="wprev_avatar_opt wpproslider_t9_IMG_2 wprevpro_avatarimg"></div>	\
 										<div class="wpproslider_t9_star_DIV wprevpro_star_imgs_T9">'+starhtml+''+verified1+'</div>	\
-										<div class="wpprooutoffive">5 out of 5 stars</div><div class="wpproslider_t9_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t9_site_logo siteicon"></div>	\
+										<div class="wpprooutoffive">5 out of 5 stars</div><div class="wpproslider_t9_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t9_site_logo siteicon" width="32" height="32"></div>	\
 									</div>	\
 									<div class="wpproslider_t9_DIV_3">	\
 											<div class="t9displayname wpproslider_t9_STRONG_5 wprev_preview_tcolor2">'+displayname+'</div>	\
@@ -186,7 +186,7 @@
 											<div class="wpproslider_t10_SPAN_6 t10datediv">'+datehtml+'</div>	\
 										</div>	\
 									</div>	\
-									<div class="wpproslider_t10_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t10_site_logo siteicon"></div>	\
+									<div class="wpproslider_t10_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t10_site_logo siteicon" width="32" height="32"></div>	\
 								</div></div></div>';
 
 		var style11html = '<div class="wprevpro_t11_outer_div w3_wprs-row-padding">	\
@@ -203,7 +203,7 @@
 										</div>	\
 										</div>	\
 									</div>	\
-									<div class="wpproslider_t11_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t11_site_logo siteicon"></div>	\
+									<div class="wpproslider_t11_DIV_3_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t11_site_logo siteicon" width="32" height="32"></div>	\
 								</div></div></div>';
 
 		var style12html = '<div class="wprevpro_t12_outer_div w3_wprs-row-padding">	\
@@ -216,7 +216,7 @@
 			</div>	\
 			<div><h3 class="wpproslider_t12_H3_3 wprev_preview_tcolor1">'+displayname+'</h3></div>	\
 			<div><span class="wpproslider_t12_date wprev_preview_tcolor3">'+datehtml+'</span></div>	\
-			<div><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t12_site_logo siteicon"></div>	\
+			<div><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t12_site_logo siteicon" width="32" height="32"></div>	\
 		</div></div></div>';
 
 		var style13html = '<div class="wprevpro_t13_outer_div w3_wprs-col l4 outerrevdiv" style="width: 100%; display: inline-block;">	\
@@ -230,7 +230,7 @@
 				<div class="wpproslider_t13_star_DIV"><span class="wprevpro_star_imgs_T13">'+starhtml+''+verified1+'</span>	\
 			</div><div class="wpproslider_t13_SPAN_6 wprev_preview_tcolor2"><span class="wprev_showdate_T13">'+datehtml+'</span></div></div>	\
 		</div><div class="wpproslider_t13_DIV_3_logo">	\
-		<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t6_site_logo siteicon">	\
+		<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t6_site_logo siteicon" width="32" height="32">	\
 		</div></div></div></div>';
 
 		var style14html = '<div class="wprevpro_t14_DIV_1 wprevpro_t14_outer_div outerrevdiv wprevpro_t14_DIV_1_preview">	\
@@ -247,7 +247,7 @@
 							<div class="wprevpro_star_imgs_T14">'+starhtml+''+verified1+'</div>	\
 							<div class="wprevpro_t14_showdate wprevpro_t14_date wprev_preview_tcolor3">'+datehtml+'</div>	\
 						</div>	\
-						<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t14_site_logo siteicon">	\
+						<img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t14_site_logo siteicon" width="32" height="32">	\
 						</div>	\
 				</div>	\
 			</div>	\
@@ -260,8 +260,44 @@
 			<span class="wprev_showdate_T15 wprev_preview_tcolor3">'+datehtml+'</span>	\
 			<span class="wpproslider_t15_SPAN_4">'+starhtml+''+verified1+'</span>	\
 			<div class="indrevtxt wpproslider_t15_P_5 wprev_preview_tcolor2"><p class="wpproslider_t15_P_5 wprev_preview_tcolor2">'+sampltext+'</p></div>	\
-			<div class="wprevt15_icon_div"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t15_site_logo siteicon"></div>	\
+			<div class="wprevt15_icon_div"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t15_site_logo siteicon" width="32" height="32"></div>	\
 		</div></div>';
+
+		var style16html = '<div class="wprevpro_t16_DIV_1 w3_wprs-col outerrevdiv" style="width: 100%;">' +
+		'<div class="indrevdiv wprevpro_t16_card wprev_preview_bg1 wprev_preview_bradius">' +
+			'<div class="wprevpro_t16_head">' +
+				'<span class="wprevpro_t16_stars">'+starhtml+''+verified1+'</span>' +
+				'<span class="wprevpro_t16_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t16_site_logo siteicon" width="32" height="32"></span>' +
+			'</div>' +
+			'<div class="indrevtxt wprevpro_t16_text wprev_preview_tcolor1">'+sampltext+'</div>' +
+		'</div>' +
+		'<div class="wprevpro_t16_author">' +
+			'<div class="wprevpro_t16_avatar"><img src="'+avatarimg+'" alt="Avatar" width="64" height="64" class="wprevpro_t16_avatar_img wprevpro_avatarimg wprev_avatar_opt"></div>' +
+			'<div class="wprevpro_t16_meta">' +
+				'<div class="wprevpro_t16_name wprev_preview_tcolor2">'+displayname+'</div>' +
+				'<span class="wprevpro_t16_date wprev_preview_tcolor3">'+datehtml+'</span>' +
+			'</div>' +
+		'</div>' +
+		'</div>';
+
+		var style17html = '<div class="wprevpro_t17_DIV_1 w3_wprs-col outerrevdiv" style="width: 100%;">' +
+		'<div class="wprevpro_t17_layout">' +
+			'<aside class="wprevpro_t17_aside">' +
+				'<div class="wprevpro_t17_avatar"><img src="'+avatarimg+'" alt="Avatar" width="96" height="96" class="wprevpro_t17_avatar_img wprevpro_avatarimg wprev_avatar_opt"></div>' +
+			'</aside>' +
+			'<div class="indrevdiv wprevpro_t17_card wprev_preview_bg1 wprev_preview_bradius">' +
+				'<div class="wprevpro_t17_head">' +
+					'<span class="wprevpro_t17_stars">'+starhtml+''+verified1+'</span>' +
+					'<div class="wprevpro_t17_logo"><img id="wprev_showicon" src="'+iconhref+'" alt="Facebook" class="wprevpro_t17_site_logo siteicon" width="32" height="32"></div>' +
+				'</div>' +
+				'<div class="indrevtxt wprevpro_t17_text wprev_preview_tcolor1">'+sampltext+'</div>' +
+				'<div class="wprevpro_t17_footer">' +
+					'<div class="wprevpro_t17_name wprev_preview_tcolor2">'+displayname+'</div>' +
+					'<span class="wprevpro_t17_date wprev_preview_tcolor3">'+datehtml+'</span>' +
+				'</div>' +
+			'</div>' +
+		'</div>' +
+		'</div>';
 		
 		changepreviewhtml();
 
@@ -512,6 +548,14 @@
 				previewhtml = style15html;
 				$( ".wprevpre_bgcolor2" ).hide();
 				$( ".wprevpre_tcolor3" ).show();
+			} else if(templatenum=='16'){
+				previewhtml = style16html;
+				$( ".wprevpre_bgcolor2" ).hide();
+				$( ".wprevpre_tcolor3" ).show();
+			} else if(templatenum=='17'){
+				previewhtml = style17html;
+				$( ".wprevpre_bgcolor2" ).hide();
+				$( ".wprevpre_tcolor3" ).show();
 			}
 			$( "#wprevpro_template_preview" ).html(prestyle+previewhtml);
 			updateProStyleNote(templatenum);
@@ -565,6 +609,10 @@
 			//avatar option
 			if(avataropt=='hide'){
 				$( ".wprev_avatar_opt" ).hide();
+				//no avatar: style 16 aims the bubble tail at the name, style 17 drops the avatar column
+				$( ".wprevpro_t16_avatar, .wprevpro_t17_avatar" ).hide();
+				$( ".wprevpro_t16_DIV_1" ).addClass( "wprevpro_t16_no_avatar" );
+				$( ".wprevpro_t17_DIV_1" ).addClass( "wprevpro_t17_no_avatar" );
 				if(templatenum=='6'){ $( ".wpproslider_t6_DIV_3L" ).hide(); }
 				if(templatenum=='5'){ $( ".wpproslider_t5_DIV_3L" ).hide(); }
 				if(templatenum=='10'){ $( ".wpproslider_t10_DIV_3L" ).hide(); }
@@ -948,7 +996,7 @@
 		//------------Template settings tabs (Style / General / Filter / Badge / AI Summary)------------
 		var currenttab = 0;
 		function hideAllSettingTables(){
-			$( "#settingtable0, #settingtable1, #settingtable2, #settingtable3, #settingtable4" ).hide();
+			$( "#settingtable0, #settingtable1, #settingtable2, #settingtable3, #settingtable4, #settingtable5" ).hide();
 		}
 		$( ".gotopage0" ).click(function() {
 			hideAllSettingTables();
@@ -974,6 +1022,11 @@
 			hideAllSettingTables();
 			$( "#settingtable4" ).fadeIn();
 			currenttab = 4; changecurrenttab(currenttab);
+		});
+		$( ".gotopage5" ).click(function() {
+			hideAllSettingTables();
+			$( "#settingtable5" ).fadeIn();
+			currenttab = 5; changecurrenttab(currenttab);
 		});
 		function changecurrenttab(ctab){
 			$( ".settingtab" ).removeClass( "nav-tab-active" );

@@ -101,7 +101,7 @@ class WP_FB_Reviews_Admin {
 				//style 6 layout css for the preview
 				wp_enqueue_style( $this->_token."_style6", plugin_dir_url(dirname(__FILE__)) . 'public/css/wprev-public_template6.css', array(), filemtime( plugin_dir_path( dirname( __FILE__ ) ) . 'public/css/wprev-public_template6.css' ), 'all' );
 				if ( $_GET['page'] == 'wpfb-templates_posts' ) {
-					wp_enqueue_style( $this->_token . '_pro_style_preview', plugin_dir_url( __FILE__ ) . 'css/wprev_pro_style_preview.css', array( $this->_token . '_style1', $this->_token . '_style6' ), $this->version, 'all' );
+					wp_enqueue_style( $this->_token . '_pro_style_preview', plugin_dir_url( __FILE__ ) . 'css/wprev_pro_style_preview.css', array( $this->_token . '_style1', $this->_token . '_style6' ), filemtime( plugin_dir_path( __FILE__ ) . 'css/wprev_pro_style_preview.css' ), 'all' );
 				}
 
 			}
@@ -1975,6 +1975,21 @@ class WP_FB_Reviews_Admin {
 			die();
 		}
 
+		echo wp_json_encode( $this->wpfb_save_template_fields( $formarray ) );
+		die();
+	}
+
+	/**
+	 * Insert or update a review template from Templates page field values.
+	 *
+	 * Shared by the Templates page (ajax save) and the setup wizard, so both
+	 * store templates the same way.
+	 *
+	 * @since 15.5
+	 * @param array $formarray Field name => value, as posted by the Templates page form.
+	 * @return array Save result with t_id and the rendered templatehtml.
+	 */
+	public function wpfb_save_template_fields( $formarray ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'wpfb_post_templates';
 
@@ -2174,8 +2189,57 @@ class WP_FB_Reviews_Admin {
 		$returnpreview               = $this->wpfb_previewtemplate_ajax_get( absint( $t_id ) );
 		$returnarray['templatehtml'] = $returnpreview['templatehtml'];
 
-		echo wp_json_encode( $returnarray );
-		die();
+		return $returnarray;
+	}
+
+	/**
+	 * Ask for a WordPress.org review in the admin footer on this plugin's screens.
+	 *
+	 * @param string $footer_text Footer text to be rendered.
+	 * @return string
+	 */
+	public function admin_footer_text( $footer_text ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $footer_text;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only admin screen check.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+		if ( '' === $page || ( 0 !== strpos( $page, 'wpfb-' ) && 0 !== strpos( $page, 'wp_fb-' ) ) ) {
+			return $footer_text;
+		}
+
+		if ( get_option( 'wpfb_admin_footer_text_rated' ) ) {
+			return '<span id="footer-thankyou">' . esc_html__( 'Thank you for using WP Review Slider.', 'wp-fb-reviews' ) . '</span>';
+		}
+
+		$footer_text = sprintf(
+			/* translators: 1: plugin name, 2: five star rating link. */
+			__( 'If you like %1$s please leave us a %2$s rating. A huge thanks in advance!', 'wp-fb-reviews' ),
+			'<strong>' . esc_html__( 'WP Review Slider', 'wp-fb-reviews' ) . '</strong>',
+			'<a href="' . esc_url( 'https://wordpress.org/support/plugin/wp-facebook-reviews/reviews?rate=5#new-post' ) . '" target="_blank" rel="noopener noreferrer" class="wprev-rating-link" style="color:#2271b1" aria-label="' . esc_attr__( 'five star', 'wp-fb-reviews' ) . '" data-rated="' . esc_attr__( 'Thanks :)', 'wp-fb-reviews' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+		);
+
+		wp_register_script( 'wpfb-admin-footer-rating', '', array(), $this->version, true );
+		wp_enqueue_script( 'wpfb-admin-footer-rating' );
+		wp_add_inline_script(
+			'wpfb-admin-footer-rating',
+			"(function(){'use strict';var ratingLink=document.querySelector('a.wprev-rating-link');if(!ratingLink){return;}ratingLink.addEventListener('click',function(){var formData=new FormData();formData.append('action','wpfb_footer_rated');formData.append('_ajax_nonce','" . esc_js( wp_create_nonce( 'wpfb_footer_rated' ) ) . "');fetch('" . esc_js( admin_url( 'admin-ajax.php' ) ) . "',{method:'POST',body:formData,credentials:'same-origin'});var parent=ratingLink.parentElement;if(parent){parent.textContent=ratingLink.getAttribute('data-rated');}});})();"
+		);
+
+		return '<span id="footer-thankyou">' . $footer_text . '</span>';
+	}
+
+	/**
+	 * Remember that the footer review link was clicked.
+	 */
+	public function ajax_footer_rated() {
+		check_ajax_referer( 'wpfb_footer_rated' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1 );
+		}
+		update_option( 'wpfb_admin_footer_text_rated', '1' );
+		wp_die();
 	}
 
 

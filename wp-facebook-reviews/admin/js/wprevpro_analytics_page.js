@@ -425,6 +425,11 @@
 						//need to find correct small icon based on review type
 						var revtype = tempdataset.reviews[clickedElementIndex].type;
 						var siconurl = adminjs_script_vars.pluginsUrl + '/public/partials/imgs/'+revtype.toLowerCase()+'_small_icon.png';
+						var siconsize = 0;
+						if(revtype=='Facebook'){
+							siconurl = adminjs_script_vars.pluginsUrl + '/public/partials/imgs/facebook_badge_icon.svg';
+							siconsize = 26;
+						}
 						var fromurllink = tempdataset.reviews[clickedElementIndex].from_url;
 						var fromurlrevlink = tempdataset.reviews[clickedElementIndex].from_url_review;
 						//facebook fix
@@ -436,6 +441,11 @@
 						}
 						if(revtype!='Manual' && revtype!='Submitted'){
 							$(".siteicon").attr("src",siconurl);
+							if(siconsize){
+								$(".siteicon").attr({width:siconsize,height:siconsize});
+							} else {
+								$(".siteicon").removeAttr("width height");
+							}
 						}
 						$("#from_url").attr("href",fromurllink);
 						

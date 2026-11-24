@@ -99,14 +99,19 @@ for ( $x = 0; $x < count( $rowarray ); $x++ ) {
 		} else {
 			$burl = ! empty( $review->from_url ) ? $review->from_url : '';
 		}
+		$logo_size = 16;
 		if ( $review->type === 'Twitter' ) {
 			$logo_src = $imgs_url . 'twitter_small_icon.svg';
 			$logo_alt = 'X';
+		} elseif ( $review->type === 'Facebook' ) {
+			$logo_src  = $imgs_url . 'facebook_badge_icon.svg';
+			$logo_alt  = 'Facebook logo';
+			$logo_size = 26;
 		} else {
 			$logo_src = $imgs_url . $typelower . '_small_icon.png';
 			$logo_alt = $review->type . ' logo';
 		}
-		$logo_img = '<img src="' . esc_url( $logo_src ) . '" alt="' . esc_attr( $logo_alt ) . '" class="wprevpro_t6_site_logo siteicon sitetype_' . esc_attr( $review->type ) . '" width="16" height="16">';
+		$logo_img = '<img src="' . esc_url( $logo_src ) . '" alt="' . esc_attr( $logo_alt ) . '" class="wprevpro_t6_site_logo siteicon sitetype_' . esc_attr( $review->type ) . '" width="' . $logo_size . '" height="' . $logo_size . '">';
 		if ( $template_misc_array['showicon'] === 'no' ) {
 			$site_logo = '';
 		} elseif ( $template_misc_array['showicon'] === 'yes' ) {

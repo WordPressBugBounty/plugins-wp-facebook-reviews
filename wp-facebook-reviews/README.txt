@@ -5,7 +5,7 @@ Tags: facebook reviews, twitter, review slider, testimonials, social proof
 Requires at least: 3.0.1
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 15.4
+Stable tag: 15.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,19 @@ We are always looking for features to add! Post on the support forum or contact 
 9. Facebook summary badge beside a Style 6 layout, with your rating, review count, and Review us button.
 
 == Changelog ==
+
+= 15.5 =
+* Added previews of Pro template styles 16 and 17 on the Templates page.
+* Added a Setup Wizard, opened from the Welcome page, that downloads the reviews of your connected Facebook page, helps you pick a look, and adds them to a page.
+* The Setup Wizard connects your Facebook page itself: get your Secret Access Code in a pop-up window, paste it in, and pick your page without leaving the wizard.
+* Added a Header Options tab on the Templates page that previews the Pro header, search, sort, and filter options.
+* Added a rating request to the admin footer on the plugin's pages.
+* Fixed review photos opening twice in the lightbox.
+* The Card style (Style 6) now uses fixed review text and date sizes, so it looks the same with any theme.
+* Fixed the Card style (Style 6) grid stacking into one column on some themes when the rating badge is beside the reviews.
+* Fixed the verified check mark sitting lower than the stars in the Card style (Style 6) with some themes.
+* The Facebook icon on reviews is now a sharp SVG icon, 26px tall in both Style 1 and the Card style (Style 6), like the other site logos.
+* The "powered by" line in the Above Wide badge now lines up with the right edge of the button below it.
 
 = 15.4 =
 * Added a WP Review Slider block so a saved template can be inserted in the block editor.

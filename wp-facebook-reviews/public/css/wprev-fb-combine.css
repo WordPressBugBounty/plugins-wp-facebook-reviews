@@ -227,3 +227,6 @@ img.wprevpro_t1_fb_logo {
     width: unset;
     margin-bottom: unset !important;
 }
+
+/* Style 1: the site logo is 26px tall, the same as the Card style (Style 6). */
+img.wprevpro_t1_site_logo,img.wprevpro_t1_fb_logo{height:26px;width:auto}

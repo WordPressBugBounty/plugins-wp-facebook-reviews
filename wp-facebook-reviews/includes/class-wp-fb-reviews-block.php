@@ -73,7 +73,7 @@ class WP_FB_Reviews_Block {
 			return;
 		}
 
-		$public = new WP_FB_Reviews_Public( 'wp-fb-reviews', '15.4' );
+		$public = new WP_FB_Reviews_Public( 'wp-fb-reviews', '15.5' );
 		$public->enqueue_styles();
 		$public->enqueue_scripts();
 
@@ -98,7 +98,7 @@ class WP_FB_Reviews_Block {
 		$path = wpfbrev_plugin_dir . ltrim( $relative, '/' );
 		$time = file_exists( $path ) ? filemtime( $path ) : false;
 
-		return $time ? (string) $time : '15.4';
+		return $time ? (string) $time : '15.5';
 	}
 
 	/**
