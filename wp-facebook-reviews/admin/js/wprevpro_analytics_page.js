@@ -267,9 +267,9 @@
 										// Use default icon path
 										iconSrc = adminjs_script_vars.pluginsUrl+'/public/partials/imgs/'+typelower+'_small_icon.png';
 									}
-									temphtml1 = temphtml1 + '<div class="lh36"><img src="'+iconSrc+'" alt="'+typelower+' logo" class="charttypelogo">'+key+' </div>';
+									temphtml1 = temphtml1 + '<div class="lh36"><img src="'+wprevEscHtml(iconSrc)+'" alt="'+wprevEscHtml(typelower)+' logo" class="charttypelogo">'+wprevEscHtml(key)+' </div>';
 								  } else {
-									temphtml1 = temphtml1 + '<div class="lh36">'+key+' </div>';
+									temphtml1 = temphtml1 + '<div class="lh36">'+wprevEscHtml(key)+' </div>';
 								  }
 								  temphtml2 = temphtml2 + '<div class="lh36">'+numratings+' ('+avg+' <span class="svgicons svg-wprsp-star w3-text-gold"></span>)</div>';
 								});
@@ -392,27 +392,27 @@
 						//var dbid = activePoints[0]._chart.tooltip._data.labels[clickedElementIndex][0];
 
 						//find review in tempdataset.reviews and update pop-up
-						$("#wprev_showname").html(tempdataset.reviews[clickedElementIndex].reviewer_name);
+						$("#wprev_showname").text(tempdataset.reviews[clickedElementIndex].reviewer_name);
 						if(tempdataset.reviews[clickedElementIndex].from_url_review!=''){
-							$("#from_url_review").attr("href", tempdataset.reviews[clickedElementIndex].from_url_review);
+							$("#from_url_review").attr("href", wprevSafeUrl(tempdataset.reviews[clickedElementIndex].from_url_review));
 						} else {
-							$("#from_url_review").attr("href", tempdataset.reviews[clickedElementIndex].from_url);
+							$("#from_url_review").attr("href", wprevSafeUrl(tempdataset.reviews[clickedElementIndex].from_url));
 						}
 						
-						$("#wprev_showdate").html(tempdataset.reviews[clickedElementIndex].created_time);
+						$("#wprev_showdate").text(tempdataset.reviews[clickedElementIndex].created_time);
 						
 						var reviewtexthtml = '';
 						if(tempdataset.reviews[clickedElementIndex].review_title!=''){
-							reviewtexthtml="<b>"+tempdataset.reviews[clickedElementIndex].review_title+"</b><br>"+tempdataset.reviews[clickedElementIndex].review_text;
+							reviewtexthtml="<b>"+wprevEscHtml(tempdataset.reviews[clickedElementIndex].review_title)+"</b><br>"+wprevEscHtml(tempdataset.reviews[clickedElementIndex].review_text);
 						} else {
-							reviewtexthtml=tempdataset.reviews[clickedElementIndex].review_text;
+							reviewtexthtml=wprevEscHtml(tempdataset.reviews[clickedElementIndex].review_text);
 						}
 						//add owner_response
 						if(tempdataset.reviews[clickedElementIndex].owner_response!=''){
 							var ownerres=JSON.parse(tempdataset.reviews[clickedElementIndex].owner_response);
 								//console.log(object[index].owner_response);
 								//console.log(ownerres);
-							reviewtexthtml = reviewtexthtml + '<div class="wppro_owners_res_div"><div class="wppro_revres_title">'+adminjs_script_vars.msg7+'</div><div>'+ownerres.name+' - '+ownerres.date+'</div><div>'+ownerres.comment+'</div></div>'
+							reviewtexthtml = reviewtexthtml + '<div class="wppro_owners_res_div"><div class="wppro_revres_title">'+adminjs_script_vars.msg7+'</div><div>'+wprevEscHtml(ownerres.name)+' - '+wprevEscHtml(ownerres.date)+'</div><div>'+wprevEscHtml(ownerres.comment)+'</div></div>'
 						}
 						$(".wpproslider_t6_P_4").html(reviewtexthtml);
 						
@@ -447,7 +447,7 @@
 								$(".siteicon").removeAttr("width height");
 							}
 						}
-						$("#from_url").attr("href",fromurllink);
+						$("#from_url").attr("href",wprevSafeUrl(fromurllink));
 						
 						//insert correct star images
 						var tempstarhtml = '';
@@ -466,7 +466,7 @@
 						$("#starloc1").html(tempstarhtml);
 						
 						//add review source details...
-						var sourcerevdetailshtml = adminjs_script_vars.msg8+': '+revtype+'</br>'+adminjs_script_vars.msg9+': '+tempdataset.reviews[clickedElementIndex].pagename+' ('+tempdataset.reviews[clickedElementIndex].pageid+')</br><a href="'+fromurllink+'" target="_blank">'+adminjs_script_vars.msg10+'</a> </br><a href="'+fromurlrevlink+'" target="_blank">'+adminjs_script_vars.msg11+'</a></br>';
+						var sourcerevdetailshtml = adminjs_script_vars.msg8+': '+wprevEscHtml(revtype)+'</br>'+adminjs_script_vars.msg9+': '+wprevEscHtml(tempdataset.reviews[clickedElementIndex].pagename)+' ('+wprevEscHtml(tempdataset.reviews[clickedElementIndex].pageid)+')</br><a href="'+wprevEscHtml(wprevSafeUrl(fromurllink))+'" target="_blank">'+adminjs_script_vars.msg10+'</a> </br><a href="'+wprevEscHtml(wprevSafeUrl(fromurlrevlink))+'" target="_blank">'+adminjs_script_vars.msg11+'</a></br>';
 						$(".sourcerevdetails").html(sourcerevdetailshtml);
 					}
 				});
@@ -557,14 +557,14 @@
 					var reviewshtml=''
 					var userpic="";
 					if(value.userpiclocal!=""){
-						userpic = '<img wprevid="'+value.id+'" class="imgprofilepic" style="-webkit-user-select: none;width: 50px;" src="'+value.userpiclocal+'">';
+						userpic = '<img wprevid="'+wprevEscHtml(value.id)+'" class="imgprofilepic" style="-webkit-user-select: none;width: 50px;" src="'+wprevEscHtml(wprevSafeUrl(value.userpiclocal))+'">';
 					} else {
-						userpic = '<img wprevid="'+value.id+'" class="imgprofilepic" style="-webkit-user-select: none;width: 50px;" src="'+value.userpic+'">';
+						userpic = '<img wprevid="'+wprevEscHtml(value.id)+'" class="imgprofilepic" style="-webkit-user-select: none;width: 50px;" src="'+wprevEscHtml(wprevSafeUrl(value.userpic))+'">';
 					}
 					
 					var fromname = '';
 					if(value.from_name){
-						fromname ='-'+value.from_name;
+						fromname ='-'+wprevEscHtml(value.from_name);
 					}
 					var fromurllink = wprev_prourldecode(value.from_url);
 					var fromurlrevlink = wprev_prourldecode(value.from_url_review);
@@ -578,11 +578,11 @@
 					if(value.type=='Facebook' && fromurlrevlink==''){
 						fromurlrevlink = 'https://www.facebook.com/search/top/?q='+encodeURI(value.reviewer_name);
 					}
-					var reviewtext = value.review_text;
+					var reviewtext = wprevEscHtml(value.review_text);
 					if(searchword!=''){
-						var boldsearchword = "<b>"+searchword+"</b>";
-						var replace = searchword;
-						var re = new RegExp(replace,"gi");
+						var safesearchword = wprevEscHtml(searchword);
+						var boldsearchword = "<b>"+safesearchword+"</b>";
+						var re = new RegExp(safesearchword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),"gi");
 						reviewtext = reviewtext.replace(re, boldsearchword);
 					}
 					//add owner_response
@@ -590,16 +590,16 @@
 							var ownerres=JSON.parse(value.owner_response);
 								//console.log(object[index].owner_response);
 								//console.log(ownerres);
-							reviewtext = reviewtext + '<div class="wppro_owners_res_div"><div class="wppro_revres_title">'+adminjs_script_vars.msg7+'</div><div>'+ownerres.name+' - '+ownerres.date+'</div><div>'+ownerres.comment+'</div></div>'
+							reviewtext = reviewtext + '<div class="wppro_owners_res_div"><div class="wppro_revres_title">'+adminjs_script_vars.msg7+'</div><div>'+wprevEscHtml(ownerres.name)+' - '+wprevEscHtml(ownerres.date)+'</div><div>'+wprevEscHtml(ownerres.comment)+'</div></div>'
 						}
 						
-					reviewshtml = reviewshtml + '<tr id="'+value.id+'" rtype="'+value.type+'">	\
-							<th scope="col" class="wprev_row_userpic wprev_row_reviewer_name manage-column"><a href="'+fromurlrevlink+'" target="_blank">'+userpic+'<br>'+value.reviewer_name+'</a></th>	\
-							<th scope="col" class="wprev_row_rating manage-column"><b>'+value.rating+'</br>'+value.recommendation_type+'</b></th>	\
-							<th scope="col" rtitle="'+value.reviewer_name+'" class="wprev_row_review_text manage-column"><span class="wprev_row_review_title_span">'+value.review_title+'</span><span class="wprev_row_review_text_span">'+reviewtext+'</span></th>	\
-							<th scope="col" class="wprev_row_created_time manage-column">'+value.created_time+'</th>	\
-							<th scope="col" class="manage-column">'+value.review_length+'<br>'+value.review_length_char+'<br>'+value.language_code+'</th>	\
-							<th scope="col" class="manage-column">'+value.pagename+'</br><a href="'+fromurllink+'" target="_blank">'+value.type+fromname+'</a></th></tr>';
+					reviewshtml = reviewshtml + '<tr id="'+wprevEscHtml(value.id)+'" rtype="'+wprevEscHtml(value.type)+'">	\
+							<th scope="col" class="wprev_row_userpic wprev_row_reviewer_name manage-column"><a href="'+wprevEscHtml(wprevSafeUrl(fromurlrevlink))+'" target="_blank">'+userpic+'<br>'+wprevEscHtml(value.reviewer_name)+'</a></th>	\
+							<th scope="col" class="wprev_row_rating manage-column"><b>'+wprevEscHtml(value.rating)+'</br>'+wprevEscHtml(value.recommendation_type)+'</b></th>	\
+							<th scope="col" rtitle="'+wprevEscHtml(value.reviewer_name)+'" class="wprev_row_review_text manage-column"><span class="wprev_row_review_title_span">'+wprevEscHtml(value.review_title)+'</span><span class="wprev_row_review_text_span">'+reviewtext+'</span></th>	\
+							<th scope="col" class="wprev_row_created_time manage-column">'+wprevEscHtml(value.created_time)+'</th>	\
+							<th scope="col" class="manage-column">'+wprevEscHtml(value.review_length)+'<br>'+wprevEscHtml(value.review_length_char)+'<br>'+wprevEscHtml(value.language_code)+'</th>	\
+							<th scope="col" class="manage-column">'+wprevEscHtml(value.pagename)+'</br><a href="'+wprevEscHtml(wprevSafeUrl(fromurllink))+'" target="_blank">'+wprevEscHtml(value.type)+fromname+'</a></th></tr>';
 							
 				return reviewshtml;
 		}
@@ -765,6 +765,24 @@
 		//javascript equivelant to urldecode
 		function wprev_prourldecode(url) {
 		  return decodeURIComponent(url.replace(/\+/g, ' '));
+		}
+
+		// Review fields come from third-party sites. Like esc_html(), existing entities are kept.
+		function wprevEscHtml(value) {
+			if (value === null || typeof value === 'undefined') {
+				return '';
+			}
+			return String(value)
+				.replace(/&(?!(?:[a-z][a-z0-9]*|#\d+|#x[0-9a-f]+);)/gi, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+		}
+
+		function wprevSafeUrl(url) {
+			url = String(url || '').trim();
+			return /^(?:javascript|data|vbscript):/i.test(url.replace(/[\s\u0000-\u001f]/g, '')) ? '' : url;
 		}
 
 		// New chart variables

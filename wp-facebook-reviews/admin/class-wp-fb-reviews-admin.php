@@ -899,9 +899,7 @@ class WP_FB_Reviews_Admin {
 			wp_die();
 		}
 		
-		$postreviewarray = $_POST['postreviewarray'];
-		
-		//var_dump($postreviewarray);
+		$postreviewarray = isset( $_POST['postreviewarray'] ) && is_array( $_POST['postreviewarray'] ) ? wp_unslash( $_POST['postreviewarray'] ) : array();
 
 		//loop through each one and insert in to db
 		global $wpdb;
@@ -911,36 +909,37 @@ class WP_FB_Reviews_Admin {
 		$seen_keys = array();
 		
 		foreach($postreviewarray as $item) { //foreach element in $arr
-			if ( empty( $item['pageid'] ) || empty( $item['created_time'] ) ) {
+			if ( ! is_array( $item ) || empty( $item['pageid'] ) || empty( $item['created_time'] ) ) {
 				continue;
 			}
 
-			$pageid = $item['pageid'];
-			$pagename = $item['pagename'];
-			$created_time = $item['created_time'];
+			// Review fields come from Facebook users, so store them as plain text only.
+			$pageid = sanitize_text_field( $item['pageid'] );
+			$pagename = isset( $item['pagename'] ) ? sanitize_text_field( $item['pagename'] ) : '';
+			$created_time = sanitize_text_field( $item['created_time'] );
 			$created_time_stamp = strtotime( $created_time );
 			if ( false === $created_time_stamp ) {
 				continue;
 			}
-			$reviewer_name = $item['reviewer_name'];
-			$reviewer_id = $item['reviewer_id'];
-			$reviewer_imgurl = $item['reviewer_imgurl'];
-			if(isset($item['rating'])){
-				$rating = $item['rating'];
+			$reviewer_name = isset( $item['reviewer_name'] ) ? sanitize_text_field( $item['reviewer_name'] ) : '';
+			$reviewer_id = isset( $item['reviewer_id'] ) ? sanitize_text_field( $item['reviewer_id'] ) : '';
+			$reviewer_imgurl = isset( $item['reviewer_imgurl'] ) ? esc_url_raw( $item['reviewer_imgurl'] ) : '';
+			if ( isset( $item['rating'] ) && '' !== $item['rating'] ) {
+				$rating = min( 5, absint( $item['rating'] ) );
 			} else {
 				$rating ="";
 			}
-			if(isset($item['recommendation_type']) && $item['recommendation_type']){
+			if ( isset( $item['recommendation_type'] ) && in_array( $item['recommendation_type'], array( 'positive', 'negative' ), true ) ) {
 				$recommendation_type = $item['recommendation_type'];
 			} else {
 				$recommendation_type ="";
 			}
-			$review_text = $item['review_text'];
+			$review_text = isset( $item['review_text'] ) ? sanitize_textarea_field( $item['review_text'] ) : '';
 			$review_length = str_word_count($review_text);
 			if($review_length <1 && $review_text !=""){		//fix for other language error
 				$review_length = substr_count($review_text, ' ');
 			}
-		$rtype = $item['type'];
+		$rtype = isset( $item['type'] ) ? sanitize_text_field( $item['type'] ) : 'Facebook';
 
 		$dedup_key = $pageid . '|' . $reviewer_id . '|' . $created_time_stamp;
 		if ( isset( $seen_keys[ $dedup_key ] ) ) {
@@ -1037,7 +1036,14 @@ class WP_FB_Reviews_Admin {
 		
 		//being called from js file after all reviews are downloaded.
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
+		// Security: the nonce is shared with other plugins and shown to logged-in visitors.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized access', 403 );
+		}
 		$img_locations_option = json_decode(get_option( 'wprev_img_locations' ),true);
+		if ( ! is_array( $img_locations_option ) || empty( $img_locations_option['upload_dir_wprev_avatars'] ) ) {
+			wp_die();
+		}
 		$imageuploadedir =$img_locations_option['upload_dir_wprev_avatars'];
 		
 		//$imagecachedir = plugin_dir_path( __DIR__ ).'/public/partials/avatars/';
@@ -1052,7 +1058,9 @@ class WP_FB_Reviews_Admin {
 			//$review->id
 			$id= $review->id;
 			$revid = $review->reviewer_id;
-			$newfilename = $review->created_time_stamp.'_'.$revid;
+			// Security: reviewer_id comes from the review source, so it must not be able to
+			// add directories or change the extension.
+			$newfilename = sanitize_file_name( intval( $review->created_time_stamp ).'_'.preg_replace( '/[^A-Za-z0-9_\-]/', '', (string) $revid ) );
 			
 			
 			//$newfile = $imagecachedir . $newfilename.'.jpg';
@@ -1062,37 +1070,29 @@ class WP_FB_Reviews_Admin {
 			
 			//echo $newfile;
 			
+			// A file here that is not an image was not made by this plugin (for example a
+			// server file copied in by an older version), so remove it.
+			if ( is_file( $newfile ) && ! $this->wpfb_is_image_file( $newfile ) ) {
+				wp_delete_file( $newfile );
+			}
+
 			//$userpic = $review->userpic;
 			$userpic = htmlspecialchars_decode($review->userpic);
 			//check for avatar
 			if(@filesize($newfile)<200){
-				if($userpic!=''){
-					if ( @copy($userpic, $newfile) ) {
-						//echo "Copy success!";
-						$this->wppro_resizeimage($newfile,60);
-						//update db with new image location, userpiclocal
-						$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = '$newfileurl' WHERE id = %d AND reviewer_id = %s",$id, $revid) );
-					} else {
-						//echo "Copy failed.";
-						//try to curl the image
-						if (function_exists('curl_init')) {
-							$fh = @fopen($newfile, 'w');
-							if ($fh) {
-								$curl = curl_init();
-								curl_setopt($curl, CURLOPT_URL, $userpic);
-								curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-								$result = curl_exec($curl);
-								if ($result !== false) {
-									fwrite($fh, $result);
-								}
-								fclose($fh);
-								curl_close($curl);
-
-								if ( is_file($newfile) ) {
-									//$this->wppro_resizeimage($newfile,60);
-									//update db with new image location, userpiclocal
-									$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = %s WHERE id = %d AND reviewer_id = %s",$newfileurl,$id, $revid) );
-								}
+				// Security: only download public http(s) URLs. Local paths and other
+				// stream wrappers would copy server files into the public uploads folder.
+				if ( $userpic != '' && wp_http_validate_url( $userpic ) ) {
+					$response = wp_safe_remote_get( $userpic, array( 'timeout' => 15 ) );
+					if ( ! is_wp_error( $response ) && 200 === (int) wp_remote_retrieve_response_code( $response ) ) {
+						$body = wp_remote_retrieve_body( $response );
+						if ( '' !== $body && false !== @file_put_contents( $newfile, $body ) ) {
+							if ( $this->wpfb_is_image_file( $newfile ) ) {
+								$this->wppro_resizeimage($newfile,60);
+								//update db with new image location, userpiclocal
+								$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = %s WHERE id = %d AND reviewer_id = %s",$newfileurl,$id, $revid) );
+							} else {
+								wp_delete_file( $newfile );
 							}
 						}
 					}
@@ -1100,7 +1100,7 @@ class WP_FB_Reviews_Admin {
 			} else {
 					//echo "image exists:".$newfile;
 					//image does exist, just update db with this filename
-					$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = '$newfileurl' WHERE id = %d AND reviewer_id = %s",$id, $revid) );
+					$wpdb->query( $wpdb->prepare("UPDATE $table_name SET userpiclocal = %s WHERE id = %d AND reviewer_id = %s",$newfileurl,$id, $revid) );
 			}
 			//--------------------------
 			//do another check in case copy failed.
@@ -1111,6 +1111,17 @@ class WP_FB_Reviews_Admin {
 
 		}
 		
+	}
+
+	/**
+	 * Whether a file on disk is a real image.
+	 *
+	 * @param string $file Absolute file path.
+	 * @return bool
+	 */
+	private function wpfb_is_image_file( $file ) {
+		$size = function_exists( 'wp_getimagesize' ) ? wp_getimagesize( $file ) : @getimagesize( $file );
+		return is_array( $size ) && ! empty( $size[0] ) && ! empty( $size[1] );
 	}
 
 	/**
@@ -1415,6 +1426,9 @@ class WP_FB_Reviews_Admin {
 	public function wprp_twitter_gettweets_ajax() {
 
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized access', 403 );
+		}
 		$searchquery = sanitize_text_field($_POST['query']);
 		$searchendpoint = sanitize_text_field($_POST['endpoint']);
 		$formid = sanitize_text_field($_POST['fid']);
@@ -1565,6 +1579,9 @@ class WP_FB_Reviews_Admin {
 	//for saving or deleting tweets in db
 	public function wprp_twitter_savetweet_ajax() {
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized access', 403 );
+		}
 
 		$resultarray = array();
 		$saveordel =  sanitize_text_field($_POST['saveordel']);
@@ -1574,10 +1591,15 @@ class WP_FB_Reviews_Admin {
 		$tw_rc = sanitize_text_field($_POST['tw_rc']);
 		$tw_fc = sanitize_text_field($_POST['tw_fc']);
 		$tw_time = sanitize_text_field($_POST['tw_time']);
-		$tw_id = sanitize_text_field($_POST['tw_id']);
-		$tw_sname = sanitize_text_field($_POST['tw_sname']);
+		// X post IDs are numeric and handles are letters, digits and underscores.
+		$tw_id = preg_replace( '/[^0-9]/', '', sanitize_text_field($_POST['tw_id']) );
+		$tw_sname = preg_replace( '/[^A-Za-z0-9_]/', '', sanitize_text_field($_POST['tw_sname']) );
 		$tw_name = sanitize_text_field($_POST['tw_name']);
-		$tw_img = sanitize_text_field($_POST['tw_img']);
+		// Security: the avatar is downloaded later, so only accept a web URL here.
+		$tw_img = esc_url_raw( wp_unslash( $_POST['tw_img'] ), array( 'http', 'https' ) );
+		if ( ! preg_match( '#^https?://#i', $tw_img ) ) {
+			$tw_img = '';
+		}
 		$tw_lang = sanitize_text_field($_POST['tw_lang']);
 		
 		$fid = sanitize_text_field($_POST['fid']);
@@ -1670,6 +1692,9 @@ class WP_FB_Reviews_Admin {
 	//to delete tweet via ajax
 	public function wprp_twitter_deltweet_ajax() {
 		check_ajax_referer('randomnoncestring', 'wpfb_nonce');
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized access', 403 );
+		}
 		$tw_id = sanitize_text_field($_POST['tw_id']);
 		
 		global $wpdb;

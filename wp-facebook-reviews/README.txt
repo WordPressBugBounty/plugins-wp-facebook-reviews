@@ -5,7 +5,7 @@ Tags: facebook reviews, twitter, review slider, testimonials, social proof
 Requires at least: 3.0.1
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 15.5
+Stable tag: 15.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,10 @@ We are always looking for features to add! Post on the support forum or contact 
 9. Facebook summary badge beside a Style 6 layout, with your rating, review count, and Review us button.
 
 == Changelog ==
+
+= 15.6 =
+* Security: Facebook review text, reviewer names, and page names are now cleaned when reviews are downloaded, and the Style 1 template and Analytics page escape them when shown. This stops HTML or scripts in a Facebook review from running on your site.
+* Security: Saving X posts and copying avatars to your server now require an administrator, and avatars are only downloaded from web addresses and kept only if they are real images. Before, a logged-in user could copy a server file such as wp-config.php into the public uploads folder. Non-image files left in the avatars folder are removed the next time avatars are copied.
 
 = 15.5 =
 * Added previews of Pro template styles 16 and 17 on the Templates page.
